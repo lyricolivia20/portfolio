@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - LyriCodes</title>
+    <style>
+        :root {
+            --terminal-primary: #bc13fe;
+            --terminal-bg: rgba(17, 0, 34, 0.97);
+            --terminal-glow: rgba(188, 19, 254, 0.3);
+        }
+
+        body {
+            background: #110022;
+            color: var(--terminal-primary);
+            font-family: 'Courier New', monospace;
+        }
+
+        .terminal-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .terminal-container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 30px var(--terminal-glow);
+        }
+
+        .contact-form {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--terminal-primary);
+            text-shadow: 0 0 5px var(--terminal-primary);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--terminal-primary);
+            color: var(--terminal-primary);
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: transparent;
+            color: var(--terminal-primary);
+            border: 1px solid var(--terminal-primary);
+            padding: 0.8rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: monospace;
+        }
+
+        .submit-btn:hover {
+            background: var(--terminal-primary);
+            color: var(--terminal-bg);
+            box-shadow: 0 0 20px var(--terminal-glow);
+        }
+
+        .contact-info {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--terminal-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal-wrapper">
+        <div class="terminal-container">
+            <div class="contact-form">
+                <h1>> Initialize Contact Protocol</h1>
+                
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label>> Enter Name:</label>
+                        <input type="text" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>> Enter Email:</label>
+                        <input type="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>> Enter Message:</label>
+                        <textarea required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">> Send Message</button>
+                </form>
+
+                <div class="contact-info">
+                    <h2>> Alternative Channels</h2>
+                    <p>GitHub: @yourusername</p>
+                    <p>LinkedIn: /in/yourprofile</p>
+                    <p>Twitter: @yourhandle</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

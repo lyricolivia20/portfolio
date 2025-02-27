@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Add this right after opening body tag -->
+    <div class="environment">
+        <div class="floor"></div>
+    </div>
+
+    <!-- Terminal Interface -->
+    <div class="terminal-wrapper">
+        <div class="terminal-container">
+            <div class="window-controls">
+                <div class="window-dot"></div>
+                <div class="window-dot"></div>
+                <div class="window-dot"></div>
+                <div class="window-title">terminal</div>
+            </div>
+            <div class="terminal-content">
+                <div class="terminal-header">
+                    <pre class="cyber-title">
+╭───────────────────────────────────────────────╮
+│               L Y R I C O D E S              │
+│          Advanced Terminal Interface          │
+╰───────────────────────────────────────────────╯
+                    </pre>
+                </div>
+
+                <div id="terminal-output" class="terminal-output"></div>
+
+                <div class="input-container">
+                    <span class="prompt">♕</span>
+                    <input type="text" id="command-input" autofocus>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Back Button -->
+    <div id="floating-back" class="floating-back hidden">
+        <button class="back-button" onclick="goBack()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 17l6-6-6-6"></path>
+                <path d="M12 3h8v18h-8"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Chaos Mode Overlay -->
+    <div id="chaos-overlay" class="chaos-overlay hidden">
+        <div class="broken-screen">
+            <div class="broken-screen-cracks">
+                <div class="crack crack-1"></div>
+                <div class="crack crack-2"></div>
+                <div class="crack crack-3"></div>
+                <div class="crack crack-4"></div>
+                <div class="crack crack-5"></div>
+                <div class="crack crack-6"></div>
+                <div class="crack crack-7"></div>
+            </div>
+            <div class="broken-screen-content">
+                <h1 id="chaos-message" class="chaos-message"></h1>
+                <div id="chaos-countdown" class="chaos-countdown hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="terminal.js"></script>
+</body>
+</html>
+
+.glitch {
+    animation: glitch 0.3s infinite;
+}
+
+@keyframes glitch {
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-2px, 2px);
+    }
+    40% {
+        transform: translate(-2px, -2px);
+    }
+    60% {
+        transform: translate(2px, 2px);
+    }
+    80% {
+        transform: translate(2px, -2px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
+.broken-screen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.broken-screen-cracks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.crack {
+  position: absolute;
+  background: rgba(255, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+.crack-1 { top: 0; left: 20%; width: 2px; height: 30%; transform: rotate(45deg); }
+.crack-2 { top: 50%; right: 15%; width: 2px; height: 40%; transform: rotate(-30deg); }
+.crack-3 { bottom: 10%; left: 35%; width: 2px; height: 50%; transform: rotate(15deg); }
+.crack-4 { top: 25%; right: 40%; width: 2px; height: 35%; transform: rotate(-60deg); }
+.crack-5 { bottom: 30%; left: 25%; width: 2px; height: 45%; transform: rotate(75deg); }
+.crack-6 { top: 15%; left: 45%; width: 2px; height: 25%; transform: rotate(-45deg); }
+.crack-7 { bottom: 20%; right: 30%; width: 2px; height: 30%; transform: rotate(30deg); }
+
+.destructing {
+  animation: glitch 0.3s infinite;
+}
+
+.destruct-letter {
+  display: inline-block;
+  animation: letter-glitch 0.2s infinite;
+}
+
+.destruct-text {
+  color: #ff0000;
+  text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+  animation: pulse 1s infinite;
+}
+
+.pulse-border {
+  animation: border-pulse 1s infinite;
+}
+
+@keyframes letter-glitch {
+  0% { transform: translate(0); opacity: 1; }
+  50% { transform: translate(1px, -1px); opacity: 0.7; }
+  100% { transform: translate(0); opacity: 1; }
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+@keyframes border-pulse {
+  0% { border-color: rgba(255, 0, 0, 0.5); }
+  50% { border-color: rgba(255, 0, 0, 1); }
+  100% { border-color: rgba(255, 0, 0, 0.5); }
+}

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhoAmI - LyriCodes</title>
+    <style>
+        body {
+            background: black;
+            color: #00ffcc;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            overflow: hidden;
+        }
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 204, 0.05) 0px,
+                rgba(0, 255, 204, 0.05) 1px,
+                transparent 2px,
+                transparent 4px
+            );
+            pointer-events: none;
+        }
+        .profile-container {
+            height: 350px;
+            width: 70%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            border: 2px solid #00ffcc;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            gap: 40px;
+            padding: 40px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+            animation: float 3s infinite ease-in-out;
+        }
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 3px solid #00ffcc;
+            box-shadow: 0 0 15px #00ffcc;
+            flex-shrink: 0;
+            object-fit: cover;
+            object-position: center top;
+        }
+        .glitch-text {
+            font-size: 1.2em;
+            animation: glitch 1.5s infinite;
+        }
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px 4px #00ffcc; }
+            50% { text-shadow: -2px -2px 4px #00ffcc; }
+            100% { text-shadow: 2px 2px 4px #00ffcc; }
+        }
+        .profile-data {
+            margin-top: 20px;
+            text-align: left;
+            width: 80%;
+        }
+        .profile-data p {
+            margin: 8px 0;
+        }
+        .restricted {
+            color: red;
+            font-weight: bold;
+        }
+        .blink {
+            animation: blink 1s step-end infinite alternate;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        /* Binary Rain Canvas */
+        #binaryRain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        /* Scan effect */
+        .scan-effect {
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            background: rgba(0, 255, 204, 0.5);
+            filter: blur(2px);
+            animation: scan 2s linear infinite;
+            opacity: 0;
+            pointer-events: none;
+        }
+        @keyframes scan {
+            0% {
+                top: 0;
+                opacity: 0;
+            }
+            5% {
+                opacity: 0.8;
+            }
+            95% {
+                opacity: 0.8;
+            }
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
+        .profile-content {
+            flex: 1;
+        }
+        /* Bendy animation */
+        @keyframes bendEffect {
+            0% {
+                border-radius: 10px;
+                transform: translate(-50%, -50%) perspective(1000px) rotateX(0deg) rotateY(0deg);
+            }
+            25% {
+                border-radius: 15px 10px 15px 10px;
+                transform: translate(-50%, -50%) perspective(1000px) rotateX(2deg) rotateY(-1deg);
+            }
+            50% {
+                border-radius: 10px 15px 10px 15px;
+                transform: translate(-50%, -50%) perspective(1000px) rotateX(0deg) rotateY(2deg);
+            }
+            75% {
+                border-radius: 15px 10px 15px 10px;
+                transform: translate(-50%, -50%) perspective(1000px) rotateX(-2deg) rotateY(-1deg);
+            }
+            100% {
+                border-radius: 10px;
+                transform: translate(-50%, -50%) perspective(1000px) rotateX(0deg) rotateY(0deg);
+            }
+        }
+        /* Update hover effect for the new layout */
+        .profile-container:hover {
+            box-shadow: 0 0 25px #00ffcc;
+        }
+        .slides-container {
+            flex: 1;
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .slide {
+            min-width: 100%;
+            padding: 30px;
+            color: #00ffcc;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+        .nav-dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        .nav-dot {
+            border: 1px solid #00ffcc;
+            width: 12px;
+            height: 12px;
+        }
+        .nav-dot.active {
+            background: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+        }
+        /* Arrow navigation */
+        .nav-arrow {
+            background: rgba(0, 255, 204, 0.1);
+            border: 1px solid #00ffcc;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 2;
+        }
+        .nav-arrow:hover {
+            background: rgba(0, 255, 204, 0.4);
+        }
+        .nav-arrow.prev {
+            left: 280px;
+        }
+        .nav-arrow.next {
+            right: 20px;
+        }
+        /* Holographic border effect */
+        .profile-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 12px;
+            background: linear-gradient(45deg, 
+                transparent 0%,
+                rgba(0, 255, 204, 0.1) 45%,
+                rgba(0, 255, 204, 0.2) 50%,
+                rgba(0, 255, 204, 0.1) 55%,
+                transparent 100%
+            );
+            z-index: -1;
+            animation: holoBorder 3s infinite linear;
+        }
+        /* Scanlines effect */
+        .profile-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 255, 204, 0.05) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+        .holographic-corners::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ffcc;
+            animation: cornerPulse 2s infinite;
+        }
+        .corner-tl { top: 0; left: 0; border-right: none; border-bottom: none; }
+        .corner-tr { top: 0; right: 0; border-left: none; border-bottom: none; }
+        .corner-bl { bottom: 0; left: 0; border-right: none; border-top: none; }
+        .corner-br { bottom: 0; right: 0; border-left: none; border-top: none; }
+        @keyframes holographic {
+            0% {
+                background: rgba(0, 0, 0, 0.7);
+                box-shadow: 
+                    0 0 20px rgba(0, 255, 204, 0.5),
+                    inset 0 0 20px rgba(0, 255, 204, 0.3);
+            }
+            50% {
+                background: rgba(0, 0, 0, 0.75);
+                box-shadow: 
+                    0 0 25px rgba(0, 255, 204, 0.6),
+                    inset 0 0 30px rgba(0, 255, 204, 0.4);
+            }
+            100% {
+                background: rgba(0, 0, 0, 0.7);
+                box-shadow: 
+                    0 0 20px rgba(0, 255, 204, 0.5),
+                    inset 0 0 20px rgba(0, 255, 204, 0.3);
+            }
+        }
+        @keyframes borderGlow {
+            0% { box-shadow: 0 0 10px #00ffcc; }
+            50% { box-shadow: 0 0 20px #00ffcc; }
+            100% { box-shadow: 0 0 10px #00ffcc; }
+        }
+        @keyframes cornerPulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translate(-50%, -50%);
+            }
+            50% {
+                transform: translate(-50%, -52%);
+            }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .content-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            color: #00ffcc;
+        }
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tab-button {
+            background: transparent;
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .tab-button:hover {
+            background: rgba(0, 255, 204, 0.1);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+        }
+        .tab-button.active {
+            background: rgba(0, 255, 204, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="binaryRain"></canvas>
+    <div class="scan-lines"></div>
+    <div class="profile-container">
+        <div class="holographic-corners">
+            <div class="corner-tl"></div>
+            <div class="corner-tr"></div>
+            <div class="corner-bl"></div>
+            <div class="corner-br"></div>
+        </div>
+        <img src="me.jpg" alt="Profile Picture" class="profile-image">
+        <div class="content-section">
+            <div class="tab-buttons">
+                <button class="tab-button active" data-tab="about">About</button>
+                <button class="tab-button" data-tab="skills">Skills</button>
+                <button class="tab-button" data-tab="experience">Experience</button>
+                <button class="tab-button" data-tab="projects">Projects</button>
+            </div>
+            
+            <div id="about" class="tab-content active">
+                <h2>About Me</h2>
+                <p>Full Stack Developer passionate about creating innovative solutions...</p>
+            </div>
+            
+            <div id="skills" class="tab-content">
+                <h2>Skills</h2>
+                <p>JavaScript, Python, React, Node.js...</p>
+            </div>
+            
+            <div id="experience" class="tab-content">
+                <h2>Experience</h2>
+                <p>Details about your work experience...</p>
+            </div>
+            
+            <div id="projects" class="tab-content">
+                <h2>Projects</h2>
+                <p>Highlights of your best projects...</p>
+            </div>
+        </div>
+        <div class="nav-arrow prev">←</div>
+        <div class="nav-arrow next">→</div>
+        <div class="nav-dots"></div>
+        <div class="scan-effect"></div>
+    </div>
+    <script>
+        const container = document.querySelector('.profile-container');
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+        let rotateX = 0;
+        let rotateY = 0;
+
+        container.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+
+            if (e.target === container) {
+                isDragging = true;
+            }
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                xOffset = currentX;
+                yOffset = currentY;
+
+                setTranslate(currentX, currentY, container);
+            }
+        }
+
+        function dragEnd(e) {
+            isDragging = false;
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.transform = `
+                translate(calc(-50% + ${xPos}px), calc(-50% + ${yPos}px))
+                rotateX(${rotateX}deg)
+                rotateY(${rotateY}deg)
+            `;
+        }
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isDragging) {
+                const rect = container.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                rotateX = (e.clientY - centerY) / 20;
+                rotateY = -(e.clientX - centerX) / 20;
+                
+                container.style.transform = `
+                    translate(${xOffset}px, ${yOffset}px)
+                    rotateX(${rotateX}deg)
+                    rotateY(${rotateY}deg)
+                `;
+            }
+        });
+
+        container.addEventListener('mouseleave', () => {
+            if (!isDragging) {
+                container.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+            }
+        });
+
+        // Binary Rain Effect
+        const canvas = document.getElementById('binaryRain');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const binary = '01';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = new Array(Math.floor(columns)).fill(1);
+
+        function drawBinaryRain() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ffcc';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = binary.charAt(Math.floor(Math.random() * binary.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        setInterval(drawBinaryRain, 50);
+
+        // Tab switching functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                document.getElementById(button.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        container.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        container.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe left
+                    const currentTab = document.querySelector('.tab-button.active');
+                    if (currentTab.nextElementSibling) {
+                        currentTab.nextElementSibling.click();
+                    } else {
+                        tabButtons[0].click();
+                    }
+                } else {
+                    // Swipe right
+                    const currentTab = document.querySelector('.tab-button.active');
+                    if (currentTab.previousElementSibling) {
+                        currentTab.previousElementSibling.click();
+                    } else {
+                        tabButtons[tabButtons.length - 1].click();
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
