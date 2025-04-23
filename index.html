@@ -3,60 +3,506 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyberpunk Under Construction</title>
+    <title>Cyber Terminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            background-color: #111; /* Dark background */
-            color: #fff;
-            font-family: 'Courier New', monospace; /* Cyberpunk font */
+        /* Custom CSS for effects that Tailwind can't handle */
+        .terminal-container {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+        
+        .terminal-wrapper {
+            transform-style: preserve-3d;
+            cursor: grab;
+            box-shadow: 0 25px 50px -12px rgba(0, 255, 255, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        
+        .terminal-wrapper:hover {
+            box-shadow: 0 25px 50px -12px rgba(0, 255, 255, 0.5);
+        }
+        
+        .terminal-wrapper:active {
+            cursor: grabbing;
+        }
+        
+        .terminal-output {
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+        }
+        
+        .command-input {
+            caret-color: #00ffff;
+        }
+        
+        .command-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.5);
+        }
+        
+        .booting::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                rgba(0, 255, 255, 0.1) 0%,
+                rgba(0, 255, 255, 0) 10%,
+                rgba(0, 255, 255, 0.1) 20%,
+                rgba(0, 255, 255, 0) 30%,
+                rgba(0, 255, 255, 0.1) 40%,
+                rgba(0, 255, 255, 0) 50%,
+                rgba(0, 255, 255, 0.1) 60%,
+                rgba(0, 255, 255, 0) 70%,
+                rgba(0, 255, 255, 0.1) 80%,
+                rgba(0, 255, 255, 0) 90%,
+                rgba(0, 255, 255, 0.1) 100%
+            );
+            pointer-events: none;
+            z-index: 10;
+            animation: bootGlitch 3s linear infinite;
+        }
+        
+        @keyframes bootGlitch {
+            0% { transform: translateY(0); opacity: 0.8; }
+            25% { transform: translateY(-5px); opacity: 0.6; }
+            50% { transform: translateY(5px); opacity: 0.8; }
+            75% { transform: translateY(-3px); opacity: 0.6; }
+            100% { transform: translateY(0); opacity: 0.8; }
+        }
+        
+        .chaos-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #ff0000;
+            font-family: 'Courier New', monospace;
+            font-size: 2rem;
             text-align: center;
-            padding: 20px;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+            animation: chaosPulse 0.5s infinite alternate;
         }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
-            border: 1px solid #00ff7f; /* Neon green border */
-            border-radius: 5px;
+        
+        @keyframes chaosPulse {
+            from { background-color: rgba(0, 0, 0, 0.9); }
+            to { background-color: rgba(20, 0, 0, 0.9); }
         }
-
-        h1 {
-            color: #00ff7f; /* Neon green text */
-            font-size: 3em;
-            margin-bottom: 20px;
+        
+        .chaos-countdown {
+            font-size: 5rem;
+            margin-top: 2rem;
+            animation: chaosCountdown 1s infinite;
         }
-
-        p {
-            font-size: 1.2em;
-            line-height: 1.6;
+        
+        @keyframes chaosCountdown {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
         }
-
-        .cyberpunk-image {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 20px;
+        
+        .floating-back {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+            transition: all 0.3s ease;
         }
-
-        /* Optional: Subtle animations */
-        .container {
-            animation: fadeIn 1s ease-in-out;
+        
+        .floating-back:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.3);
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        
+        /* Custom scrollbar */
+        .terminal-output::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .terminal-output::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .terminal-output::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 255, 0.5);
+            border-radius: 4px;
+        }
+        
+        .terminal-output::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 255, 0.7);
         }
     </style>
 </head>
-<body>
-
-    <div class="container">
-        <img src="cyberpunk-image.jpg" alt="Cyberpunk Background" class="cyberpunk-image">
-        <h1>UNDER CONSTRUCTION</h1>
-        <p>The site is currently under development. Please check back soon for updates.</p>
+<body class="bg-gray-900 text-green-400 min-h-screen flex items-center justify-center p-4">
+    <!-- Chaos Mode Overlay (hidden by default) -->
+    <div id="chaos-overlay" class="chaos-overlay hidden">
+        <div id="chaos-message">SYSTEM OVERRIDE DETECTED</div>
+        <div id="chaos-countdown" class="chaos-countdown hidden">5</div>
+    </div>
+    
+    <!-- Floating Back Button -->
+    <button id="floating-back" onclick="goBack()" class="floating-back hidden bg-gray-800 hover:bg-gray-700 text-cyan-400 font-bold py-3 px-4 rounded-full shadow-lg border border-cyan-400/30">
+        ← Back to Terminal
+    </button>
+    
+    <!-- Main Terminal Container -->
+    <div class="terminal-container w-full max-w-4xl">
+        <div class="terminal-wrapper bg-gray-800 rounded-lg overflow-hidden border border-cyan-400/30">
+            <!-- Terminal Header -->
+            <div class="bg-gray-900 px-4 py-2 flex items-center justify-between border-b border-cyan-400/20">
+                <div class="flex items-center space-x-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div class="text-sm text-cyan-400 font-mono">SYSTEM TERMINAL v2.1.3</div>
+                <div class="w-12"></div> <!-- Spacer for alignment -->
+            </div>
+            
+            <!-- Terminal Output -->
+            <div id="terminal-output" class="terminal-output p-4 h-96 overflow-y-auto bg-gray-900/50"></div>
+            
+            <!-- Terminal Input -->
+            <div class="bg-gray-900 px-4 py-3 flex items-center border-t border-cyan-400/20">
+                <span class="text-cyan-400 mr-2">></span>
+                <input 
+                    id="command-input" 
+                    type="text" 
+                    class="command-input flex-1 bg-transparent text-cyan-400 outline-none font-mono" 
+                    autocomplete="off" 
+                    spellcheck="false"
+                    placeholder="Type command and press Enter..."
+                    autofocus
+                >
+            </div>
+        </div>
     </div>
 
+    <script>
+        // Terminal functionality
+        const commands = {
+            p: {
+                description: 'View my projects',
+                action: () => {
+                    addResponse("Redirecting to Projects page...");
+                    setTimeout(() => window.location.href = 'projects.html', 1000);
+                }
+            },
+            a: {
+                description: 'About me',
+                action: () => {
+                    addResponse("Redirecting to About page...");
+                    setTimeout(() => window.location.href = 'about.html', 1000);
+                }
+            },
+            c: {
+                description: 'Get in touch',
+                action: () => {
+                    addResponse("Redirecting to Contact page...");
+                    setTimeout(() => window.location.href = 'contact.html', 1000);
+                }
+            },
+            x: {
+                description: 'Enter chaos mode',
+                action: () => initiateChaosMode()
+            },
+            help: {
+                description: 'Show available commands',
+                action: () => {
+                    addResponse("\nAvailable commands:\n");
+                    addResponse("[P] - Projects       // Access project matrix\n");
+                    addResponse("[A] - About         // Identity protocols\n");
+                    addResponse("[C] - Contact       // Secure channel\n");
+                    addResponse("[X] - Chaos Mode    // Enter at own risk\n");
+                }
+            }
+        };
+
+        const bootSequence = [
+            {
+                text: "\n   // SYSTEM OS v2.1.3 //\n",
+                delay: 800
+            },
+            {
+                text: "[INIT] Establishing secure connection...",
+                delay: 800
+            },
+            {
+                text: "[CORE] ████████████████████████████  100%",
+                delay: 400
+            },
+            {
+                text: "[SYS]  ████████████████████████████  100%",
+                delay: 400
+            },
+            {
+                text: "[AUTH] Verifying credentials...",
+                delay: 800
+            },
+            {
+                text: "[AUTH] Access granted: Welcome, Traveler.",
+                delay: 600
+            },
+            {
+                text: "\n[SYS] :: Terminal ready. Available commands:\n",
+                delay: 800
+            },
+            {
+                text: "\n[P] - Projects       // Access project matrix\n",
+                delay: 300
+            },
+            {
+                text: "[A] - About         // Identity protocols\n",
+                delay: 300
+            },
+            {
+                text: "[C] - Contact       // Secure channel\n",
+                delay: 300
+            },
+            {
+                text: "[X] - Chaos Mode    // Enter at own risk\n",
+                delay: 300
+            },
+            {
+                text: "\n> _",
+                delay: 300
+            }
+        ];
+
+        // Make terminal draggable
+        const terminalWrapper = document.querySelector('.terminal-wrapper');
+        let rotation = { x: -15, y: -5 }; // Initial tilt
+        let isDragging = false;
+        let isRotating = false;
+        let currentX = 0;
+        let currentY = 0;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        // Update event listeners
+        terminalWrapper.addEventListener('mousedown', startDragging);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', stopDragging);
+
+        function startDragging(e) {
+            if (e.button === 2) { // Right click
+                isRotating = true;
+                initialX = e.clientX;
+                initialY = e.clientY;
+            } else { // Left click
+                isDragging = true;
+                initialX = e.clientX - xOffset;
+                initialY = e.clientY - yOffset;
+            }
+            
+            if (e.target.closest('.terminal-wrapper')) {
+                terminalWrapper.style.cursor = isRotating ? 'grabbing' : 'move';
+            }
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = (e.clientX - initialX) * 0.3; // Reduced movement sensitivity
+                currentY = (e.clientY - initialY) * 0.3; // Reduced movement sensitivity
+                xOffset = currentX;
+                yOffset = currentY;
+                updateTransform();
+            } else if (isRotating) {
+                e.preventDefault();
+                rotation.x += (e.clientY - initialY) * 0.15; // Reduced rotation sensitivity
+                rotation.y += (e.clientX - initialX) * 0.15; // Reduced rotation sensitivity
+                rotation.x = Math.min(Math.max(rotation.x, -20), 20); // More limited rotation
+                rotation.y = Math.min(Math.max(rotation.y, -20), 20);
+                initialX = e.clientX;
+                initialY = e.clientY;
+                updateTransform();
+            }
+        }
+
+        function updateTransform() {
+            const transform = `
+                translate3d(${currentX}px, ${currentY}px, 0)
+                rotateX(${rotation.x}deg)
+                rotateY(${rotation.y}deg)
+                translateZ(100px)
+            `;
+            
+            terminalWrapper.style.transform = transform;
+            terminalWrapper.style.transition = 'transform 0.1s cubic-bezier(0.4, 0, 0.2, 1)';
+        }
+
+        function stopDragging() {
+            isDragging = false;
+            isRotating = false;
+            terminalWrapper.style.cursor = 'grab';
+        }
+
+        // Prevent context menu on terminal
+        terminalWrapper.addEventListener('contextmenu', e => e.preventDefault());
+
+        // Terminal functionality
+        function addResponse(text, isTyping = true) {
+            const output = document.getElementById('terminal-output');
+            const response = document.createElement('div');
+            
+            if (!isTyping) {
+                // Instant display for user input
+                response.textContent = text;
+                output.appendChild(response);
+                output.scrollTop = output.scrollHeight;
+                return;
+            }
+
+            // Typing effect for system responses
+            response.textContent = '';
+            output.appendChild(response);
+            
+            let i = 0;
+            const typeSpeed = 30; // Adjust typing speed (milliseconds)
+            
+            function typeChar() {
+                if (i < text.length) {
+                    if (text.charAt(i) === '\n') {
+                        response.innerHTML += '<br>';
+                    } else {
+                        response.textContent += text.charAt(i);
+                    }
+                    i++;
+                    output.scrollTop = output.scrollHeight;
+                    setTimeout(typeChar, typeSpeed);
+                }
+            }
+            
+            typeChar();
+        }
+
+        // Handle commands
+        document.getElementById('command-input').addEventListener('keyup', function(e) {
+            if (e.key !== 'Enter') return;
+            
+            const command = this.value.toLowerCase().trim();
+            addResponse(`> ${this.value}`, false); // false for instant display
+            
+            if (command in commands) {
+                commands[command].action();
+            } else if (command === 'help') {
+                commands.help.action();
+            } else if (command !== '') {
+                addResponse(`Command not found: ${command}\nType 'help' for available commands`);
+            }
+            
+            this.value = '';
+        });
+
+        // Enhanced terminal initialization
+        async function initTerminal() {
+            const output = document.getElementById('terminal-output');
+            
+            // Clear terminal
+            output.innerHTML = '';
+            
+            // Add glitch effect during boot
+            document.querySelector('.terminal-container').classList.add('booting');
+            
+            // Play boot sound if available
+            // Note: In a real implementation, you would need an actual audio file
+            // const bootSound = new Audio('boot.mp3');
+            // bootSound.volume = 0.3;
+            // try {
+            //     await bootSound.play();
+            // } catch (e) {
+            //     // Ignore audio play errors
+            // }
+
+            // Run boot sequence
+            for (const sequence of bootSequence) {
+                await new Promise(resolve => setTimeout(resolve, sequence.delay));
+                addResponse(sequence.text, true);
+            }
+            
+            // Remove boot effect
+            setTimeout(() => {
+                document.querySelector('.terminal-container').classList.remove('booting');
+            }, 3000);
+        }
+
+        // Chaos mode messages
+        const chaosMessages = [
+            "SYSTEM OVERRIDE DETECTED",
+            "SECURITY PROTOCOLS BYPASSED",
+            "ACCESSING RESTRICTED DIRECTORIES",
+            "INITIATING SYSTEM CHAOS SEQUENCE",
+            "INJECTING UNSTABLE CODE FRAGMENTS",
+            "WARNING: CRITICAL SYSTEM CORRUPTION",
+            "SELF-DESTRUCT SEQUENCE INITIATED"
+        ];
+
+        // Chaos mode functionality
+        async function initiateChaosMode() {
+            const overlay = document.getElementById('chaos-overlay');
+            const message = document.getElementById('chaos-message');
+            const countdown = document.getElementById('chaos-countdown');
+            
+            overlay.classList.remove('hidden');
+            
+            // Display chaos messages
+            for (const msg of chaosMessages) {
+                message.textContent = msg;
+                await new Promise(resolve => setTimeout(resolve, 1200));
+            }
+            
+            // Countdown
+            message.textContent = "SYSTEM DESTABILIZED";
+            countdown.classList.remove('hidden');
+            
+            for (let i = 5; i >= 0; i--) {
+                countdown.textContent = i;
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            
+            // Reset
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                countdown.classList.add('hidden');
+                addResponse("\n✓ System restored from backup\n");
+                addResponse("Type 'x' to initiate again...\n");
+            }, 2000);
+        }
+
+        // Back button functionality
+        function updateBackButton() {
+            const backButton = document.getElementById('floating-back');
+            if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+                backButton.classList.add('hidden');
+            } else {
+                backButton.classList.remove('hidden');
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // Initialize
+        updateBackButton();
+        window.addEventListener('popstate', updateBackButton);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTerminal();
+        });
+    </script>
 </body>
 </html>
