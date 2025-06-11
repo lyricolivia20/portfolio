@@ -8,6 +8,34 @@
     <meta name="author" content="Lyric Olivia Jensen" />
     <link rel="canonical" href="https://portfolio-roan-one-39.vercel.app/about.html" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-pink': '#f72585',
+                        'violet-fuschia': '#b5179e',
+                        'dark-purple': '#7209b7',
+                        'midnight-indigo': '#3a0ca3',
+                        'cyber-blue': '#4361ee',
+                        'cool-lavender': '#4cc9f0',
+                        'dark-charcoal': '#1a1a2e',
+                        'soft-gray': '#adb5bd',
+                        'monitor-glow': '#edf6f9'
+                    },
+                    fontFamily: {
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                        'jetbrains': ['JetBrains Mono', 'monospace']
+                    },
+                    boxShadow: {
+                        'neon-pink': '0 0 10px #f72585',
+                        'cool-lavender': '0 0 10px #4cc9f0',
+                        'cyber-blue': '0 0 10px #4361ee'
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -16,242 +44,243 @@
     
     <style>
         :root {
-            --neon-pink: #ff00cc;
-            --neon-blue: #00ccff;
-            --deep-blue: #0d0163;
-            --light-blue: #80fff9;
-            --deep-violet: #1e003f;
-            --midnight-bg: #0a0a1f;
-            --card-bg: rgba(10, 10, 36, 0.85);
-            --border-pulse: rgba(255, 0, 204, 0.3);
-            --glow: 0 0 12px var(--neon-pink);
-            --gradient-accent: linear-gradient(135deg, var(--neon-pink), var(--light-blue));
-            --scan-pulse: 0 0 15px rgba(255, 0, 204, 0.7);
-            --content-bg: rgba(20, 10, 40, 0.15);
-            --border-color: rgba(0, 204, 255, 0.2);
+            --neon-pink: #f72585;
+            --violet-fuschia: #b5179e;
+            --dark-purple: #7209b7;
+            --midnight-indigo: #3a0ca3;
+            --cyber-blue: #4361ee;
+            --cool-lavender: #4cc9f0;
+            --dark-charcoal: #1a1a2e;
+            --soft-gray: #adb5bd;
+            --monitor-glow: #edf6f9;
+            
+            --glow: 0 0 12px #f72585;
+            --scan-pulse: 0 0 15px rgba(247, 37, 133, 0.7);
+            --gradient-accent: linear-gradient(135deg, var(--neon-pink), var(--cool-lavender));
         }
         
-        /* FIX: Body overflow is handled by JS now */
         body {
-            background: var(--midnight-bg);
+            background-color: var(--dark-charcoal);
+            color: var(--monitor-glow);
             min-height: 100vh;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--light-blue);
             touch-action: none;
-            overflow-x: hidden;
-            overflow-y: hidden; /* Initial state */
+            font-family: 'JetBrains Mono', monospace;
         }
         
-        #matrix-canvas {
-            position: fixed; top: 0; left: 0;
-            z-index: -1; width: 100vw; height: 100vh;
-            opacity: 0.2;
+        a {
+            color: var(--cyber-blue);
+        }
+        a:hover {
+            color: var(--neon-pink);
         }
         
-        /* --- ID Card --- */
+        button {
+            background: var(--dark-purple);
+            border: none;
+            color: var(--monitor-glow);
+        }
+        
+        h1, h2 {
+            color: var(--violet-fuschia);
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        ::selection {
+            background: var(--neon-pink);
+            color: var(--dark-charcoal);
+        }
+        
+        /* UI Elements */
         #idCard {
-            position: absolute; width: 300px; height: 440px;
-            background: var(--card-bg); border: 1px solid var(--border-pulse);
-            border-radius: 20px; box-shadow: var(--glow), 0 0 0 3px rgba(0, 204, 255, 0.1);
-            backdrop-filter: blur(12px); padding: 20px;
-            display: flex; flex-direction: column; align-items: center;
-            color: var(--light-blue); cursor: grab; z-index: 30;
+            background: rgba(58, 12, 163, 0.5);
+            border: 1px solid rgba(247, 37, 133, 0.3);
+            backdrop-filter: blur(12px);
+            color: var(--monitor-glow);
+            box-shadow: var(--glow), 0 0 0 3px rgba(67, 97, 238, 0.1);
             transform-style: preserve-3d;
             transition: all 0.3s ease;
         }
         #idCard:active {
-            cursor: grabbing;
             transform: scale(1.05) translateZ(10px);
-            box-shadow: 0 0 40px var(--neon-pink), 0 0 30px rgba(0, 204, 255, 0.5);
+            box-shadow: 0 0 40px var(--neon-pink), 0 0 30px rgba(67, 97, 238, 0.5);
         }
         #idCard:hover {
             transform: translateZ(15px);
-            box-shadow: var(--glow), 0 0 40px rgba(0, 204, 255, 0.4);
+            box-shadow: var(--glow), 0 0 40px rgba(67, 97, 238, 0.4);
         }
+        
         .id-photo {
-            width: 120px; height: 120px; border-radius: 50%;
-            border: 2px solid rgba(0, 204, 255, 0.7); overflow: hidden;
-            margin: 25px 0; position: relative;
-            box-shadow: 0 0 30px rgba(0, 204, 255, 0.3), inset 0 0 30px rgba(0, 204, 255, 0.1);
+            border: 2px solid rgba(76, 201, 240, 0.7);
+            box-shadow: 0 0 30px rgba(76, 201, 240, 0.3), inset 0 0 30px rgba(76, 201, 240, 0.1);
         }
         .id-photo::before {
-            content: ''; position: absolute; inset: -2px; border-radius: 50%;
-            background: conic-gradient(from 0deg at 50% 50%, rgba(255,0,204,0) 0%, rgba(255,0,204,0.7) 25%, rgba(0,204,255,0.7) 50%, rgba(255,0,204,0.7) 75%, rgba(255,0,204,0) 100%);
-            animation: rotateBorder 4s linear infinite; z-index: -1; filter: blur(3px);
+            background: conic-gradient(from 0deg at 50% 50%, rgba(247,37,133,0) 0%, rgba(247,37,133,0.7) 25%, rgba(76,201,240,0.7) 50%, rgba(247,37,133,0.7) 75%, rgba(247,37,133,0) 100%);
         }
         @keyframes rotateBorder { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .id-photo img { width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 1; }
         
-        /* --- Scanner --- */
-        #scannerUnit {
-            position: fixed; top: 50%; right: 8vw;
-            transform: translateY(-50%);
-            display: flex; flex-direction: column; align-items: center;
-            gap: 16px; z-index: 20;
-        }
-        #indicatorLights {
-            display: flex; gap: 15px; padding: 10px 20px;
-            background: rgba(10, 2, 25, 0.7); border-radius: 50px;
-            border: 1px solid rgba(255, 0, 204, 0.2);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-        }
-        .light {
-            width: 18px; height: 18px; border-radius: 50%;
-            background: #0f001f; border: 2px solid var(--deep-blue);
-            transition: all 0.3s; box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.7);
-        }
         #scanner {
-            width: 160px; height: 260px;
-            background: rgba(10, 5, 30, 0.4); backdrop-filter: blur(20px);
-            border: 1px solid var(--neon-blue); border-radius: 12px;
-            display: flex; justify-content: center; align-items: center;
-            transition: all 0.3s ease;
-            box-shadow: inset 0 0 40px rgba(0, 204, 255, 0.2), 0 0 30px rgba(0, 204, 255, 0.2);
-            overflow: hidden;
+            background: rgba(72, 9, 183, 0.4);
+            border: 1px solid var(--cool-lavender);
+            box-shadow: inset 0 0 40px rgba(76, 201, 240, 0.2), 0 0 30px rgba(76, 201, 240, 0.2);
         }
-        #scanner.hovering { box-shadow: 0 0 60px var(--neon-blue), inset 0 0 60px rgba(0, 204, 255, 0.4); }
+        #scanner.hovering {
+            box-shadow: 0 0 60px var(--cool-lavender), inset 0 0 60px rgba(76, 201, 240, 0.4);
+        }
         #scanner .scan-line {
-            position: absolute; width: 90%; height: 3px;
-            background: var(--neon-blue); box-shadow: 0 0 25px var(--neon-blue);
-            animation: scan-anim 3s ease-in-out infinite; opacity: 0.9;
+            background: var(--cool-lavender);
+            box-shadow: 0 0 25px var(--cool-lavender);
         }
         #scanner .scan-grid {
-            position: absolute; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,204,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,204,255,0.1) 1px, transparent 1px);
-            background-size: 20px 20px; opacity: 0.7;
+            background: linear-gradient(rgba(76,201,240,0.1) 1px, transparent 1px), 
+                        linear-gradient(90deg, rgba(76,201,240,0.1) 1px, transparent 1px);
         }
-        #scanner .scan-label {
-            position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
-            font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 2px;
-            color: var(--light-blue); text-shadow: 0 0 5px var(--neon-blue); opacity: 0.9;
-        }
-        @keyframes scan-anim { 0% { top: 5%; opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { top: 95%; opacity: 0; } }
-
-        /* --- Blast Doors --- */
+        
         .blast-door {
-            position: fixed; top: 0; width: 50vw; height: 100vh;
-            background: linear-gradient(to right, #0b011e, #1a0044);
-            z-index: 10; transform-style: preserve-3d;
+            background: linear-gradient(to right, #160132, #2a0069);
             box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.8);
         }
-        #doorLeft { left: 0; border-right: 4px solid var(--neon-pink); }
-        #doorRight { right: 0; border-left: 4px solid var(--neon-pink); }
+        #doorLeft { border-right: 4px solid var(--neon-pink); }
+        #doorRight { border-left: 4px solid var(--neon-pink); }
         .door-panel {
-            position: absolute; width: 100%; height: 100%;
-            background: linear-gradient(135deg,rgba(255,0,204,0.05) 25%,transparent 25%) -50px 0, linear-gradient(225deg,rgba(255,0,204,0.05) 25%,transparent 25%) -50px 0, linear-gradient(315deg,rgba(255,0,204,0.05) 25%,transparent 25%), linear-gradient(45deg,rgba(255,0,204,0.05) 25%,transparent 25%);
-            background-size: 120px 120px;
+            background: linear-gradient(135deg,rgba(247,37,133,0.05) 25%,transparent 25%) -50px 0, 
+                        linear-gradient(225deg,rgba(247,37,133,0.05) 25%,transparent 25%) -50px 0, 
+                        linear-gradient(315deg,rgba(247,37,133,0.05) 25%,transparent 25%), 
+                        linear-gradient(45deg,rgba(247,37,133,0.05) 25%,transparent 25%);
         }
-
-        /* --- Dossier Content --- */
-        #dossier-wrapper { /* New wrapper for scrolling */
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100vh;
-            overflow-x: hidden; overflow-y: auto;
-            opacity: 0; pointer-events: none; z-index: 5;
-        }
-        #dossier-wrapper.active { pointer-events: all; }
+        
         #dossier-content {
-            width: 100%; min-height: 100%;
-            padding: 5rem 2rem;
-            background: radial-gradient(circle at 20% 30%, rgba(30,0,63,0.2) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(255,0,204,0.1) 0%, transparent 40%), var(--midnight-bg);
+            background: radial-gradient(circle at 20% 30%, rgba(114,9,183,0.2) 0%, transparent 40%), 
+                        radial-gradient(circle at 80% 70%, rgba(247,37,133,0.1) 0%, transparent 40%), 
+                        var(--dark-charcoal);
         }
-        #dossier-content h1, #dossier-content h2 {
-            font-family: 'Orbitron', sans-serif; letter-spacing: 1px;
-            background: var(--gradient-accent);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 15px rgba(255, 0, 204, 0.4);
-        }
-        .section-divider {
-            height: 1px; background: linear-gradient(to right, transparent, var(--light-blue), transparent);
-            margin: 3rem auto; opacity: 0.3; max-width: 900px;
-        }
+        
         .content-card {
-            background: var(--content-bg); border: 1px solid var(--border-color);
-            border-radius: 12px; padding: 2rem;
-            backdrop-filter: blur(8px); transition: all 0.3s ease;
+            background: rgba(26, 26, 46, 0.4);
+            border: 1px solid rgba(76, 201, 240, 0.2);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
         }
-        .content-card:hover { border-color: rgba(255,0,204,0.3); box-shadow: 0 0 30px rgba(255,0,204,0.1); transform: translateY(-5px); }
-        .skill-item { position: relative; padding-left: 1.5rem; margin-bottom: 0.75rem; }
-        .skill-item::before {
-            content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-            width: 8px; height: 8px; border-radius: 50%;
-            background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue);
-        }
-        
-        /* --- Floating UI --- */
-        .floating-back-button {
-            position: fixed; bottom: 2.5rem; right: 2.5rem;
-            z-index: 1000; background: rgba(10, 5, 30, 0.7);
-            border: 1px solid var(--neon-blue); color: var(--light-blue);
-            padding: 1rem 2rem; border-radius: 50px; cursor: pointer;
-            font-family: 'Orbitron', sans-serif; font-size: 0.9rem; letter-spacing: 1px;
-            transition: all 0.3s ease; box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
-            opacity: 0; visibility: hidden; display: flex; align-items: center; gap: 10px;
-        }
-        .floating-back-button:hover {
-            transform: translateX(-10px); background: rgba(255, 0, 204, 0.1);
-            border-color: var(--neon-pink); box-shadow: 0 0 30px var(--neon-pink);
+        .content-card:hover {
+            border-color: rgba(247,37,133,0.3);
+            box-shadow: 0 0 30px rgba(247,37,133,0.1);
+            transform: translateY(-5px);
         }
         
-        /* Particles for background */
-        .particles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden; }
+        /* Video container (placeholder before doors open) */
+        #video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        #video-bg.active {
+            opacity: 1;
+        }
+        
+        /* Particles */
+        .particles-container { 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
         .particle {
-            position: absolute; background: var(--neon-pink);
-            border-radius: 50%; filter: blur(1px); opacity: 0.5;
+            position: absolute;
+            background: var(--neon-pink);
+            border-radius: 50%;
+            filter: blur(1px);
+            opacity: 0.5;
             animation: floatParticles linear infinite;
         }
-        @keyframes floatParticles { 0% { transform: translateY(0) rotate(0deg); opacity: 0.5; } 100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; } }
+        @keyframes floatParticles { 
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.5; } 
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; } 
+        }
         
-        /* Responsive */
+        /* Overrides for Tailwind classes */
+        .bg-cyber-gradient {
+            background: linear-gradient(135deg, var(--neon-pink), var(--cool-lavender));
+        }
+        .text-cyber-gradient {
+            background: linear-gradient(135deg, var(--neon-pink), var(--cool-lavender));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Responsive adjustments */
         @media (max-width: 768px) {
-            #idCard { width: 260px; height: 380px; padding: 15px; }
-            #scannerUnit { right: 20px; }
+            #idCard { width: 260px; height: 380px; }
             #scanner { width: 120px; height: 200px; }
-            .id-photo { width: 90px; height: 90px; margin: 15px 0; }
-            #dossier-wrapper { padding: 4rem 1rem 1rem; } /* Adjusted padding for mobile */
-            .content-card { padding: 1.5rem; }
-            .floating-back-button { padding: 0.75rem 1.5rem; font-size: 0.8rem; bottom: 1.5rem; right: 1.5rem; }
+            .id-photo { width: 90px; height: 90px; }
         }
     </style>
 </head>
-<body>
-    <canvas id="matrix-canvas"></canvas>
+<body class="font-jetbrains overflow-hidden">
+    <!-- Video background placeholder (will show after doors open) -->
+    <video id="video-bg" muted loop>
+        <source src="#" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <canvas id="matrix-canvas" class="fixed top-0 left-0 w-full h-full opacity-20 -z-10"></canvas>
     <div class="particles-container" id="particles"></div>
     
-    <div id="idCard">
-        <div class="id-photo"><img src="https://i.imgur.com/3p2au6v.png" alt="Lyric Olivia Jensen"></div>
-        <h3 class="text-2xl font-bold text-center text-gray-100 mb-1" style="font-family: 'Orbitron', sans-serif;">Lyric Olivia Jensen</h3>
+    <!-- ID Card -->
+    <div id="idCard" class="absolute w-[300px] h-[440px] rounded-[20px] p-5 flex flex-col items-center cursor-grab z-30">
+        <div class="id-photo relative w-32 h-32 rounded-full my-6 overflow-hidden">
+            <img src="https://i.imgur.com/3p2au6v.png" alt="Lyric Olivia Jensen" class="w-full h-full object-cover relative z-10">
+        </div>
+        <h3 class="text-2xl font-bold text-center text-monitor-glow mb-1 font-orbitron">Lyric Olivia Jensen</h3>
         <p class="text-sm text-center opacity-90">// Creative Technologist</p>
         <div class="mt-6 w-full h-px bg-gradient-to-r from-transparent via-current to-transparent opacity-20"></div>
         <div class="mt-4 text-center">
             <p class="text-xs opacity-70">ID: LC-2025-X01</p>
-            <p class="text-xs opacity-70 mt-1">CLEARANCE: <span class="font-bold" style="color: var(--light-blue)">LEVEL 4</span></p>
-            <p class="text-xs opacity-70 mt-1">STATUS: <span class="font-bold" style="color: var(--neon-blue)">ACTIVE</span></p>
+            <p class="text-xs opacity-70 mt-1">CLEARANCE: <span class="font-bold text-cool-lavender">LEVEL 4</span></p>
+            <p class="text-xs opacity-70 mt-1">STATUS: <span class="font-bold text-cyber-blue">ACTIVE</span></p>
         </div>
         <p class="text-xs text-center opacity-90 mt-6 animate-pulse">[ DRAG TO SCAN → ]</p>
     </div>
     
-    <div id="scannerUnit">
-        <div id="indicatorLights">
-            <div class="light"></div> <div class="light"></div> <div class="light"></div> <div class="light"></div>
+    <!-- Scanner Unit -->
+    <div id="scannerUnit" class="fixed top-1/2 right-[8vw] transform -translate-y-1/2 flex flex-col items-center gap-4 z-20">
+        <div id="indicatorLights" class="flex gap-4 p-3 bg-black/70 rounded-full border border-neon-pink/20 shadow-lg">
+            <div class="light w-4 h-4 rounded-full bg-black/80 border border-midnight-indigo shadow-inner transition-all"></div> 
+            <div class="light w-4 h-4 rounded-full bg-black/80 border border-midnight-indigo shadow-inner transition-all"></div> 
+            <div class="light w-4 h-4 rounded-full bg-black/80 border border-midnight-indigo shadow-inner transition-all"></div> 
+            <div class="light w-4 h-4 rounded-full bg-black/80 border border-midnight-indigo shadow-inner transition-all"></div>
         </div>
-        <div id="scanner">
-            <div class="scan-grid"></div>
-            <div class="scan-line"></div>
-            <div class="scan-label">IDENTITY</div>
+        <div id="scanner" class="w-40 h-64 rounded-xl flex justify-center items-center relative overflow-hidden">
+            <div class="scan-grid absolute w-full h-full opacity-70"></div>
+            <div class="scan-line absolute w-[90%] h-[2px] bg-cool-lavender shadow-neon-pink opacity-90"></div>
+            <div class="scan-label absolute top-4 left-1/2 transform -translate-x-1/2 font-orbitron text-xs tracking-wider text-cool-lavender text-shadow-cool-lavender opacity-90">
+                IDENTITY
+            </div>
         </div>
     </div>
     
-    <div id="doorLeft" class="blast-door"><div class="door-panel"></div></div>
-    <div id="doorRight" class="blast-door"><div class="door-panel"></div></div>
+    <!-- Blast Doors -->
+    <div id="doorLeft" class="blast-door fixed top-0 left-0 w-[50vw] h-full z-10 transform-style-3d"><div class="door-panel w-full h-full"></div></div>
+    <div id="doorRight" class="blast-door fixed top-0 right-0 w-[50vw] h-full z-10 transform-style-3d"><div class="door-panel w-full h-full"></div></div>
     
-    <div id="dossier-wrapper">
-        <div id="dossier-content">
+    <!-- Dossier Content -->
+    <div id="dossier-wrapper" class="fixed top-0 left-0 w-full h-full overflow-x-hidden overflow-y-auto opacity-0 pointer-events-none z-5">
+        <div id="dossier-content" class="w-full min-h-full py-20 px-8">
             <div class="max-w-6xl mx-auto px-4">
                 <section class="text-center mb-16">
-                    <h1 class="text-5xl md:text-6xl font-bold mb-4">ACCESS GRANTED</h1>
-                    <h2 class="text-2xl md:text-3xl">DOSSIER: LYRICODES</h2>
-                    <div class="flex justify-center mt-6"><div class="w-40 h-1 rounded-full" style="background: var(--gradient-accent)"></div></div>
+                    <h1 class="text-5xl md:text-6xl font-bold mb-4 text-violet-fuschia text-shadow-neon-pink">ACCESS GRANTED</h1>
+                    <h2 class="text-2xl md:text-3xl text-violet-fuschia">DOSSIER: LYRICODES</h2>
+                    <div class="flex justify-center mt-6">
+                        <div class="w-40 h-1 rounded-full bg-cyber-gradient"></div>
+                    </div>
                 </section>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
@@ -259,41 +288,62 @@
                         <div class="flex items-center mb-6 gap-4">
                             <div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.imgur.com/3p2au6v.png" alt="Avatar" class="w-full h-full object-cover"></div>
                             <div>
-                                <h2 class="text-2xl md:text-3xl font-bold">Lyric Olivia Jensen</h2>
+                                <h2 class="text-2xl md:text-3xl font-bold text-violet-fuschia">Lyric Olivia Jensen</h2>
                                 <p class="text-sm opacity-80">// Creative Technologist</p>
                             </div>
                         </div>
-                        <p class="mb-4 leading-relaxed"><span class="text-xl font-bold font-mono">&gt;&gt;</span> Welcome to my digital dossier. I'm a multidisciplinary creator specializing in the intersection of artificial intelligence, interactive media, and computational design. My work focuses on building bridges between complex technology and human experience.</p>
-                        <p class="leading-relaxed">Currently pursuing advanced studies in Computer Science with a focus on AI and Machine Learning at Stanford University, I work at the crossroads of code, creativity, and cognitive science. My projects range from neural network visualization tools to generative art installations that explore the nature of human-machine collaboration.</p>
+                        <p class="mb-4 leading-relaxed text-monitor-glow"><span class="text-xl font-bold font-jetbrains">&gt;&gt;</span> Welcome to my digital dossier. I'm a multidisciplinary creator specializing in the intersection of artificial intelligence, interactive media, and computational design. My work focuses on building bridges between complex technology and human experience.</p>
+                        <p class="leading-relaxed text-monitor-glow">Currently pursuing advanced studies in Computer Science with a focus on AI and Machine Learning at Stanford University, I work at the crossroads of code, creativity, and cognitive science. My projects range from neural network visualization tools to generative art installations that explore the nature of human-machine collaboration.</p>
                     </div>
                     
                     <div class="content-card">
-                        <h3 class="text-2xl font-bold mb-6" style="text-shadow: 0 0 10px var(--neon-blue);">Core Skills</h3>
+                        <h3 class="text-2xl font-bold mb-6 text-violet-fuschia text-shadow-neon-pink">Core Skills</h3>
                         <div class="space-y-4">
-                            <div class="skill-item"><h4 class="font-bold text-gray-100">AI & Machine Learning</h4><p class="text-sm opacity-80">TensorFlow, PyTorch, NLP</p></div>
-                            <div class="skill-item"><h4 class="font-bold text-gray-100">Creative Development</h4><p class="text-sm opacity-80">Three.js, WebGL, GLSL, AR/VR</p></div>
-                            <div class="skill-item"><h4 class="font-bold text-gray-100">Fullstack Engineering</h4><p class="text-sm opacity-80">React, Node.js, GraphQL</p></div>
-                            <div class="skill-item"><h4 class="font-bold text-gray-100">Generative Systems</h4><p class="text-sm opacity-80">Processing, p5.js</p></div>
+                            <div class="skill-item relative pl-6 mb-3">
+                                <h4 class="font-bold text-monitor-glow">AI & Machine Learning</h4>
+                                <p class="text-sm opacity-80">TensorFlow, PyTorch, NLP</p>
+                            </div>
+                            <div class="skill-item relative pl-6 mb-3">
+                                <h4 class="font-bold text-monitor-glow">Creative Development</h4>
+                                <p class="text-sm opacity-80">Three.js, WebGL, GLSL, AR/VR</p>
+                            </div>
+                            <div class="skill-item relative pl-6 mb-3">
+                                <h4 class="font-bold text-monitor-glow">Fullstack Engineering</h4>
+                                <p class="text-sm opacity-80">React, Node.js, GraphQL</p>
+                            </div>
+                            <div class="skill-item relative pl-6 mb-3">
+                                <h4 class="font-bold text-monitor-glow">Generative Systems</h4>
+                                <p class="text-sm opacity-80">Processing, p5.js</p>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="content-card">
-                        <h3 class="text-2xl font-bold mb-6" style="text-shadow: 0 0 10px var(--neon-pink);">Current Focus</h3>
+                        <h3 class="text-2xl font-bold mb-6 text-violet-fuschia text-shadow-neon-pink">Current Focus</h3>
                         <div class="space-y-6">
-                            <div><h4 class="font-bold text-gray-100 mb-2">Cognitive Interfaces</h4><p class="text-sm opacity-80">Developing adaptive UI systems that respond to cognitive load and user attention patterns.</p></div>
-                            <div><h4 class="font-bold text-gray-100 mb-2">Neuroaesthetics</h4><p class="text-sm opacity-80">Researching how generative art influences focus states in ADHD brains.</p></div>
-                            <div><h4 class="font-bold text-gray-100 mb-2">AI-Assisted Creativity</h4><p class="text-sm opacity-80">Building tools that augment human creativity rather than replace it.</p></div>
+                            <div>
+                                <h4 class="font-bold text-monitor-glow mb-2">Cognitive Interfaces</h4>
+                                <p class="text-sm opacity-80">Developing adaptive UI systems that respond to cognitive load and user attention patterns.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-monitor-glow mb-2">Neuroaesthetics</h4>
+                                <p class="text-sm opacity-80">Researching how generative art influences focus states in ADHD brains.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-monitor-glow mb-2">AI-Assisted Creativity</h4>
+                                <p class="text-sm opacity-80">Building tools that augment human creativity rather than replace it.</p>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="md:col-span-2 text-center mt-8">
-                        <h3 class="text-2xl font-bold mb-6">Access Channels</h3>
+                        <h3 class="text-2xl font-bold mb-6 text-violet-fuschia">Access Channels</h3>
                         <div class="flex justify-center gap-8 text-3xl">
-                            <a href="#" class="text-gray-400 hover:text-blue-400 transition-all hover:scale-110"><i class="fab fa-github"></i></a>
-                            <a href="#" class="text-gray-400 hover:text-blue-500 transition-all hover:scale-110"><i class="fab fa-linkedin"></i></a>
-                            <a href="#" class="text-gray-400 hover:text-pink-500 transition-all hover:scale-110"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-gray-400 hover:text-indigo-400 transition-all hover:scale-110"><i class="fab fa-discord"></i></a>
-                            <a href="mailto:lyric@lyricodes.com" class="text-gray-400 hover:text-red-400 transition-all hover:scale-110"><i class="fas fa-envelope"></i></a>
+                            <a href="#" class="text-soft-gray hover:text-cyber-blue transition-all hover:scale-110"><i class="fab fa-github"></i></a>
+                            <a href="#" class="text-soft-gray hover:text-cyber-blue transition-all hover:scale-110"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="text-soft-gray hover:text-neon-pink transition-all hover:scale-110"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-soft-gray hover:text-midnight-indigo transition-all hover:scale-110"><i class="fab fa-discord"></i></a>
+                            <a href="mailto:lyric@lyricodes.com" class="text-soft-gray hover:text-neon-pink transition-all hover:scale-110"><i class="fas fa-envelope"></i></a>
                         </div>
                     </div>
                 </div>
@@ -301,7 +351,8 @@
         </div>
     </div>
     
-    <button class="floating-back-button">
+    <!-- Exit Button -->
+    <button class="floating-back-button fixed bottom-10 right-10 z-50 bg-dark-purple/70 border border-cyber-blue text-monitor-glow px-8 py-4 rounded-full cursor-pointer transition-all font-orbitron text-sm tracking-wider shadow-cyber-blue opacity-0 invisible flex items-center gap-2">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         EXIT DOSSIER
     </button>
@@ -309,7 +360,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             gsap.registerPlugin(ScrollTrigger);
-
+            
+            // Initialize elements
             const idCard = document.getElementById('idCard');
             const scannerUnit = document.getElementById('scannerUnit');
             const scanner = document.getElementById('scanner');
@@ -319,7 +371,16 @@
             const doorLeft = document.getElementById('doorLeft');
             const doorRight = document.getElementById('doorRight');
             const particlesContainer = document.getElementById('particles');
+            const videoBg = document.getElementById('video-bg');
             
+            // Skill item dots (using custom CSS instead of before pseudo-elements)
+            document.querySelectorAll('.skill-item').forEach(item => {
+                const dot = document.createElement('div');
+                dot.className = 'absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-cool-lavender shadow-cool-lavender';
+                item.prepend(dot);
+            });
+            
+            // Sound effects
             const soundEffects = {
                 scanBeep: new Audio('https://assets.codepen.io/3364143/beep-07a.mp3'),
                 accessGranted: new Audio('https://assets.codepen.io/3364143/access-granted.mp3'),
@@ -327,18 +388,18 @@
                 hover: new Audio('https://assets.codepen.io/3364143/hover.mp3'),
                 click: new Audio('https://assets.codepen.io/3364143/click.mp3')
             };
-            
             Object.values(soundEffects).forEach(sound => {
                 sound.volume = 0.3;
                 sound.load();
             });
             
+            // Create floating particles
             function createParticles() {
-                const colors = ['rgba(255, 0, 204, 0.7)', 'rgba(0, 204, 255, 0.7)', 'rgba(255, 255, 255, 0.5)'];
+                const colors = ['var(--neon-pink)', 'var(--cool-lavender)', 'var(--monitor-glow)'];
                 const particleCount = 40;
                 for (let i = 0; i < particleCount; i++) {
                     const particle = document.createElement('div');
-                    particle.classList.add('particle');
+                    particle.className = 'particle';
                     const size = Math.random() * 5 + 3;
                     const posX = Math.random() * window.innerWidth;
                     const duration = Math.random() * 20 + 10;
@@ -356,9 +417,10 @@
             }
             createParticles();
             
+            // Initialize draggable ID card
             let startPosition = {};
             gsap.set(idCard, {xPercent: -50, yPercent: -50, top: "50%", left: "50%"});
-
+            
             Draggable.create(idCard, {
                 type: "x,y",
                 bounds: window,
@@ -388,7 +450,8 @@
                     }
                 }
             });
-
+            
+            // Scan sequence animation
             function runScanSequence(dragInstance) {
                 dragInstance.disable();
                 
@@ -401,6 +464,9 @@
                     onComplete: () => {
                         document.body.style.cursor = 'default';
                         dossierWrapper.classList.add('active');
+                        // Activate video background
+                        videoBg.classList.add('active');
+                        
                         // Animate dossier content on scroll
                         gsap.from(".content-card", {
                             scrollTrigger: {
@@ -432,16 +498,18 @@
                 .to(backButton, { opacity: 1, visibility: 'visible', duration: 0.5, ease: 'back.out(1.7)' }, "-=1.0");
             }
             
+            // Back button functionality
             backButton.addEventListener('click', () => {
                 soundEffects.click.play();
                 dossierWrapper.classList.remove('active');
+                videoBg.classList.remove('active');
                 
                 const tl = gsap.timeline({
                     onComplete: () => {
                         Draggable.get(idCard).enable();
                     }
                 });
-
+                
                 tl.to(backButton, { opacity: 0, visibility: 'hidden', duration: 0.3 })
                 .to(dossierWrapper, { opacity: 0, duration: 0.5 }, 0)
                 .to(doorLeft, { x: "0vw", duration: 1, ease: "power3.inOut" }, "-=0.2")
@@ -453,12 +521,15 @@
                 })
                 .to(lights, { backgroundColor: '#0f001f', boxShadow: 'inset 0 0 8px rgba(0,0,0,0.7)', duration: 0.3 }, "<");
             });
-
-            // --- MATRIX RAIN BACKGROUND ---
+            
+            // Matrix rain background
             const canvas = document.getElementById('matrix-canvas');
             const ctx = canvas.getContext('2d');
             
-            function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+            function resizeCanvas() { 
+                canvas.width = window.innerWidth; 
+                canvas.height = window.innerHeight; 
+            }
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
             
@@ -468,9 +539,9 @@
             const drops = Array(columns).fill(0).map(() => Math.random() * -canvas.height);
             
             function drawMatrix() {
-                ctx.fillStyle = 'rgba(10, 10, 31, 0.04)';
+                ctx.fillStyle = 'rgba(26, 26, 46, 0.04)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--neon-blue').trim();
+                ctx.fillStyle = 'var(--cool-lavender)';
                 ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
                 
                 for (let i = 0; i < drops.length; i++) {
@@ -489,7 +560,3 @@
     </script>
 </body>
 </html>
-
-
-
-This is the one I want you to work with... make it better. The back button doesn't work right either. The dossier part is weird and idk. I don't love the card either. Can you just make something completely new? I trust you.
