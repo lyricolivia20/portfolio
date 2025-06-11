@@ -16,15 +16,15 @@
     
     <style>
         :root {
-            --hot-pink: #ff069d;
-            --purple: #9333ea;
-            --light-pink: #ff9de2;
-            --body-bg: #110011;
-            --content-bg: rgba(17, 0, 17, 0.9);
-            --border-color: rgba(255, 6, 157, 0.3);
-            --glow-shadow: 0 0 8px var(--hot-pink);
-            --gradient: linear-gradient(90deg, var(--hot-pink), var(--purple));
-            --scan-glow: 0 0 15px rgba(255, 6, 157, 0.7);
+            --neon-blue: #00f2ff;
+            --deep-blue: #0066ff;
+            --light-blue: #a0f0ff;
+            --body-bg: #0a0a1a;
+            --content-bg: rgba(10, 10, 26, 0.9);
+            --border-color: rgba(0, 242, 255, 0.3);
+            --glow-shadow: 0 0 8px var(--neon-blue);
+            --gradient: linear-gradient(135deg, var(--neon-blue), var(--deep-blue));
+            --scan-glow: 0 0 15px rgba(0, 242, 255, 0.7);
         }
         body {
             overflow: hidden; 
@@ -44,6 +44,7 @@
             z-index: -1; 
             width: 100vw; 
             height: 100vh;
+            opacity: 0.3;
         }
 
         /* --- INTERACTIVE ELEMENTS --- */
@@ -61,7 +62,7 @@
             flex-direction: column; 
             align-items: center; 
             justify-content: center;
-            color: var(--light-pink); 
+            color: var(--light-blue); 
             cursor: grab; 
             z-index: 30;
             transform-style: preserve-3d;
@@ -69,7 +70,7 @@
         }
         #idCard:active {
             cursor: grabbing;
-            box-shadow: 0 0 30px var(--hot-pink);
+            box-shadow: 0 0 30px var(--neon-blue);
         }
         #idCard:hover {
             transform: translateZ(10px);
@@ -80,36 +81,50 @@
             top: 50%; 
             right: 5vw; 
             transform: translateY(-50%);
-            width: 120px; 
+            width: 140px; 
             height: 240px;
-            background: rgba(41, 41, 56, 0.5); 
+            background: rgba(0, 20, 40, 0.5); 
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            border-radius: 16px;
+            border: 1px solid var(--neon-blue); 
+            border-radius: 8px;
             display: flex; 
             justify-content: center; 
             align-items: center;
             transition: all 0.3s ease; 
             z-index: 20;
-            box-shadow: inset 0 0 30px rgba(255, 6, 157, 0.3);
+            box-shadow: inset 0 0 30px rgba(0, 242, 255, 0.3),
+                        0 0 20px rgba(0, 242, 255, 0.2);
+            overflow: hidden;
         }
         #scanner.hovering { 
-            box-shadow: 0 0 40px var(--hot-pink), inset 0 0 30px rgba(255, 6, 157, 0.5); 
-            border-color: var(--hot-pink); 
+            box-shadow: 0 0 40px var(--neon-blue), 
+                       inset 0 0 40px rgba(0, 242, 255, 0.5); 
+            border-color: var(--neon-blue); 
         }
         #scanner .scan-line {
             position: absolute; 
             width: 90%; 
-            height: 2px;
-            background: var(--light-pink); 
+            height: 3px;
+            background: var(--neon-blue); 
             box-shadow: var(--scan-glow);
-            animation: scan-anim 1.8s ease-in-out infinite;
-            opacity: 0.8;
+            animation: scan-anim 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+            opacity: 0.9;
+            z-index: 2;
+        }
+        #scanner .scan-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(rgba(0, 242, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.5;
         }
         @keyframes scan-anim { 
             0% { top: 5%; opacity: 0; } 
-            10% { opacity: 1; }
-            90% { opacity: 1; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
             100% { top: 95%; opacity: 0; } 
         }
         
@@ -122,16 +137,16 @@
             gap: 12px; 
             z-index: 25;
             padding: 8px 16px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 10, 20, 0.5);
             border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 242, 255, 0.2);
         }
         .light {
             width: 16px; 
             height: 16px; 
             border-radius: 50%;
-            background: #333; 
-            border: 2px solid #111;
+            background: #0a1a2a; 
+            border: 2px solid #001020;
             transition: all 0.3s;
             box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
         }
@@ -142,33 +157,32 @@
             top: 0; 
             width: 50vw; 
             height: 100vh;
-            background: linear-gradient(to right, #0f172a, #1e293b);
-            border-color: #334155;
+            background: linear-gradient(to right, #020a1a, #041a2a);
+            border-color: #003050;
             z-index: 10;
             transform-style: preserve-3d;
             box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.7);
         }
         #doorLeft { 
             left: 0; 
-            border-right: 3px solid;
+            border-right: 3px solid var(--neon-blue);
             transform-origin: left center;
         }
         #doorRight { 
             right: 0; 
-            border-left: 3px solid;
+            border-left: 3px solid var(--neon-blue);
             transform-origin: right center;
         }
         .door-panel {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(
-                135deg,
-                rgba(255, 255, 255, 0.03),
-                rgba(255, 255, 255, 0.03) 1px,
-                transparent 1px,
-                transparent 10px
-            );
+            background: 
+                linear-gradient(135deg, rgba(0, 242, 255, 0.05) 25%, transparent 25%) -50px 0,
+                linear-gradient(225deg, rgba(0, 242, 255, 0.05) 25%, transparent 25%) -50px 0,
+                linear-gradient(315deg, rgba(0, 242, 255, 0.05) 25%, transparent 25%),
+                linear-gradient(45deg, rgba(0, 242, 255, 0.05) 25%, transparent 25%);
+            background-size: 100px 100px;
         }
 
         /* --- DOSSIER CONTENT (BEHIND DOORS) --- */
@@ -192,7 +206,7 @@
             background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(147, 51, 234, 0.3);
+            text-shadow: 0 0 10px rgba(0, 102, 255, 0.3);
         }
         .section-divider { 
             height: 1px; 
@@ -208,7 +222,7 @@
             z-index: 1000;
             background: var(--content-bg); 
             border: 1px solid var(--border-color);
-            color: var(--light-pink); 
+            color: var(--light-blue); 
             padding: 0.75rem 1.5rem; 
             border-radius: 50px;
             cursor: pointer; 
@@ -223,7 +237,8 @@
         }
         .floating-back-button:hover {
             transform: translateX(-5px);
-            background: rgba(255, 6, 157, 0.1);
+            background: rgba(0, 242, 255, 0.1);
+            box-shadow: 0 0 20px var(--neon-blue);
         }
         
         /* ID Card styling */
@@ -235,6 +250,7 @@
             overflow: hidden; 
             margin-bottom: 1.5rem;
             position: relative;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
         }
         .id-photo::after {
             content: '';
@@ -243,7 +259,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(255,6,157,0.3) 0%, rgba(147,51,234,0.3) 100%);
+            background: linear-gradient(135deg, rgba(0,242,255,0.3) 0%, rgba(0,102,255,0.3) 100%);
             mix-blend-mode: overlay;
         }
         
@@ -255,8 +271,8 @@
                 padding: 16px;
             }
             #scanner {
-                width: 80px;
-                height: 160px;
+                width: 100px;
+                height: 200px;
                 right: 20px;
             }
             .id-photo {
@@ -275,15 +291,16 @@
         </div>
         <h3 class="text-xl font-bold text-white text-center mb-1">Lyric Olivia Jensen</h3>
         <p class="text-sm text-center opacity-80">Creative Technologist</p>
-        <div class="mt-4 w-full h-px bg-gradient-to-r from-transparent via-[var(--hot-pink)] to-transparent"></div>
+        <div class="mt-4 w-full h-px bg-gradient-to-r from-transparent via-[var(--neon-blue)] to-transparent"></div>
         <p class="text-xs text-center opacity-70 mt-4">ID: LC-2025-X01</p>
-        <p class="text-xs text-center opacity-70">STATUS: <span class="text-[var(--light-pink)]">ACTIVE</span></p>
-        <p class="text-xs text-center opacity-70 mt-4">DRAG TO SCAN →</p>
+        <p class="text-xs text-center opacity-70">STATUS: <span class="text-[var(--light-blue)]">ACTIVE</span></p>
+        <p class="text-xs text-center opacity-70 mt-4 animate-pulse">DRAG TO SCAN →</p>
     </div>
 
     <div id="scanner">
+        <div class="scan-grid"></div>
         <div class="scan-line"></div>
-        <div class="absolute top-4 left-1/2 transform -translate-x-1/2 text-xs opacity-50">SCANNER</div>
+        <div class="absolute top-4 left-1/2 transform -translate-x-1/2 text-xs opacity-70 font-mono" style="color: var(--neon-blue);">SECURITY SCAN</div>
     </div>
     
     <div id="indicatorLights">
@@ -306,7 +323,7 @@
                 <h1 class="text-4xl sm:text-5xl font-bold mb-2">ACCESS GRANTED</h1>
                 <h2 class="text-2xl sm:text-3xl">DOSSIER: LYRICODES</h2>
                 <div class="flex justify-center mt-6">
-                    <div class="w-24 h-1 bg-gradient-to-r from-[var(--hot-pink)] to-[var(--purple)]"></div>
+                    <div class="w-24 h-1 bg-gradient-to-r from-[var(--neon-blue)] to-[var(--deep-blue)]"></div>
                 </div>
             </section>
             
@@ -323,12 +340,12 @@
                         "My work is fueled by curiosity and the desire to make systems more intuitive for people who think differently. I build for the overwhelmed, the over-stimulated, and the underestimated."
                     </blockquote>
                     <div class="bg-[var(--content-bg)] p-4 rounded-lg border border-[var(--border-color)]">
-                        <h4 class="font-bold mb-2 text-[var(--light-pink)]">Core Skills:</h4>
+                        <h4 class="font-bold mb-2 text-[var(--light-blue)]">Core Skills:</h4>
                         <ul class="text-sm space-y-1">
-                            <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-[var(--hot-pink)] mr-2"></span> AI & Machine Learning</li>
-                            <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-[var(--hot-pink)] mr-2"></span> WebGL & 3D Graphics</li>
-                            <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-[var(--hot-pink)] mr-2"></span> Creative Coding</li>
-                            <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-[var(--hot-pink)] mr-2"></span> Interactive Design</li>
+                            <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-[var(--neon-blue)] mr-2"></span> AI & Machine Learning</li>
+                            <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-[var(--neon-blue)] mr-2"></span> WebGL & 3D Graphics</li>
+                            <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-[var(--neon-blue)] mr-2"></span> Creative Coding</li>
+                            <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-[var(--neon-blue)] mr-2"></span> Interactive Design</li>
                         </ul>
                     </div>
                 </div>
@@ -339,10 +356,10 @@
             <section class="text-center">
                  <h2 class="text-3xl font-bold mb-8">Let's Connect</h2>
                  <div class="flex justify-center items-center space-x-8 text-4xl">
-                    <a href="mailto:lyric@lyricodes.com" class="text-gray-400 hover:text-[var(--light-pink)] transition-all hover:scale-110" aria-label="Email"><i class="fas fa-envelope"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-[var(--light-pink)] transition-all hover:scale-110" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-[var(--light-pink)] transition-all hover:scale-110" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-[var(--light-pink)] transition-all hover:scale-110" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="mailto:lyric@lyricodes.com" class="text-gray-400 hover:text-[var(--light-blue)] transition-all hover:scale-110" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-[var(--light-blue)] transition-all hover:scale-110" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-[var(--light-blue)] transition-all hover:scale-110" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-[var(--light-blue)] transition-all hover:scale-110" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                 </div>
             </section>
         </div>
@@ -399,7 +416,7 @@
                     gsap.to(idCard, { 
                         scale: 1.1, 
                         duration: 0.2,
-                        boxShadow: '0 0 40px var(--hot-pink)'
+                        boxShadow: '0 0 40px var(--neon-blue)'
                     });
                     startPosition.x = this.x;
                     startPosition.y = this.y;
@@ -407,6 +424,13 @@
                 onDrag: function() {
                     if (this.hitTest(scanner, "50%")) { 
                         scanner.classList.add('hovering');
+                        // Add subtle pulse effect when hovering over scanner
+                        gsap.to(scanner, {
+                            boxShadow: '0 0 50px var(--neon-blue), inset 0 0 50px rgba(0, 242, 255, 0.7)',
+                            duration: 0.5,
+                            yoyo: true,
+                            repeat: 1
+                        });
                     } else { 
                         scanner.classList.remove('hovering'); 
                     }
@@ -422,7 +446,7 @@
                             x: startPosition.x, 
                             y: startPosition.y, 
                             scale: 1, 
-                            boxShadow: '0 0 20px var(--hot-pink)',
+                            boxShadow: '0 0 20px var(--neon-blue)',
                             duration: 0.5, 
                             ease: "back.out(1.7)" 
                         });
@@ -457,7 +481,7 @@
                     scale: 1, 
                     duration: 0.4, 
                     ease: "power2.inOut",
-                    boxShadow: '0 0 30px var(--hot-pink)'
+                    boxShadow: '0 0 30px var(--neon-blue)'
                 })
                 .to(lights[0], { 
                     backgroundColor: '#ef4444', 
@@ -490,12 +514,12 @@
                     scale: 0.8, 
                     duration: 0.4, 
                     ease: 'power2.in',
-                    boxShadow: '0 0 50px var(--hot-pink)'
+                    boxShadow: '0 0 50px var(--neon-blue)'
                 }, "-=0.2")
 
                 // 3. Doors open with perspective effect
                 .to([doorLeft, doorRight], {
-                    boxShadow: '0 0 50px rgba(255, 6, 157, 0.5)',
+                    boxShadow: '0 0 50px rgba(0, 242, 255, 0.5)',
                     duration: 0.5
                 }, "-=0.2")
                 .to(doorLeft, { 
@@ -526,7 +550,7 @@
                 }, "-=0.5");
             }
 
-            // --- MATRIX BACKGROUND ---
+            // --- SUBTLE MATRIX BACKGROUND ---
             const canvas = document.getElementById('matrix-canvas');
             const ctx = canvas.getContext('2d');
             
@@ -538,9 +562,9 @@
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
             
-            // Matrix characters - personalization
-            const chars = 'LYRICODES 10101 ♕<>{}[]$%&@#*';
-            const fontSize = 16;
+            // Matrix characters - simplified
+            const chars = 'LYRICODES 10101';
+            const fontSize = 18;
             const columns = Math.floor(canvas.width / fontSize);
             
             // Each drop is a y-position for a column
@@ -548,33 +572,35 @@
             
             // Adjust some drops to start further down
             for (let i = 0; i < columns; i++) {
-                drops[i] = Math.random() * -100;
+                drops[i] = Math.random() * -canvas.height/2;
             }
             
             function drawMatrix() {
                 // Semi-transparent overlay to create trail effect
-                ctx.fillStyle = 'rgba(17, 0, 17, 0.05)';
+                ctx.fillStyle = 'rgba(10, 10, 26, 0.03)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 
                 // Set text style
-                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--hot-pink').trim();
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--neon-blue').trim();
                 ctx.font = `${fontSize}px 'Space Mono', monospace`;
                 
                 // Draw characters
                 for (let i = 0; i < drops.length; i++) {
+                    // Only draw about 1/3 of the columns to reduce density
+                    if (Math.random() > 0.3) continue;
+                    
                     const text = chars[Math.floor(Math.random() * chars.length)];
-                    
-                    // Draw character with varying opacity based on position
                     const yPos = drops[i] * fontSize;
-                    const opacity = Math.min(1, yPos / (canvas.height * 0.7));
-                    ctx.globalAlpha = opacity;
                     
-                    ctx.fillText(text, i * fontSize, yPos);
-                    
-                    // Reset character with some randomness
-                    if (yPos > canvas.height && Math.random() > 0.975) {
+                    // Skip drawing if off screen
+                    if (yPos > canvas.height) {
                         drops[i] = 0;
+                        continue;
                     }
+                    
+                    // Draw character with varying opacity
+                    ctx.globalAlpha = Math.min(0.8, yPos / (canvas.height * 0.7));
+                    ctx.fillText(text, i * fontSize, yPos);
                     
                     drops[i]++;
                 }
@@ -583,20 +609,13 @@
                 ctx.globalAlpha = 1;
             }
             
-            // Adjust animation speed for performance
-            let lastTime = 0;
-            const matrixInterval = 40; // ms
+            // Slower animation for subtle effect
+            let matrixInterval = setInterval(drawMatrix, 80);
             
-            function animateMatrix(timestamp) {
-                if (timestamp - lastTime > matrixInterval) {
-                    drawMatrix();
-                    lastTime = timestamp;
-                }
-                requestAnimationFrame(animateMatrix);
-            }
-            
-            // Start animation
-            animateMatrix(0);
+            // Cleanup on unmount
+            window.addEventListener('beforeunload', () => {
+                clearInterval(matrixInterval);
+            });
         });
     </script>
 </body>
