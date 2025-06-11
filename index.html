@@ -24,9 +24,7 @@
             color: var(--hot-pink);
             font-family: 'Courier New', monospace;
         }
-        .terminal-container {
-            perspective: 1000px;
-        }
+        .terminal-container { perspective: 1000px; }
         .terminal-wrapper {
             transform-style: preserve-3d;
             cursor: grab;
@@ -35,45 +33,61 @@
             box-shadow: 0 25px 50px -12px rgba(255, 0, 150, 0.3);
             transition: transform 0.2s ease, box-shadow 0.3s ease;
         }
-        .terminal-wrapper:hover {
-            box-shadow: 0 25px 50px -12px rgba(255, 0, 150, 0.5);
-        }
-        .terminal-wrapper:active {
-            cursor: grabbing;
-        }
-        .neon-header {
-            text-align: center;
-            padding: 0.75rem 0; /* Reduced padding */
-        }
+        .terminal-wrapper:hover { box-shadow: 0 25px 50px -12px rgba(255, 0, 150, 0.5); }
+        .terminal-wrapper:active { cursor: grabbing; }
+        
+        /* Neon Header & Typing Animation */
+        .neon-header { text-align: center; padding: 0.75rem 0; min-height: 80px; } /* min-height to prevent layout shift */
         .neon-header h1 {
             font-family: 'Dancing Script', cursive;
             font-weight: 700;
-            font-size: 3.5rem; /* Sized down from 4rem */
+            font-size: 3.5rem;
             color: var(--light-pink);
-            animation: neon-flicker 2.5s infinite alternate;
             text-shadow:
-                0 0 5px var(--light-pink),
-                0 0 10px var(--light-pink),
-                0 0 20px var(--hot-pink),
-                0 0 40px var(--hot-pink),
+                0 0 5px var(--light-pink), 0 0 10px var(--light-pink),
+                0 0 20px var(--hot-pink), 0 0 40px var(--hot-pink),
                 0 0 80px var(--hot-pink);
         }
-        @keyframes neon-flicker {
-            0%, 100% {
-                text-shadow:
-                    0 0 5px var(--light-pink), 0 0 10px var(--light-pink),
-                    0 0 20px var(--hot-pink), 0 0 40px var(--hot-pink),
-                    0 0 80px var(--hot-pink);
-                color: var(--light-pink);
-            }
-            50% {
-                 text-shadow:
-                    0 0 5px var(--light-pink), 0 0 8px var(--light-pink),
-                    0 0 15px var(--hot-pink), 0 0 30px var(--hot-pink),
-                    0 0 60px var(--hot-pink);
-                color: #ffd0f5;
-            }
+        .typing-cursor {
+            display: inline-block;
+            background-color: var(--light-pink);
+            width: 1rem;
+            height: 3.5rem;
+            margin-left: 0.5rem;
+            animation: blink 1s infinite;
+            box-shadow: 0 0 5px var(--light-pink), 0 0 10px var(--hot-pink);
         }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Command Buttons */
+        #command-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .command-btn {
+            background-color: rgba(255, 6, 157, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--light-pink);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-shadow: 0 0 3px var(--hot-pink);
+        }
+        .command-btn:hover {
+            background-color: rgba(255, 6, 157, 0.25);
+            box-shadow: 0 0 10px var(--hot-pink);
+            transform: translateY(-2px);
+        }
+        .command-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .terminal-output {
             text-shadow: 0 0 5px var(--hot-pink);
             background-color: rgba(0,0,0,0.2);
@@ -82,9 +96,8 @@
             caret-color: var(--hot-pink);
             text-shadow: 0 0 5px var(--hot-pink);
         }
-        .command-input::placeholder {
-            color: rgba(255, 6, 157, 0.4);
-        }
+        .command-input::placeholder { color: rgba(255, 6, 157, 0.4); }
+
         #matrix-canvas {
             position: fixed; top: 0; left: 0;
             z-index: -1; width: 100vw; height: 100vh;
@@ -113,10 +126,17 @@
             </div>
             
             <div class="neon-header" style="background-color: rgba(20,0,10,0.9);">
-                <h1>LyriCodes</h1>
+                <h1 id="neon-title"></h1>
             </div>
             
-            <div id="terminal-output" class="terminal-output p-4 h-80 overflow-y-auto"></div>
+            <div id="terminal-output" class="terminal-output p-4 h-72 overflow-y-auto"></div>
+            
+            <div id="command-buttons">
+                <button class="command-btn" data-command="p">Portfolio</button>
+                <button class="command-btn" data-command="a">About</button>
+                <button class="command-btn" data-command="c">Contact</button>
+                <button class="command-btn" data-command="clear">Clear</button>
+            </div>
             
             <div class="px-4 py-3 flex items-center border-t" style="border-color: var(--border-color); background-color: rgba(20,0,10,0.9);">
                 <span class="mr-2" style="color: var(--neon-pink); text-shadow: 0 0 8px var(--neon-pink);">♕</span>
@@ -124,19 +144,22 @@
                     id="command-input" 
                     type="text" 
                     class="command-input flex-1 bg-transparent outline-none font-mono"
-                    autocomplete="off" 
-                    spellcheck="false"
-                    placeholder="Type command and press Enter..."
-                    autofocus
-                >
+                    autocomplete="off" spellcheck="false"
+                    placeholder="Type command or use buttons..." autofocus >
             </div>
         </div>
     </div>
 
     <script>
-        // --- 1. PINK MATRIX DIGITAL RAIN ---
+        // --- 1. SETUP & ELEMENTS ---
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
+        const outputElement = document.getElementById('terminal-output');
+        const inputElement = document.getElementById('command-input');
+        const neonTitleElement = document.getElementById('neon-title');
+        const commandButtons = document.querySelectorAll('.command-btn');
+
+        // --- 2. MATRIX BACKGROUND ---
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         const chars = 'LYRICO DES♕💖👩💻█▓▒░║‗╔╦╗╚╩╝';
@@ -151,43 +174,24 @@
             for (let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
         }
-        setInterval(drawMatrix, 50);
+        const matrixInterval = setInterval(drawMatrix, 50);
 
-        // --- 2. TERMINAL FUNCTIONALITY ---
-        const outputElement = document.getElementById('terminal-output');
-        const inputElement = document.getElementById('command-input');
-
+        // --- 3. COMMANDS & BOOT SEQUENCE ---
         const commands = {
-            'p': { // Restored single-letter command
-                description: 'View my projects',
+            'p': {
                 action: () => addResponse('Initializing femme tech showcase... Stand by.', () => window.location.href = 'projects.html')
             },
-            'a': { // Restored single-letter command
-                description: 'About me',
+            'a': {
                 action: () => addResponse('Accessing neural imprint... Please wait.', () => window.location.href = 'about.html')
             },
-            'c': { // Restored single-letter command
-                description: 'Get in touch',
+            'c': {
                 action: () => addResponse('Opening secure DMs... Channel established.', () => window.location.href = 'contact.html')
             },
-            'help': {
-                description: 'Show available commands',
-                action: () => {
-                    addResponse("\n[AVAILABLE DIRECTIVES]\n");
-                    addResponse("[p] - Portfolio   // Access project matrix\n"); // Updated help text
-                    addResponse("[a] - About       // Identity protocols\n");    // Updated help text
-                    addResponse("[c] - Contact     // Open secure channel\n");   // Updated help text
-                    addResponse("[clear] - Purge terminal display\n");
-                }
-            },
             'clear': {
-                description: 'Clear the terminal screen',
                 action: () => outputElement.innerHTML = ''
             }
         };
@@ -196,22 +200,23 @@
             { text: "Booting Lyricodes OS...", delay: 500 },
             { text: "Aesthetic protocols injected... [OK]", delay: 800 },
             { text: "Verifying user... Access granted.", delay: 1000 },
-            { text: "\nWelcome, user. Type 'help' for a list of directives.", delay: 300 }
+            { text: "\n[AVAILABLE DIRECTIVES]\n", delay: 300 },
+            { text: "[p] - Portfolio   // Access project matrix\n", delay: 200 },
+            { text: "[a] - About       // Identity protocols\n", delay: 200 },
+            { text: "[c] - Contact     // Open secure channel\n", delay: 200 },
+            { text: "[clear] - Purge terminal display\n", delay: 200 }
         ];
 
-        // --- 3. COMMAND & BOOT LOGIC ---
-        inputElement.addEventListener('keyup', function(e) {
-            if (e.key !== 'Enter') return;
-            const command = this.value.toLowerCase().trim();
-            addResponse(`♕ ${this.value}`, false);
+        // --- 4. CORE LOGIC ---
+        function processCommand(command) {
+            addResponse(`♕ ${command}`, false);
             if (command in commands) {
                 commands[command].action();
-            } else if (command !== '') {
+            } else {
                 addResponse(`Directive not recognized: [${command}]`);
             }
-            this.value = '';
-        });
-
+        }
+        
         function addResponse(text, isTypingOrCallback, callback) {
             const line = document.createElement('div');
             outputElement.appendChild(line);
@@ -229,32 +234,63 @@
                     outputElement.scrollTop = outputElement.scrollHeight;
                     setTimeout(typeChar, typeSpeed);
                 } else {
-                    if (typeof isTypingOrCallback === 'function') {
-                        setTimeout(isTypingOrCallback, 500);
-                    } else if (typeof callback === 'function') {
-                        setTimeout(callback, 500);
-                    }
+                    if (typeof isTypingOrCallback === 'function') setTimeout(isTypingOrCallback, 500);
+                    else if (typeof callback === 'function') setTimeout(callback, 500);
                 }
             }
             typeChar();
         }
 
         async function initTerminal() {
-            inputElement.disabled = true;
+            setControlsDisabled(true);
+            await animateHeader();
             for (const item of bootSequence) {
                 await new Promise(resolve => setTimeout(resolve, item.delay));
                 addResponse(item.text);
             }
-            inputElement.disabled = false;
+            setControlsDisabled(false);
             inputElement.focus();
         }
 
-        // --- 4. DRAGGABLE/ROTATABLE TERMINAL LOGIC ---
+        async function animateHeader() {
+            const title = "LyriCodes";
+            neonTitleElement.innerHTML = '<span class="typing-cursor"></span>';
+            for (let i = 0; i < title.length; i++) {
+                await new Promise(resolve => setTimeout(resolve, 150)); // Typing speed
+                neonTitleElement.innerHTML = title.substring(0, i + 1) + '<span class="typing-cursor"></span>';
+            }
+            await new Promise(resolve => setTimeout(resolve, 500)); // Pause with cursor
+            neonTitleElement.innerHTML = title; // Remove cursor
+            await new Promise(resolve => setTimeout(resolve, 500)); // Final pause before boot
+        }
+        
+        function setControlsDisabled(isDisabled) {
+            inputElement.disabled = isDisabled;
+            commandButtons.forEach(btn => btn.disabled = isDisabled);
+        }
+
+        // --- 5. EVENT LISTENERS & INITIALIZATION ---
+        inputElement.addEventListener('keyup', (e) => {
+            if (e.key !== 'Enter') return;
+            const command = inputElement.value.toLowerCase().trim();
+            if (command) processCommand(command);
+            inputElement.value = '';
+        });
+
+        commandButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const command = button.dataset.command;
+                processCommand(command);
+            });
+        });
+
+        // --- 6. DRAGGABLE TERMINAL LOGIC ---
         const terminalWrapper = document.querySelector('.terminal-wrapper');
         let rotation = { x: 5, y: -5 };
         let isDragging = false;
         let startX, startY;
         terminalWrapper.addEventListener('mousedown', e => {
+            if (e.target.closest('.command-btn, #command-input')) return; // Don't drag on buttons/input
             isDragging = true;
             startX = e.clientX;
             startY = e.clientY;
@@ -279,7 +315,6 @@
             terminalWrapper.style.transition = 'transform 0.2s ease, box-shadow 0.3s ease';
         });
 
-        // Initialize on DOM load
         document.addEventListener('DOMContentLoaded', initTerminal);
     </script>
 </body>
