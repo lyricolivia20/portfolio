@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About | LyriCodes Portfolio</title>
-    <meta name="description" content="The personal holographic ID of LyriCodes, a creative technologist. Drag the ID card to the scanner to reveal the full dossier.">
-    <meta name="author" content="LyriCodes">
-    <link rel="canonical" href="https://portfolio-roan-one-39.vercel.app/about.html">
-
-    <meta property="og:title" content="About LyriCodes | Creative Technologist">
-    <meta property="og:description" content="An interactive holographic ID card. Drag it to the scanner to learn more about a creative developer.">
-    <meta property="og:image" content="https://i.imgur.com/your-preview-image.png"> <meta property="og:url" content="https://portfolio-roan-one-39.vercel.app/about.html">
-    <meta property="og:type" content="profile">
-
+    <meta name="description" content="The personal holographic ID of LyriCodes, a creative technologist. Drag the ID card to the scanner to reveal the full dossier." />
+    <meta name="author" content="LyriCodes" />
+    <link rel="canonical" href="https://portfolio-roan-one-39.vercel.app/about.html" />
+    <meta property="og:title" content="About LyriCodes | Creative Technologist" />
+    <meta property="og:description" content="An interactive holographic ID card. Drag it to the scanner to learn more about a creative developer." />
+    <meta property="og:image" content="https://i.imgur.com/your-preview-image.png" />
+    <meta property="og:url" content="https://portfolio-roan-one-39.vercel.app/about.html" />
+    <meta property="og:type" content="profile" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <style>
         :root {
             --hot-pink: #ff069d;
@@ -28,103 +26,115 @@
             --border-color: rgba(255, 6, 157, 0.3);
             --glow-shadow: 0 0 8px var(--hot-pink);
         }
-        
         body {
             overflow: hidden; background: var(--body-bg); height: 100vh;
             display: flex; justify-content: center; align-items: center;
             perspective: 1500px; font-family: 'Inter', sans-serif;
         }
-
         #matrix-canvas {
             position: fixed; top: 0; left: 0;
             z-index: -1; width: 100vw; height: 100vh;
         }
-
-        /* The ID Card */
         .id-card {
-            position: absolute;
-            top: 15%; /* Start position */
-            width: 300px; height: 480px;
+            position: absolute; top: 15%; width: 300px; height: 480px;
             background: var(--content-bg); backdrop-filter: blur(10px);
             border: 1px solid var(--border-color); border-radius: 20px;
-            box-shadow: 0 0 30px var(--border-color);
-            padding: 25px; display: flex; flex-direction: column;
-            color: var(--light-pink); cursor: grab; z-index: 100;
+            box-shadow: 0 0 30px var(--border-color); padding: 25px;
+            display: flex; flex-direction: column; color: var(--light-pink);
+            cursor: grab; z-index: 100;
         }
         .id-card:active { cursor: grabbing; }
 
-        /* The Scanner Area */
         #scanner {
-            position: absolute;
-            bottom: 10%;
-            width: 350px; height: 120px;
-            border: 2px dashed var(--border-color);
-            border-radius: 20px;
+            position: absolute; bottom: 10%; width: 350px; height: 120px;
+            border: 2px dashed var(--border-color); border-radius: 20px;
             display: flex; justify-content: center; align-items: center;
             transition: all 0.3s ease;
         }
         #scanner.hovering {
-            background: rgba(255, 6, 157, 0.1);
-            border-style: solid;
+            background: rgba(255, 6, 157, 0.1); border-style: solid;
             box-shadow: 0 0 30px var(--hot-pink);
         }
         #scanner .scan-line {
             position: absolute; width: 100%; height: 2px;
-            background: var(--light-pink);
-            box-shadow: 0 0 10px var(--light-pink);
+            background: var(--light-pink); box-shadow: 0 0 10px var(--light-pink);
             animation: scan-anim 3s linear infinite;
         }
-        @keyframes scan-anim {
-            0% { top: 0; } 50% { top: 118px; } 100% { top: 0; }
-        }
+        @keyframes scan-anim { 0% {top: 0;} 50% {top: 118px;} 100% {top: 0;} }
 
-        /* Dossier content - hidden by default */
-        #dossier-content {
+        /* NEW - Instructions Text */
+        #instruction-text {
             position: absolute;
-            width: 95vw; height: 90vh; max-width: 1200px;
+            bottom: calc(10% - 40px); /* Position below the scanner */
+            color: #6B7280; /* Gray-500 */
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem; /* 12px */
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            animation: pulse-text 4s infinite;
+        }
+        @keyframes pulse-text { 50% { opacity: 0.6; } }
+
+        #dossier-content {
+            position: absolute; width: 95vw; height: 90vh; max-width: 1200px;
             background: var(--content-bg); backdrop-filter: blur(15px);
             border: 1px solid var(--border-color); border-radius: 10px;
-            box-shadow: 0 0 40px var(--border-color);
-            padding: 2rem; overflow-y: auto;
-            opacity: 0; visibility: hidden; z-index: 50;
-            transform: scale(0.95);
-            transition: all 0.5s ease;
+            box-shadow: 0 0 40px var(--border-color); padding: 2rem;
+            overflow-y: auto; opacity: 0; visibility: hidden;
+            z-index: 50; transform: scale(0.95); transition: all 0.5s ease;
         }
-        #dossier-content.visible {
-            opacity: 1; visibility: visible; transform: scale(1);
+        #dossier-content.visible { opacity: 1; visibility: visible; transform: scale(1); }
+        
+        #dossier-content h1, #dossier-content h2, #dossier-content h3 {
+            font-family: 'Space Mono', monospace; color: white;
+            text-shadow: var(--glow-shadow); letter-spacing: 1px;
         }
-
-        /* Reusable Dossier Styles */
-        #dossier-content h1, #dossier-content h2, #dossier-content h3 { font-family: 'Space Mono', monospace; color: white; text-shadow: var(--glow-shadow); letter-spacing: 1px; }
-        #dossier-content .section-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border-color), transparent); margin: 2rem 0; }
-        .hexagon-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin: 0 auto; max-width: 800px; }
+        #dossier-content .section-divider {
+            height: 1px; background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+            margin: 2rem 0;
+        }
+        .hexagon-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 5px; margin: 0 auto; max-width: 800px;
+        }
         .hexagon {
-            position: relative; width: 120px; height: 138.56px; background-color: rgba(255, 6, 157, 0.1);
-            margin: -24.28px 5px; display: flex; align-items: center; justify-content: center; text-align: center;
-            font-family: 'Space Mono', monospace; font-size: 14px; color: var(--light-pink);
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); transition: all 0.3s ease;
+            position: relative; width: 120px; height: 138.56px;
+            background-color: rgba(255, 6, 157, 0.1); margin: -24.28px 5px;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; font-family: 'Space Mono', monospace;
+            font-size: 14px; color: var(--light-pink);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            transition: all 0.3s ease;
         }
         .hexagon:hover { background-color: rgba(255, 6, 157, 0.25); transform: scale(1.1); z-index: 10; }
         
         .close-dossier-btn {
             position: absolute; top: 1rem; right: 1rem;
             background: rgba(255, 255, 255, 0.1); border: 1px solid var(--border-color);
-            width: 40px; height: 40px; border-radius: 50%; color: white; cursor: pointer;
-            display: flex; justify-content: center; align-items: center; z-index: 20;
+            width: 40px; height: 40px; border-radius: 50%; color: white;
+            cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 20;
+        }
+        
+        /* NEW - Floating Back Button */
+        .floating-back-button {
+            position: fixed; bottom: 2rem; left: 2rem; z-index: 1000;
+            background: var(--content-bg); border: 1px solid var(--border-color);
+            color: var(--light-pink); padding: 0.75rem 1rem; border-radius: 50px;
+            cursor: pointer; font-family: 'Space Mono', monospace; transition: all 0.3s ease;
+            box-shadow: 0 0 20px var(--border-color);
+        }
+        .floating-back-button:hover {
+            transform: translateY(-5px); box-shadow: 0 0 30px var(--hot-pink);
         }
     </style>
 </head>
-<body>
+<body class="p-4 sm:p-8">
     <canvas id="matrix-canvas"></canvas>
-    
+    <a href="index.html" class="floating-back-button text-xs sm:text-base">← Back to Terminal</a>
+
     <div class="id-card" id="idCard">
-        <div class="header text-center mb-5">
-            <div class="title text-xl">LyriCodes</div>
-            <div class="subtitle text-xs">IDENTITY PROTOCOL</div>
-        </div>
-        <div class="photo w-28 h-28 rounded-full mx-auto mb-4 border-4" style="border-color: var(--border-color);">
-            <img src="https://i.imgur.com/3p2au6v.png" alt="LyriCodes Portrait" class="w-full h-full object-cover rounded-full">
-        </div>
+        <div class="header text-center mb-5"><div class="title text-xl">LyriCodes</div><div class="subtitle text-xs">IDENTITY PROTOCOL</div></div>
+        <div class="photo w-28 h-28 rounded-full mx-auto mb-4 border-4" style="border-color: var(--border-color);"><img src="https://i.imgur.com/3p2au6v.png" alt="LyriCodes Portrait" class="w-full h-full object-cover rounded-full"></div>
         <div class="text-center space-y-3">
             <div><div class="label text-xs uppercase opacity-70">Designation</div><div class="value text-lg">Creative Technologist</div></div>
             <div><div class="label text-xs uppercase opacity-70">ID Number</div><div class="value text-lg">LC-2025-X01</div></div>
@@ -134,44 +144,21 @@
 
     <div id="scanner">
         <div class="scan-line"></div>
-        <span class="text-gray-500 font-mono text-sm tracking-widest">SCAN ID</span>
+        <span class="text-gray-500 font-mono text-sm tracking-widest">SCANNER</span>
     </div>
+
+    <p id="instruction-text">AWAITING IDENTIFICATION &gt;&gt; DRAG & DROP ID CARD</p>
 
     <div id="dossier-content" class="text-gray-200">
         <button id="closeDossier" class="close-dossier-btn" aria-label="Close Dossier"><i class="fas fa-times"></i></button>
         <main class="w-full max-w-5xl mx-auto">
-             <section class="text-center px-4">
-                <h1 class="text-2xl sm:text-3xl font-bold text-white">Hi, I’m Lyric — a creative technologist.</h1>
-                <p class="mt-2 text-md sm:text-lg text-gray-300 max-w-3xl mx-auto">
-                    I build tools, games, and AI-driven experiences designed with curiosity and neurodivergence in mind.
-                </p>
-            </section>
+             <section class="text-center px-4"><h1 class="text-2xl sm:text-3xl font-bold text-white">Hi, I’m Lyric — a creative technologist.</h1><p class="mt-2 text-md sm:text-lg text-gray-300 max-w-3xl mx-auto">I build tools, games, and AI-driven experiences designed with curiosity and neurodivergence in mind.</p></section>
             <div class="section-divider"></div>
-            <section>
-                <h2 class="text-xl sm:text-2xl font-bold mb-6 text-center text-white">Tech Stack</h2>
-                <div class="hexagon-grid">
-                     <div class="hexagon">JavaScript</div><div class="hexagon">Python</div><div class="hexagon">C#</div>
-                     <div class="hexagon">Three.js</div><div class="hexagon">Next.js</div><div class="hexagon">Tailwind</div>
-                     <div class="hexagon">Firebase</div><div class="hexagon">A-Frame</div><div class="hexagon">Playwright</div>
-                     <div class="hexagon">LangChain</div><div class="hexagon">Unity</div><div class="hexagon">Git</div>
-                </div>
-            </section>
+            <section><h2 class="text-xl sm:text-2xl font-bold mb-6 text-center text-white">Tech Stack</h2><div class="hexagon-grid"><div class="hexagon">JavaScript</div><div class="hexagon">Python</div><div class="hexagon">C#</div><div class="hexagon">Three.js</div><div class="hexagon">Next.js</div><div class="hexagon">Tailwind</div><div class="hexagon">Firebase</div><div class="hexagon">A-Frame</div><div class="hexagon">Playwright</div><div class="hexagon">LangChain</div><div class="hexagon">Unity</div><div class="hexagon">Git</div></div></section>
             <div class="section-divider"></div>
-            <section class="text-center px-4">
-                 <h2 class="text-xl sm:text-2xl font-bold mb-4 text-white">My Approach</h2>
-                 <blockquote class="text-md sm:text-lg text-gray-200 italic border-l-4 pl-4 sm:pl-6 max-w-3xl mx-auto" style="border-color: var(--hot-pink);">
-                   "I build for the overwhelmed, the over-stimulated, and the underestimated. My goal is to make tech that empowers people without requiring them to change who they are."
-               </blockquote>
-           </section>
+            <section class="text-center px-4"><h2 class="text-xl sm:text-2xl font-bold mb-4 text-white">My Approach</h2><blockquote class="text-md sm:text-lg text-gray-200 italic border-l-4 pl-4 sm:pl-6 max-w-3xl mx-auto" style="border-color: var(--hot-pink);">"I build for the overwhelmed, the over-stimulated, and the underestimated. My goal is to make tech that empowers people without requiring them to change who they are."</blockquote></section>
            <div class="section-divider"></div>
-           <section class="text-center">
-                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-white">Let's Connect</h2>
-                <div class="flex justify-center items-center space-x-6 text-3xl">
-                    <a href="mailto:lyric@lyricodes.com" class="text-gray-400 hover:text-white transition-all"><i class="fas fa-envelope"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-all"><i class="fab fa-github"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-all"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </section>
+           <section class="text-center"><h2 class="text-xl sm:text-2xl font-bold mb-4 text-white">Let's Connect</h2><div class="flex justify-center items-center space-x-6 text-3xl"><a href="mailto:lyric@lyricodes.com" class="text-gray-400 hover:text-white transition-all"><i class="fas fa-envelope"></i></a><a href="#" class="text-gray-400 hover:text-white transition-all"><i class="fab fa-github"></i></a><a href="#" class="text-gray-400 hover:text-white transition-all"><i class="fab fa-linkedin"></i></a></div></section>
         </main>
     </div>
 
@@ -181,70 +168,68 @@
             const scanner = document.getElementById('scanner');
             const dossier = document.getElementById('dossier-content');
             const closeDossierBtn = document.getElementById('closeDossier');
+            const instructionText = document.getElementById('instruction-text');
 
-            let startPosition = { x: 0, y: 0 }; // To store original position
+            let startPosition = { x: 0, y: 0 };
             
-            // GSAP Floating Animation
-            let floatingTween = gsap.to(idCard, {
-                y: "+=10", rotationZ: -1, duration: 4,
-                repeat: -1, yoyo: true, ease: "sine.inOut"
-            });
+            let floatingTween = gsap.to(idCard, { y: "+=10", rotationZ: -1, duration: 4, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
-            // GSAP Draggable
             Draggable.create(idCard, {
                 type: "x,y",
                 onPress: function() {
-                    floatingTween.pause(); // Pause floating on touch
+                    floatingTween.pause();
                     gsap.to(idCard, { scale: 1.05, duration: 0.2 });
                     startPosition.x = this.x;
                     startPosition.y = this.y;
                 },
                 onDrag: function() {
-                    // Check if card is over the scanner
-                    if (this.hitTest(scanner, "50%")) {
-                        scanner.classList.add('hovering');
-                    } else {
-                        scanner.classList.remove('hovering');
-                    }
+                    if (this.hitTest(scanner, "50%")) { scanner.classList.add('hovering'); } 
+                    else { scanner.classList.remove('hovering'); }
                 },
                 onRelease: function() {
                     scanner.classList.remove('hovering');
                     
-                    // If dropped on scanner
                     if (this.hitTest(scanner, "50%")) {
-                        gsap.to(idCard, {
-                            x: scanner.offsetLeft + scanner.offsetWidth / 2 - idCard.offsetWidth / 2,
-                            y: scanner.offsetTop + scanner.offsetHeight / 2 - idCard.offsetHeight / 2,
-                            scale: 1, opacity: 0, duration: 0.5, ease: "power2.inOut",
+                        // --- EDITED: Enhanced Scan Animation ---
+                        const tl = gsap.timeline();
+                        tl.to(scanner, {
+                            borderColor: 'var(--light-pink)',
+                            duration: 0.1,
+                            repeat: 3,
+                            yoyo: true
+                        }).to(idCard, {
+                            scale: 0,
+                            opacity: 0,
+                            duration: 0.5,
+                            ease: 'power2.in',
                             onComplete: () => {
-                                idCard.style.display = 'none'; // Hide card
-                                dossier.classList.add('visible'); // Show dossier
+                                idCard.style.display = 'none';
+                                dossier.classList.add('visible');
+                                instructionText.style.display = 'none'; // Hide instructions
                             }
-                        });
+                        }, "-=0.2");
                     } else {
-                        // If not on scanner, return to start
                         gsap.to(idCard, {
                             x: startPosition.x, y: startPosition.y,
                             scale: 1, duration: 0.5, ease: "power2.out",
-                            onComplete: () => floatingTween.resume() // Resume floating
+                            onComplete: () => floatingTween.resume()
                         });
                     }
                 }
             });
 
-            // Close Dossier Button
             closeDossierBtn.addEventListener('click', () => {
                 dossier.classList.remove('visible');
-                idCard.style.display = 'flex'; // Show card again
-                // Animate card back to start
+                instructionText.style.display = 'block'; // Show instructions again
+                idCard.style.display = 'flex';
                  gsap.to(idCard, {
                     x: startPosition.x, y: startPosition.y,
-                    opacity: 1, duration: 0.5, ease: "power2.out", delay: 0.3,
+                    scale: 1, opacity: 1, duration: 0.5, ease: "power2.out", delay: 0.3,
                     onComplete: () => floatingTween.resume()
                 });
             });
 
-            // --- Matrix Background ---
+            // Matrix Background
             const canvas = document.getElementById('matrix-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
