@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>About | LyriCodes Portfolio</title>
-    <meta name="description" content="The personal holographic ID of LyriCodes, a creative technologist. Flip the card to reveal the full dossier and interactive skill wall.">
+    <meta name="description" content="The personal holographic ID of LyriCodes, a creative technologist. Drag the ID card to the scanner to reveal the full dossier.">
     <meta name="author" content="LyriCodes">
     <link rel="canonical" href="https://portfolio-roan-one-39.vercel.app/about.html">
 
     <meta property="og:title" content="About LyriCodes | Creative Technologist">
-    <meta property="og:description" content="An interactive, flippable holographic ID card that expands to reveal the full story and skill set of a creative developer.">
+    <meta property="og:description" content="An interactive holographic ID card. Drag it to the scanner to learn more about a creative developer.">
     <meta property="og:image" content="https://i.imgur.com/your-preview-image.png"> <meta property="og:url" content="https://portfolio-roan-one-39.vercel.app/about.html">
     <meta property="og:type" content="profile">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
@@ -24,7 +24,7 @@
             --hot-pink: #ff069d;
             --light-pink: #ff9de2;
             --body-bg: #110011;
-            --content-bg: rgba(20, 0, 10, 0.85);
+            --content-bg: rgba(20, 0, 10, 0.9);
             --border-color: rgba(255, 6, 157, 0.3);
             --glow-shadow: 0 0 8px var(--hot-pink);
         }
@@ -40,243 +40,211 @@
             z-index: -1; width: 100vw; height: 100vh;
         }
 
-        .dossier-container {
-            position: relative; transform-style: preserve-3d;
-            transition: all 0.8s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-            cursor: grab; width: 320px; height: 500px;
+        /* The ID Card */
+        .id-card {
+            position: absolute;
+            top: 15%; /* Start position */
+            width: 300px; height: 480px;
+            background: var(--content-bg); backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color); border-radius: 20px;
+            box-shadow: 0 0 30px var(--border-color);
+            padding: 25px; display: flex; flex-direction: column;
+            color: var(--light-pink); cursor: grab; z-index: 100;
         }
-        .dossier-container:active { cursor: grabbing; }
+        .id-card:active { cursor: grabbing; }
 
-        .dossier-container.expanded {
-            width: 95vw; height: 90vh;
-            max-width: 1200px; cursor: default;
-        }
-
-        .dossier-container.flipped { transform: rotateY(180deg); }
-        
-        .dossier-face {
-            position: absolute; width: 100%; height: 100%;
-            backface-visibility: hidden; background: var(--content-bg);
-            backdrop-filter: blur(15px); border: 1px solid var(--border-color);
-            border-radius: 20px; box-shadow: 0 0 40px var(--border-color);
-            display: flex; flex-direction: column; color: var(--light-pink);
-        }
-        
-        .dossier-front { padding: 25px; }
-
-        .dossier-back {
-            transform: rotateY(180deg); padding: 1.5rem 2rem;
-            overflow-y: auto;
-        }
-        .dossier-container:not(.expanded) .dossier-back { overflow: hidden; }
-        
-        .holographic-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255, 157, 226, 0.1) 0%, rgba(255, 0, 255, 0.15) 100%);
-            mix-blend-mode: overlay; pointer-events: none; opacity: 0.5;
-        }
-        
-        /* ID Card Front Styling */
-        .dossier-front .header { text-align: center; margin-bottom: 20px; }
-        .dossier-front .title { font-size: 20px; font-weight: bold; color: white; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 3px; text-shadow: 0 0 10px var(--hot-pink); }
-        .dossier-front .subtitle { font-size: 12px; color: var(--light-pink); }
-        .dossier-front .photo { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 15px; border: 4px solid var(--border-color); overflow: hidden; }
-        .dossier-front .info-row { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); text-align: center; }
-        .dossier-front .info-row:last-child { border-bottom: none; }
-        .dossier-front .label { font-weight: bold; color: var(--light-pink); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; opacity: 0.7; }
-        .dossier-front .value { color: white; font-size: 16px; text-shadow: 0 0 5px var(--hot-pink); }
-
-        /* Dossier Back Styling */
-        .dossier-back h1, .dossier-back h2, .dossier-back h3 { font-family: 'Space Mono', monospace; color: white; text-shadow: var(--glow-shadow); letter-spacing: 1px; }
-        .dossier-back .section-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border-color), transparent); margin: 2rem 0; }
-        
-        /* --- NEW Hexagonal Skill Wall --- */
-        .hexagon-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 5px;
-            margin: 0 auto;
-            max-width: 800px;
-        }
-        .hexagon {
-            position: relative;
-            width: 120px; height: 138.56px; /* height = width * sqrt(3)/2 * 2 */
-            background-color: rgba(255, 6, 157, 0.1);
-            margin: -24.28px 5px; /* Adjust vertical margin for honeycomb */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            font-family: 'Space Mono', monospace;
-            font-size: 14px;
-            color: var(--light-pink);
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        /* The Scanner Area */
+        #scanner {
+            position: absolute;
+            bottom: 10%;
+            width: 350px; height: 120px;
+            border: 2px dashed var(--border-color);
+            border-radius: 20px;
+            display: flex; justify-content: center; align-items: center;
             transition: all 0.3s ease;
         }
-        .hexagon:hover {
-            background-color: rgba(255, 6, 157, 0.25);
-            transform: scale(1.1);
-            z-index: 10;
+        #scanner.hovering {
+            background: rgba(255, 6, 157, 0.1);
+            border-style: solid;
+            box-shadow: 0 0 30px var(--hot-pink);
         }
-        
-        .flip-button {
-            position: absolute; bottom: 15px; right: 15px; background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--border-color); width: 40px; height: 40px; border-radius: 50%;
-            color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 20;
-            transition: transform 0.3s;
+        #scanner .scan-line {
+            position: absolute; width: 100%; height: 2px;
+            background: var(--light-pink);
+            box-shadow: 0 0 10px var(--light-pink);
+            animation: scan-anim 3s linear infinite;
         }
-        .flip-button:hover { transform: scale(1.1); }
-        
-        .floating-back-button {
-            position: fixed; bottom: 2rem; left: 2rem; z-index: 1000; background: var(--content-bg);
-            border: 1px solid var(--border-color); color: var(--light-pink); padding: 0.75rem 1rem; border-radius: 50px;
-            cursor: pointer; font-family: 'Space Mono', monospace; transition: all 0.3s ease; box-shadow: 0 0 20px var(--border-color);
+        @keyframes scan-anim {
+            0% { top: 0; } 50% { top: 118px; } 100% { top: 0; }
         }
-        .floating-back-button:hover { transform: translateY(-5px); box-shadow: 0 0 30px var(--hot-pink); }
 
-        /* Scrollbar */
-        .dossier-back::-webkit-scrollbar { width: 8px; }
-        .dossier-back::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
-        .dossier-back::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+        /* Dossier content - hidden by default */
+        #dossier-content {
+            position: absolute;
+            width: 95vw; height: 90vh; max-width: 1200px;
+            background: var(--content-bg); backdrop-filter: blur(15px);
+            border: 1px solid var(--border-color); border-radius: 10px;
+            box-shadow: 0 0 40px var(--border-color);
+            padding: 2rem; overflow-y: auto;
+            opacity: 0; visibility: hidden; z-index: 50;
+            transform: scale(0.95);
+            transition: all 0.5s ease;
+        }
+        #dossier-content.visible {
+            opacity: 1; visibility: visible; transform: scale(1);
+        }
+
+        /* Reusable Dossier Styles */
+        #dossier-content h1, #dossier-content h2, #dossier-content h3 { font-family: 'Space Mono', monospace; color: white; text-shadow: var(--glow-shadow); letter-spacing: 1px; }
+        #dossier-content .section-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border-color), transparent); margin: 2rem 0; }
+        .hexagon-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin: 0 auto; max-width: 800px; }
+        .hexagon {
+            position: relative; width: 120px; height: 138.56px; background-color: rgba(255, 6, 157, 0.1);
+            margin: -24.28px 5px; display: flex; align-items: center; justify-content: center; text-align: center;
+            font-family: 'Space Mono', monospace; font-size: 14px; color: var(--light-pink);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); transition: all 0.3s ease;
+        }
+        .hexagon:hover { background-color: rgba(255, 6, 157, 0.25); transform: scale(1.1); z-index: 10; }
+        
+        .close-dossier-btn {
+            position: absolute; top: 1rem; right: 1rem;
+            background: rgba(255, 255, 255, 0.1); border: 1px solid var(--border-color);
+            width: 40px; height: 40px; border-radius: 50%; color: white; cursor: pointer;
+            display: flex; justify-content: center; align-items: center; z-index: 20;
+        }
     </style>
 </head>
 <body>
     <canvas id="matrix-canvas"></canvas>
-    <a href="index.html" class="floating-back-button text-xs sm:text-base">← Back to Terminal</a>
-
-    <div class="dossier-container" id="dossierContainer">
-        
-        <div class="dossier-face dossier-front">
-             <div class="holographic-overlay"></div>
-            <div class="header">
-                <div class="title">LyriCodes</div>
-                <div class="subtitle">IDENTITY PROTOCOL</div>
-            </div>
-            <div class="photo">
-                <img src="https://i.imgur.com/3p2au6v.png" alt="A neon-lit abstract portrait representing LyriCodes">
-            </div>
-            <div class="info-row"><div class="label">Designation:</div><div class="value">Creative Technologist</div></div>
-            <div class="info-row"><div class="label">ID Number:</div><div class="value">LC-2025-X01</div></div>
-            <div class="info-row"><div class="label">Specialization:</div><div class="value">Immersive Experiences</div></div>
+    
+    <div class="id-card" id="idCard">
+        <div class="header text-center mb-5">
+            <div class="title text-xl">LyriCodes</div>
+            <div class="subtitle text-xs">IDENTITY PROTOCOL</div>
         </div>
-        
-        <div class="dossier-face dossier-back">
-            <div class="holographic-overlay"></div>
-            <main class="w-full max-w-5xl mx-auto text-gray-200">
-                <section class="text-center px-4">
-                    <h1 class="text-2xl sm:text-3xl font-bold text-white">Hi, I’m Lyric — a creative technologist.</h1>
-                    <p class="mt-2 text-md sm:text-lg text-gray-300 max-w-3xl mx-auto">
-                        I build tools, games, and AI-driven experiences designed with curiosity and neurodivergence in mind.
-                    </p>
-                </section>
-
-                <div class="section-divider"></div>
-
-                <section>
-                    <h2 class="text-xl sm:text-2xl font-bold mb-6 text-center text-white">Tech Stack</h2>
-                    <div class="hexagon-grid">
-                        <div class="hexagon">JavaScript</div>
-                        <div class="hexagon">Python</div>
-                        <div class="hexagon">C#</div>
-                        <div class="hexagon">Three.js</div>
-                        <div class="hexagon">Next.js</div>
-                        <div class="hexagon">Tailwind</div>
-                        <div class="hexagon">Firebase</div>
-                        <div class="hexagon">A-Frame</div>
-                        <div class="hexagon">Playwright</div>
-                        <div class="hexagon">LangChain</div>
-                        <div class="hexagon">Unity</div>
-                        <div class="hexagon">Git</div>
-                    </div>
-                </section>
-                
-                <div class="section-divider"></div>
-
-                <section class="text-center px-4">
-                     <h2 class="text-xl sm:text-2xl font-bold mb-4 text-white">My Approach</h2>
-                     <blockquote class="text-md sm:text-lg text-gray-200 italic border-l-4 pl-4 sm:pl-6 max-w-3xl mx-auto" style="border-color: var(--hot-pink);">
-                       "I build for the overwhelmed, the over-stimulated, and the underestimated. My goal is to make tech that empowers people without requiring them to change who they are."
-                   </blockquote>
-               </section>
-
-                <div class="section-divider"></div>
-
-                <section class="text-center">
-                    <h2 class="text-xl sm:text-2xl font-bold mb-4 text-white">Let's Connect</h2>
-                    <div class="flex justify-center items-center space-x-6 text-3xl">
-                        <a href="mailto:lyric@lyricodes.com" class="text-gray-400 hover:text-white transition-all" aria-label="Email"><i class="fas fa-envelope"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-all" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-all" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </section>
-            </main>
+        <div class="photo w-28 h-28 rounded-full mx-auto mb-4 border-4" style="border-color: var(--border-color);">
+            <img src="https://i.imgur.com/3p2au6v.png" alt="LyriCodes Portrait" class="w-full h-full object-cover rounded-full">
         </div>
+        <div class="text-center space-y-3">
+            <div><div class="label text-xs uppercase opacity-70">Designation</div><div class="value text-lg">Creative Technologist</div></div>
+            <div><div class="label text-xs uppercase opacity-70">ID Number</div><div class="value text-lg">LC-2025-X01</div></div>
+            <div><div class="label text-xs uppercase opacity-70">Specialization</div><div class="value text-lg">Immersive Experiences</div></div>
+        </div>
+    </div>
 
-        <button class="flip-button" id="flipButton" aria-label="Flip card">
-            <i class="fas fa-sync-alt"></i>
-        </button>
+    <div id="scanner">
+        <div class="scan-line"></div>
+        <span class="text-gray-500 font-mono text-sm tracking-widest">SCAN ID</span>
+    </div>
+
+    <div id="dossier-content" class="text-gray-200">
+        <button id="closeDossier" class="close-dossier-btn" aria-label="Close Dossier"><i class="fas fa-times"></i></button>
+        <main class="w-full max-w-5xl mx-auto">
+             <section class="text-center px-4">
+                <h1 class="text-2xl sm:text-3xl font-bold text-white">Hi, I’m Lyric — a creative technologist.</h1>
+                <p class="mt-2 text-md sm:text-lg text-gray-300 max-w-3xl mx-auto">
+                    I build tools, games, and AI-driven experiences designed with curiosity and neurodivergence in mind.
+                </p>
+            </section>
+            <div class="section-divider"></div>
+            <section>
+                <h2 class="text-xl sm:text-2xl font-bold mb-6 text-center text-white">Tech Stack</h2>
+                <div class="hexagon-grid">
+                     <div class="hexagon">JavaScript</div><div class="hexagon">Python</div><div class="hexagon">C#</div>
+                     <div class="hexagon">Three.js</div><div class="hexagon">Next.js</div><div class="hexagon">Tailwind</div>
+                     <div class="hexagon">Firebase</div><div class="hexagon">A-Frame</div><div class="hexagon">Playwright</div>
+                     <div class="hexagon">LangChain</div><div class="hexagon">Unity</div><div class="hexagon">Git</div>
+                </div>
+            </section>
+            <div class="section-divider"></div>
+            <section class="text-center px-4">
+                 <h2 class="text-xl sm:text-2xl font-bold mb-4 text-white">My Approach</h2>
+                 <blockquote class="text-md sm:text-lg text-gray-200 italic border-l-4 pl-4 sm:pl-6 max-w-3xl mx-auto" style="border-color: var(--hot-pink);">
+                   "I build for the overwhelmed, the over-stimulated, and the underestimated. My goal is to make tech that empowers people without requiring them to change who they are."
+               </blockquote>
+           </section>
+           <div class="section-divider"></div>
+           <section class="text-center">
+                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-white">Let's Connect</h2>
+                <div class="flex justify-center items-center space-x-6 text-3xl">
+                    <a href="mailto:lyric@lyricodes.com" class="text-gray-400 hover:text-white transition-all"><i class="fas fa-envelope"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all"><i class="fab fa-github"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </section>
+        </main>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const dossierContainer = document.getElementById('dossierContainer');
-            const flipButton = document.getElementById('flipButton');
-            const flipIcon = flipButton.querySelector('i');
-            const hexagons = document.querySelectorAll('.hexagon');
+        document.addEventListener('DOMContentLoaded', () => {
+            const idCard = document.getElementById('idCard');
+            const scanner = document.getElementById('scanner');
+            const dossier = document.getElementById('dossier-content');
+            const closeDossierBtn = document.getElementById('closeDossier');
+
+            let startPosition = { x: 0, y: 0 }; // To store original position
             
-            let floatingTween = null;
+            // GSAP Floating Animation
+            let floatingTween = gsap.to(idCard, {
+                y: "+=10", rotationZ: -1, duration: 4,
+                repeat: -1, yoyo: true, ease: "sine.inOut"
+            });
 
-            function startFloating() {
-                if (!floatingTween) {
-                    floatingTween = gsap.to(dossierContainer, {
-                        y: -10, x: 5, rotationZ: 1, duration: 4,
-                        repeat: -1, yoyo: true, ease: "sine.inOut"
-                    });
-                } else { floatingTween.play(); }
-            }
-            function stopFloating() {
-                if (floatingTween) floatingTween.pause();
-            }
-
-            flipButton.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isExpanded = dossierContainer.classList.contains('expanded');
-                
-                dossierContainer.classList.toggle('flipped');
-                dossierContainer.classList.toggle('expanded');
-
-                if (!isExpanded) {
-                    stopFloating();
-                    gsap.to(dossierContainer, { rotationY: 180, rotationX: 0, duration: 0.1, ease: "power1.inOut" });
-                    flipIcon.className = "fas fa-compress-arrows-alt";
-                    // Animate hexagons in
-                    gsap.fromTo(hexagons, 
-                        { opacity: 0, scale: 0.5 },
-                        { opacity: 1, scale: 1, duration: 0.5, stagger: 0.05, ease: "back.out(1.7)", delay: 0.5 }
-                    );
-                } else {
-                    startFloating();
-                    flipIcon.className = "fas fa-sync-alt";
+            // GSAP Draggable
+            Draggable.create(idCard, {
+                type: "x,y",
+                onPress: function() {
+                    floatingTween.pause(); // Pause floating on touch
+                    gsap.to(idCard, { scale: 1.05, duration: 0.2 });
+                    startPosition.x = this.x;
+                    startPosition.y = this.y;
+                },
+                onDrag: function() {
+                    // Check if card is over the scanner
+                    if (this.hitTest(scanner, "50%")) {
+                        scanner.classList.add('hovering');
+                    } else {
+                        scanner.classList.remove('hovering');
+                    }
+                },
+                onRelease: function() {
+                    scanner.classList.remove('hovering');
+                    
+                    // If dropped on scanner
+                    if (this.hitTest(scanner, "50%")) {
+                        gsap.to(idCard, {
+                            x: scanner.offsetLeft + scanner.offsetWidth / 2 - idCard.offsetWidth / 2,
+                            y: scanner.offsetTop + scanner.offsetHeight / 2 - idCard.offsetHeight / 2,
+                            scale: 1, opacity: 0, duration: 0.5, ease: "power2.inOut",
+                            onComplete: () => {
+                                idCard.style.display = 'none'; // Hide card
+                                dossier.classList.add('visible'); // Show dossier
+                            }
+                        });
+                    } else {
+                        // If not on scanner, return to start
+                        gsap.to(idCard, {
+                            x: startPosition.x, y: startPosition.y,
+                            scale: 1, duration: 0.5, ease: "power2.out",
+                            onComplete: () => floatingTween.resume() // Resume floating
+                        });
+                    }
                 }
             });
-            
-            document.addEventListener('mousemove', (e) => {
-                if (dossierContainer.classList.contains('expanded')) return;
-                const rect = dossierContainer.getBoundingClientRect();
-                const x = e.clientX - (rect.left + rect.width / 2);
-                const y = e.clientY - (rect.top + rect.height / 2);
-                const rotateY = x / 30;
-                const rotateX = -y / 30;
-                gsap.to(dossierContainer, { rotationY: rotateY, rotationX: rotateX, duration: 0.7, ease: "power2.out" });
+
+            // Close Dossier Button
+            closeDossierBtn.addEventListener('click', () => {
+                dossier.classList.remove('visible');
+                idCard.style.display = 'flex'; // Show card again
+                // Animate card back to start
+                 gsap.to(idCard, {
+                    x: startPosition.x, y: startPosition.y,
+                    opacity: 1, duration: 0.5, ease: "power2.out", delay: 0.3,
+                    onComplete: () => floatingTween.resume()
+                });
             });
 
-            document.addEventListener('mouseleave', () => {
-                 if (!dossierContainer.classList.contains('expanded')) {
-                    gsap.to(dossierContainer, { rotationY: 0, rotationX: 0, duration: 1, ease: "elastic.out(1, 0.3)" });
-                }
-            });
-
+            // --- Matrix Background ---
             const canvas = document.getElementById('matrix-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -296,8 +264,6 @@
                 }
             }
             setInterval(drawMatrix, 50);
-
-            startFloating();
         });
     </script>
 </body>
