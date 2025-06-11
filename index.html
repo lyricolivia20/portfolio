@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* Establishing the Lyricodes color palette */
         :root {
             --hot-pink: #ff069d;
             --neon-pink: #ff00ff;
@@ -20,19 +19,14 @@
             --scrollbar-thumb: rgba(255, 6, 157, 0.5);
             --scrollbar-thumb-hover: rgba(255, 6, 157, 0.7);
         }
-
-        /* Applying the color palette to the body */
         body {
             background-color: var(--body-bg);
             color: var(--hot-pink);
             font-family: 'Courier New', monospace;
         }
-
-        /* Custom CSS for effects and layout */
         .terminal-container {
             perspective: 1000px;
         }
-
         .terminal-wrapper {
             transform-style: preserve-3d;
             cursor: grab;
@@ -41,24 +35,20 @@
             box-shadow: 0 25px 50px -12px rgba(255, 0, 150, 0.3);
             transition: transform 0.2s ease, box-shadow 0.3s ease;
         }
-
         .terminal-wrapper:hover {
             box-shadow: 0 25px 50px -12px rgba(255, 0, 150, 0.5);
         }
-
         .terminal-wrapper:active {
             cursor: grabbing;
         }
-        
-        /* --- NEW NEON HEADER STYLES --- */
         .neon-header {
             text-align: center;
-            padding: 1rem 0;
+            padding: 0.75rem 0; /* Reduced padding */
         }
         .neon-header h1 {
             font-family: 'Dancing Script', cursive;
             font-weight: 700;
-            font-size: 4rem; /* Increased size for impact */
+            font-size: 3.5rem; /* Sized down from 4rem */
             color: var(--light-pink);
             animation: neon-flicker 2.5s infinite alternate;
             text-shadow:
@@ -68,54 +58,37 @@
                 0 0 40px var(--hot-pink),
                 0 0 80px var(--hot-pink);
         }
-
         @keyframes neon-flicker {
             0%, 100% {
                 text-shadow:
-                    0 0 5px var(--light-pink),
-                    0 0 10px var(--light-pink),
-                    0 0 20px var(--hot-pink),
-                    0 0 40px var(--hot-pink),
+                    0 0 5px var(--light-pink), 0 0 10px var(--light-pink),
+                    0 0 20px var(--hot-pink), 0 0 40px var(--hot-pink),
                     0 0 80px var(--hot-pink);
                 color: var(--light-pink);
             }
             50% {
                  text-shadow:
-                    0 0 5px var(--light-pink),
-                    0 0 8px var(--light-pink),
-                    0 0 15px var(--hot-pink),
-                    0 0 30px var(--hot-pink),
+                    0 0 5px var(--light-pink), 0 0 8px var(--light-pink),
+                    0 0 15px var(--hot-pink), 0 0 30px var(--hot-pink),
                     0 0 60px var(--hot-pink);
-                color: #ffd0f5; /* A slightly dimmer color for the flicker */
+                color: #ffd0f5;
             }
         }
-
-
         .terminal-output {
             text-shadow: 0 0 5px var(--hot-pink);
             background-color: rgba(0,0,0,0.2);
         }
-
         .command-input {
             caret-color: var(--hot-pink);
             text-shadow: 0 0 5px var(--hot-pink);
         }
-
         .command-input::placeholder {
             color: rgba(255, 6, 157, 0.4);
         }
-
-        /* Matrix background canvas */
         #matrix-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            width: 100vw;
-            height: 100vh;
+            position: fixed; top: 0; left: 0;
+            z-index: -1; width: 100vw; height: 100vh;
         }
-
-        /* Custom scrollbar to match the theme */
         .terminal-output::-webkit-scrollbar { width: 8px; }
         .terminal-output::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
         .terminal-output::-webkit-scrollbar-thumb {
@@ -123,10 +96,9 @@
             border-radius: 4px;
         }
         .terminal-output::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
-
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 overflow-hidden">
+<body class="min-h-screen flex items-center justify-center p-2 sm:p-4">
     
     <canvas id="matrix-canvas"></canvas>
 
@@ -144,7 +116,7 @@
                 <h1>LyriCodes</h1>
             </div>
             
-            <div id="terminal-output" class="terminal-output p-4 h-96 overflow-y-auto"></div>
+            <div id="terminal-output" class="terminal-output p-4 h-80 overflow-y-auto"></div>
             
             <div class="px-4 py-3 flex items-center border-t" style="border-color: var(--border-color); background-color: rgba(20,0,10,0.9);">
                 <span class="mr-2" style="color: var(--neon-pink); text-shadow: 0 0 8px var(--neon-pink);">♕</span>
@@ -167,18 +139,15 @@
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
         const chars = 'LYRICO DES♕💖👩💻█▓▒░║‗╔╦╗╚╩╝';
         const fontSize = 14;
         const columns = canvas.width / fontSize;
         const drops = Array.from({ length: columns }).fill(1);
-
         function drawMatrix() {
             ctx.fillStyle = 'rgba(17, 0, 17, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--hot-pink').trim();
             ctx.font = fontSize + 'px monospace';
-
             for (let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
@@ -195,26 +164,26 @@
         const inputElement = document.getElementById('command-input');
 
         const commands = {
-            'portfolio': {
+            'p': { // Restored single-letter command
                 description: 'View my projects',
-                action: () => addResponse('Initializing femme tech showcase... Stand by.', () => window.location.href = '#') // Replace '#' with your projects page
+                action: () => addResponse('Initializing femme tech showcase... Stand by.', () => window.location.href = 'projects.html')
             },
-            'bio': {
+            'a': { // Restored single-letter command
                 description: 'About me',
-                action: () => addResponse('Accessing neural imprint... Please wait.', () => window.location.href = '#') // Replace '#' with your about page
+                action: () => addResponse('Accessing neural imprint... Please wait.', () => window.location.href = 'about.html')
             },
-            'contact': {
+            'c': { // Restored single-letter command
                 description: 'Get in touch',
-                action: () => addResponse('Opening secure DMs... Channel established.', () => window.location.href = '#') // Replace '#' with your contact page
+                action: () => addResponse('Opening secure DMs... Channel established.', () => window.location.href = 'contact.html')
             },
             'help': {
                 description: 'Show available commands',
                 action: () => {
                     addResponse("\n[AVAILABLE DIRECTIVES]\n");
-                    addResponse("[portfolio] - Access project matrix\n");
-                    addResponse("[bio]       - Identity protocols\n");
-                    addResponse("[contact]   - Open secure channel\n");
-                    addResponse("[clear]     - Purge terminal display\n");
+                    addResponse("[p] - Portfolio   // Access project matrix\n"); // Updated help text
+                    addResponse("[a] - About       // Identity protocols\n");    // Updated help text
+                    addResponse("[c] - Contact     // Open secure channel\n");   // Updated help text
+                    addResponse("[clear] - Purge terminal display\n");
                 }
             },
             'clear': {
@@ -233,33 +202,26 @@
         // --- 3. COMMAND & BOOT LOGIC ---
         inputElement.addEventListener('keyup', function(e) {
             if (e.key !== 'Enter') return;
-            
             const command = this.value.toLowerCase().trim();
             addResponse(`♕ ${this.value}`, false);
-            
             if (command in commands) {
                 commands[command].action();
             } else if (command !== '') {
                 addResponse(`Directive not recognized: [${command}]`);
             }
-            
             this.value = '';
         });
 
         function addResponse(text, isTypingOrCallback, callback) {
             const line = document.createElement('div');
             outputElement.appendChild(line);
-
-            if (isTypingOrCallback === false) { // Instantly add user command
+            if (isTypingOrCallback === false) {
                 line.innerHTML = text;
                 outputElement.scrollTop = outputElement.scrollHeight;
                 return;
             }
-
-            // Handle system responses with typing effect
             let i = 0;
             const typeSpeed = 25; 
-            
             function typeChar() {
                 if (i < text.length) {
                     line.innerHTML += text.charAt(i);
@@ -289,37 +251,28 @@
 
         // --- 4. DRAGGABLE/ROTATABLE TERMINAL LOGIC ---
         const terminalWrapper = document.querySelector('.terminal-wrapper');
-        let rotation = { x: 5, y: -5 }; // Initial tilt
+        let rotation = { x: 5, y: -5 };
         let isDragging = false;
         let startX, startY;
-
         terminalWrapper.addEventListener('mousedown', e => {
             isDragging = true;
             startX = e.clientX;
             startY = e.clientY;
             terminalWrapper.style.cursor = 'grabbing';
-            terminalWrapper.style.transition = 'none'; // Disable transition while dragging for smoothness
+            terminalWrapper.style.transition = 'none';
         });
-
         document.addEventListener('mousemove', e => {
             if (!isDragging) return;
-
             const dx = e.clientX - startX;
             const dy = e.clientY - startY;
-
             rotation.y += dx * 0.2;
             rotation.x -= dy * 0.2;
-            
-            // Limit rotation to avoid flipping it completely
             rotation.x = Math.max(-25, Math.min(25, rotation.x));
             rotation.y = Math.max(-25, Math.min(25, rotation.y));
-
             terminalWrapper.style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`;
-            
             startX = e.clientX;
             startY = e.clientY;
         });
-
         document.addEventListener('mouseup', () => {
             isDragging = false;
             terminalWrapper.style.cursor = 'grab';
