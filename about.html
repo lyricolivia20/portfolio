@@ -13,274 +13,269 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-    
     <style>
-        :root {
-            --neon-blue: #00f2ff;
-            --deep-blue: #0066ff;
-            --light-blue: #a0f0ff;
-            --body-bg: #0a0a1a;
-            --content-bg: rgba(10, 10, 26, 0.9);
-            --border-color: rgba(0, 242, 255, 0.3);
-            --glow-shadow: 0 0 8px var(--neon-blue);
-            --gradient: linear-gradient(135deg, var(--neon-blue), var(--deep-blue));
-            --scan-glow: 0 0 15px rgba(0, 242, 255, 0.7);
-        }
-        body {
-            overflow: hidden; 
-            background: var(--body-bg); 
-            height: 100vh;
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            perspective: 1500px; 
-            font-family: 'Inter', sans-serif;
-            touch-action: none;
-        }
-        #matrix-canvas {
-            position: fixed; 
-            top: 0; 
-            left: 0;
-            z-index: -1; 
-            width: 100vw; 
-            height: 100vh;
-            opacity: 0.3;
-        }
+   :root {
+    --neon-pink: #ff00cc;
+    --soft-cyan: #80fff9;
+    --deep-violet: #1e003f;
+    --midnight-bg: #0a0a1f;
+    --card-bg: rgba(10, 10, 36, 0.85);
+    --border-pulse: rgba(255, 0, 204, 0.3);
+    --glow: 0 0 12px var(--neon-pink);
+    --gradient-accent: linear-gradient(135deg, var(--neon-pink), var(--soft-cyan));
+    --scan-pulse: 0 0 15px rgba(255, 0, 204, 0.7);
+}
 
-        /* --- INTERACTIVE ELEMENTS --- */
-        #idCard {
-            position: absolute; 
-            width: 280px; 
-            height: 420px;
-            background: var(--content-bg); 
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color); 
-            border-radius: 16px;
-            box-shadow: var(--glow-shadow); 
-            padding: 24px;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            color: var(--light-blue); 
-            cursor: grab; 
-            z-index: 30;
-            transform-style: preserve-3d;
-            transition: transform 0.2s ease, box-shadow 0.3s ease;
-        }
-        #idCard:active {
-            cursor: grabbing;
-            box-shadow: 0 0 30px var(--neon-blue);
-        }
-        #idCard:hover {
-            transform: translateZ(10px);
-        }
-        
-        #scanner {
-            position: fixed; 
-            top: 50%; 
-            right: 5vw; 
-            transform: translateY(-50%);
-            width: 140px; 
-            height: 240px;
-            background: rgba(0, 20, 40, 0.5); 
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--neon-blue); 
-            border-radius: 8px;
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            transition: all 0.3s ease; 
-            z-index: 20;
-            box-shadow: inset 0 0 30px rgba(0, 242, 255, 0.3),
-                        0 0 20px rgba(0, 242, 255, 0.2);
-            overflow: hidden;
-        }
-        #scanner.hovering { 
-            box-shadow: 0 0 40px var(--neon-blue), 
-                       inset 0 0 40px rgba(0, 242, 255, 0.5); 
-            border-color: var(--neon-blue); 
-        }
-        #scanner .scan-line {
-            position: absolute; 
-            width: 90%; 
-            height: 3px;
-            background: var(--neon-blue); 
-            box-shadow: var(--scan-glow);
-            animation: scan-anim 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-            opacity: 0.9;
-            z-index: 2;
-        }
-        #scanner .scan-grid {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(rgba(0, 242, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 242, 255, 0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.5;
-        }
-        @keyframes scan-anim { 
-            0% { top: 5%; opacity: 0; } 
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { top: 95%; opacity: 0; } 
-        }
-        
-        #indicatorLights {
-            position: fixed; 
-            top: 40px; 
-            left: 50%; 
-            transform: translateX(-50%);
-            display: flex; 
-            gap: 12px; 
-            z-index: 25;
-            padding: 8px 16px;
-            background: rgba(0, 10, 20, 0.5);
-            border-radius: 50px;
-            border: 1px solid rgba(0, 242, 255, 0.2);
-        }
-        .light {
-            width: 16px; 
-            height: 16px; 
-            border-radius: 50%;
-            background: #0a1a2a; 
-            border: 2px solid #001020;
-            transition: all 0.3s;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
-        }
+body {
+    overflow: hidden;
+    background: var(--midnight-bg);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1500px;
+    font-family: 'JetBrains Mono', monospace;
+    touch-action: none;
+    color: var(--soft-cyan);
+}
 
-        /* --- BLAST DOORS --- */
-        .blast-door {
-            position: fixed; 
-            top: 0; 
-            width: 50vw; 
-            height: 100vh;
-            background: linear-gradient(to right, #020a1a, #041a2a);
-            border-color: #003050;
-            z-index: 10;
-            transform-style: preserve-3d;
-            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.7);
-        }
-        #doorLeft { 
-            left: 0; 
-            border-right: 3px solid var(--neon-blue);
-            transform-origin: left center;
-        }
-        #doorRight { 
-            right: 0; 
-            border-left: 3px solid var(--neon-blue);
-            transform-origin: right center;
-        }
-        .door-panel {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(135deg, rgba(0, 242, 255, 0.05) 25%, transparent 25%) -50px 0,
-                linear-gradient(225deg, rgba(0, 242, 255, 0.05) 25%, transparent 25%) -50px 0,
-                linear-gradient(315deg, rgba(0, 242, 255, 0.05) 25%, transparent 25%),
-                linear-gradient(45deg, rgba(0, 242, 255, 0.05) 25%, transparent 25%);
-            background-size: 100px 100px;
-        }
+#matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.25;
+}
 
-        /* --- DOSSIER CONTENT (BEHIND DOORS) --- */
-        #dossier-content {
-            position: relative; 
-            width: 100%; 
-            height: 100%; 
-            max-width: 1200px;
-            padding: 4rem 2rem; 
-            overflow-y: auto; 
-            opacity: 0;
-            pointer-events: none;
-        }
-        #dossier-content.active {
-            pointer-events: all;
-        }
-        #dossier-content h1, #dossier-content h2 {
-            font-family: 'Space Mono', monospace; 
-            color: white;
-            letter-spacing: 1px;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(0, 102, 255, 0.3);
-        }
-        .section-divider { 
-            height: 1px; 
-            background: var(--gradient); 
-            margin: 2rem 0; 
-            opacity: 0.3;
-        }
-        
-        .floating-back-button {
-            position: fixed; 
-            bottom: 2rem; 
-            right: 2rem; 
-            z-index: 1000;
-            background: var(--content-bg); 
-            border: 1px solid var(--border-color);
-            color: var(--light-blue); 
-            padding: 0.75rem 1.5rem; 
-            border-radius: 50px;
-            cursor: pointer; 
-            font-family: 'Space Mono', monospace;
-            transition: all 0.3s ease; 
-            box-shadow: var(--glow-shadow);
-            opacity: 0; 
-            visibility: hidden;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .floating-back-button:hover {
-            transform: translateX(-5px);
-            background: rgba(0, 242, 255, 0.1);
-            box-shadow: 0 0 20px var(--neon-blue);
-        }
-        
-        /* ID Card styling */
-        .id-photo {
-            width: 100px; 
-            height: 100px; 
-            border-radius: 50%; 
-            border: 2px solid var(--border-color); 
-            overflow: hidden; 
-            margin-bottom: 1.5rem;
-            position: relative;
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
-        }
-        .id-photo::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(0,242,255,0.3) 0%, rgba(0,102,255,0.3) 100%);
-            mix-blend-mode: overlay;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            #idCard {
-                width: 240px;
-                height: 360px;
-                padding: 16px;
-            }
-            #scanner {
-                width: 100px;
-                height: 200px;
-                right: 20px;
-            }
-            .id-photo {
-                width: 80px;
-                height: 80px;
-            }
-        }
-    </style>
+/* --- ID Card --- */
+#idCard {
+    position: absolute;
+    width: 280px;
+    height: 420px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-pulse);
+    border-radius: 20px;
+    box-shadow: var(--glow);
+    backdrop-filter: blur(12px);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--soft-cyan);
+    cursor: grab;
+    z-index: 30;
+    transform-style: preserve-3d;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+#idCard:active {
+    cursor: grabbing;
+    box-shadow: 0 0 30px var(--neon-pink);
+}
+#idCard:hover {
+    transform: translateZ(10px);
+}
+.id-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid var(--soft-cyan);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    position: relative;
+    box-shadow: 0 0 20px rgba(255, 0, 204, 0.3);
+}
+.id-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,0,204,0.25), rgba(0,255,255,0.25));
+    mix-blend-mode: overlay;
+}
+
+/* --- Scanner --- */
+#scanner {
+    position: fixed;
+    top: 50%;
+    right: 5vw;
+    transform: translateY(-50%);
+    width: 140px;
+    height: 240px;
+    background: rgba(20, 10, 40, 0.4);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--neon-pink);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    z-index: 20;
+    box-shadow: inset 0 0 30px rgba(255, 0, 204, 0.2),
+                0 0 20px rgba(255, 0, 204, 0.2);
+    overflow: hidden;
+}
+#scanner.hovering {
+    box-shadow: 0 0 40px var(--neon-pink),
+                inset 0 0 40px rgba(255, 0, 204, 0.5);
+}
+#scanner .scan-line {
+    position: absolute;
+    width: 90%;
+    height: 3px;
+    background: var(--neon-pink);
+    box-shadow: var(--scan-pulse);
+    animation: scan-anim 1.5s ease-in-out infinite;
+    opacity: 0.9;
+}
+#scanner .scan-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background:
+        linear-gradient(rgba(255, 0, 204, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 0, 204, 0.08) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.5;
+}
+@keyframes scan-anim {
+    0% { top: 5%; opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { top: 95%; opacity: 0; }
+}
+
+/* --- Indicator Lights --- */
+#indicatorLights {
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 25;
+    padding: 8px 16px;
+    background: rgba(10, 0, 20, 0.5);
+    border-radius: 50px;
+    border: 1px solid rgba(255, 0, 204, 0.2);
+}
+.light {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #0f001f;
+    border: 2px solid #320040;
+    transition: all 0.3s;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Blast Doors --- */
+.blast-door {
+    position: fixed;
+    top: 0;
+    width: 50vw;
+    height: 100vh;
+    background: linear-gradient(to right, #100028, #1f003f);
+    z-index: 10;
+    transform-style: preserve-3d;
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.6);
+}
+#doorLeft {
+    left: 0;
+    border-right: 3px solid var(--neon-pink);
+}
+#doorRight {
+    right: 0;
+    border-left: 3px solid var(--neon-pink);
+}
+.door-panel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background:
+        linear-gradient(135deg, rgba(255, 0, 204, 0.05) 25%, transparent 25%) -50px 0,
+        linear-gradient(225deg, rgba(255, 0, 204, 0.05) 25%, transparent 25%) -50px 0,
+        linear-gradient(315deg, rgba(255, 0, 204, 0.05) 25%, transparent 25%),
+        linear-gradient(45deg, rgba(255, 0, 204, 0.05) 25%, transparent 25%);
+    background-size: 100px 100px;
+}
+
+/* --- Dossier Content --- */
+#dossier-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    padding: 4rem 2rem;
+    overflow-y: auto;
+    opacity: 0;
+    pointer-events: none;
+}
+#dossier-content.active {
+    pointer-events: all;
+}
+#dossier-content h1,
+#dossier-content h2 {
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 1px;
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px rgba(255, 0, 204, 0.3);
+}
+.section-divider {
+    height: 1px;
+    background: var(--gradient-accent);
+    margin: 2rem 0;
+    opacity: 0.3;
+}
+
+/* --- Back Button --- */
+.floating-back-button {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    background: var(--card-bg);
+    border: 1px solid var(--border-pulse);
+    color: var(--soft-cyan);
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    transition: all 0.3s ease;
+    box-shadow: var(--glow);
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.floating-back-button:hover {
+    transform: translateX(-5px);
+    background: rgba(255, 0, 204, 0.1);
+    box-shadow: 0 0 20px var(--neon-pink);
+}
+
+/* --- Mobile --- */
+@media (max-width: 768px) {
+    #idCard {
+        width: 240px;
+        height: 360px;
+        padding: 16px;
+    }
+    #scanner {
+        width: 100px;
+        height: 200px;
+        right: 20px;
+    }
+    .id-photo {
+        width: 80px;
+        height: 80px;
+    }
+}
+</style>
 </head>
 <body class="text-gray-200">
     <canvas id="matrix-canvas"></canvas>
