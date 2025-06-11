@@ -16,14 +16,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <style>
         :root {
-            --hot-pink: #ff069d;
-            --light-pink: #ff9de2;
-            --body-bg: #110011;
-            --content-bg: rgba(20, 0, 10, 0.9);
-            --border-color: rgba(255, 6, 157, 0.3);
+            --hot-pink: #ff069d; --light-pink: #ff9de2; --body-bg: #110011;
+            --content-bg: rgba(20, 0, 10, 0.9); --border-color: rgba(255, 6, 157, 0.3);
             --glow-shadow: 0 0 8px var(--hot-pink);
         }
         body {
@@ -36,44 +34,35 @@
             z-index: -1; width: 100vw; height: 100vh;
         }
         .id-card {
-            position: absolute; top: 15%; width: 300px; height: 480px;
+            position: absolute; top: 20%;
+            width: 500px; height: 280px; /* NEW: Landscape orientation */
             background: var(--content-bg); backdrop-filter: blur(10px);
             border: 1px solid var(--border-color); border-radius: 20px;
             box-shadow: 0 0 30px var(--border-color); padding: 25px;
-            display: flex; flex-direction: column; color: var(--light-pink);
-            cursor: grab; z-index: 100;
+            display: flex; align-items: center; gap: 25px;
+            color: var(--light-pink); cursor: grab; z-index: 100;
         }
         .id-card:active { cursor: grabbing; }
 
         #scanner {
-            position: absolute; bottom: 10%; width: 350px; height: 120px;
-            border: 2px dashed var(--border-color); border-radius: 20px;
-            display: flex; justify-content: center; align-items: center;
+            position: absolute; bottom: 10%; width: 550px; height: 100px;
+            /* NEW: Glassmorphism effect */
+            background: rgba(41, 41, 56, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px; display: flex; justify-content: center; align-items: center;
             transition: all 0.3s ease;
         }
         #scanner.hovering {
-            background: rgba(255, 6, 157, 0.1); border-style: solid;
             box-shadow: 0 0 30px var(--hot-pink);
+            border-color: var(--border-color);
         }
         #scanner .scan-line {
             position: absolute; width: 100%; height: 2px;
             background: var(--light-pink); box-shadow: 0 0 10px var(--light-pink);
-            animation: scan-anim 3s linear infinite;
+            animation: scan-anim 3s ease-in-out infinite;
         }
-        @keyframes scan-anim { 0% {top: 0;} 50% {top: 118px;} 100% {top: 0;} }
-
-        /* NEW - Instructions Text */
-        #instruction-text {
-            position: absolute;
-            bottom: calc(10% - 40px); /* Position below the scanner */
-            color: #6B7280; /* Gray-500 */
-            font-family: 'Space Mono', monospace;
-            font-size: 0.75rem; /* 12px */
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            animation: pulse-text 4s infinite;
-        }
-        @keyframes pulse-text { 50% { opacity: 0.6; } }
+        @keyframes scan-anim { 0% {top: 5%;} 50% {top: 95%;} 100% {top: 5%;} }
 
         #dossier-content {
             position: absolute; width: 95vw; height: 90vh; max-width: 1200px;
@@ -85,80 +74,113 @@
         }
         #dossier-content.visible { opacity: 1; visibility: visible; transform: scale(1); }
         
-        #dossier-content h1, #dossier-content h2, #dossier-content h3 {
-            font-family: 'Space Mono', monospace; color: white;
-            text-shadow: var(--glow-shadow); letter-spacing: 1px;
-        }
-        #dossier-content .section-divider {
-            height: 1px; background: linear-gradient(90deg, transparent, var(--border-color), transparent);
-            margin: 2rem 0;
-        }
-        .hexagon-grid {
-            display: flex; flex-wrap: wrap; justify-content: center;
-            gap: 5px; margin: 0 auto; max-width: 800px;
-        }
-        .hexagon {
-            position: relative; width: 120px; height: 138.56px;
-            background-color: rgba(255, 6, 157, 0.1); margin: -24.28px 5px;
-            display: flex; align-items: center; justify-content: center;
-            text-align: center; font-family: 'Space Mono', monospace;
-            font-size: 14px; color: var(--light-pink);
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            transition: all 0.3s ease;
-        }
-        .hexagon:hover { background-color: rgba(255, 6, 157, 0.25); transform: scale(1.1); z-index: 10; }
+        /* Dossier Content Styling */
+        #dossier-content h2, #dossier-content h3 { font-family: 'Space Mono', monospace; color: white; text-shadow: var(--glow-shadow); letter-spacing: 1px; }
+        .section-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border-color), transparent); margin: 2rem 0; }
         
+        /* NEW: Skill category and tile styling */
+        .skill-category { margin-bottom: 2rem; }
+        .skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem; }
+        .skill-tile {
+            background: rgba(255, 6, 157, 0.05); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 1rem; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 0.75rem;
+            transition: all 0.2s ease;
+        }
+        .skill-tile:hover { background: rgba(255, 6, 157, 0.2); transform: translateY(-5px); }
+        .skill-tile i { font-size: 2.5rem; color: var(--light-pink); }
+        .skill-tile span { font-size: 0.8rem; font-family: 'Space Mono', monospace; }
+
         .close-dossier-btn {
-            position: absolute; top: 1rem; right: 1rem;
-            background: rgba(255, 255, 255, 0.1); border: 1px solid var(--border-color);
-            width: 40px; height: 40px; border-radius: 50%; color: white;
-            cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 20;
-        }
-        
-        /* NEW - Floating Back Button */
-        .floating-back-button {
-            position: fixed; bottom: 2rem; left: 2rem; z-index: 1000;
-            background: var(--content-bg); border: 1px solid var(--border-color);
-            color: var(--light-pink); padding: 0.75rem 1rem; border-radius: 50px;
-            cursor: pointer; font-family: 'Space Mono', monospace; transition: all 0.3s ease;
-            box-shadow: 0 0 20px var(--border-color);
-        }
-        .floating-back-button:hover {
-            transform: translateY(-5px); box-shadow: 0 0 30px var(--hot-pink);
+            position: absolute; top: 1rem; right: 1rem; background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color); width: 40px; height: 40px; border-radius: 50%;
+            color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 20;
         }
     </style>
 </head>
 <body class="p-4 sm:p-8">
     <canvas id="matrix-canvas"></canvas>
-    <a href="index.html" class="floating-back-button text-xs sm:text-base">← Back to Terminal</a>
-
+    
     <div class="id-card" id="idCard">
-        <div class="header text-center mb-5"><div class="title text-xl">LyriCodes</div><div class="subtitle text-xs">IDENTITY PROTOCOL</div></div>
-        <div class="photo w-28 h-28 rounded-full mx-auto mb-4 border-4" style="border-color: var(--border-color);"><img src="https://i.imgur.com/3p2au6v.png" alt="LyriCodes Portrait" class="w-full h-full object-cover rounded-full"></div>
-        <div class="text-center space-y-3">
-            <div><div class="label text-xs uppercase opacity-70">Designation</div><div class="value text-lg">Creative Technologist</div></div>
-            <div><div class="label text-xs uppercase opacity-70">ID Number</div><div class="value text-lg">LC-2025-X01</div></div>
-            <div><div class="label text-xs uppercase opacity-70">Specialization</div><div class="value text-lg">Immersive Experiences</div></div>
+        <div class="photo w-32 h-32 rounded-full border-4 flex-shrink-0" style="border-color: var(--border-color);">
+            <img src="https://i.imgur.com/3p2au6v.png" alt="LyriCodes Portrait" class="w-full h-full object-cover rounded-full">
+        </div>
+        <div class="info text-left">
+            <h2 class="text-2xl font-bold text-white" style="font-family: 'Space Mono', monospace;">Lyric J.</h2>
+            <p class="mt-2 text-md text-gray-200">
+                Pursuing a B.S. in Computer Science with a concentration in Artificial Intelligence & Machine Learning.
+            </p>
         </div>
     </div>
 
     <div id="scanner">
         <div class="scan-line"></div>
-        <span class="text-gray-500 font-mono text-sm tracking-widest">SCANNER</span>
+        <span class="text-gray-400 font-mono text-lg tracking-widest opacity-50">AUTHORIZATION SCANNER</span>
     </div>
-
-    <p id="instruction-text">AWAITING IDENTIFICATION &gt;&gt; DRAG & DROP ID CARD</p>
 
     <div id="dossier-content" class="text-gray-200">
         <button id="closeDossier" class="close-dossier-btn" aria-label="Close Dossier"><i class="fas fa-times"></i></button>
         <main class="w-full max-w-5xl mx-auto">
-             <section class="text-center px-4"><h1 class="text-2xl sm:text-3xl font-bold text-white">Hi, I’m Lyric — a creative technologist.</h1><p class="mt-2 text-md sm:text-lg text-gray-300 max-w-3xl mx-auto">I build tools, games, and AI-driven experiences designed with curiosity and neurodivergence in mind.</p></section>
+             <section class="text-center px-4">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white">Identity Verified: LyriCodes</h2>
+                <p class="mt-2 text-lg text-gray-300 max-w-3xl mx-auto">
+                    A creative technologist building tools, games, and AI-driven experiences.
+                </p>
+            </section>
             <div class="section-divider"></div>
-            <section><h2 class="text-xl sm:text-2xl font-bold mb-6 text-center text-white">Tech Stack</h2><div class="hexagon-grid"><div class="hexagon">JavaScript</div><div class="hexagon">Python</div><div class="hexagon">C#</div><div class="hexagon">Three.js</div><div class="hexagon">Next.js</div><div class="hexagon">Tailwind</div><div class="hexagon">Firebase</div><div class="hexagon">A-Frame</div><div class="hexagon">Playwright</div><div class="hexagon">LangChain</div><div class="hexagon">Unity</div><div class="hexagon">Git</div></div></section>
-            <div class="section-divider"></div>
-            <section class="text-center px-4"><h2 class="text-xl sm:text-2xl font-bold mb-4 text-white">My Approach</h2><blockquote class="text-md sm:text-lg text-gray-200 italic border-l-4 pl-4 sm:pl-6 max-w-3xl mx-auto" style="border-color: var(--hot-pink);">"I build for the overwhelmed, the over-stimulated, and the underestimated. My goal is to make tech that empowers people without requiring them to change who they are."</blockquote></section>
+            
+            <section class="skill-category">
+                <h3 class="text-2xl font-bold mb-6 text-center">Languages</h3>
+                <div class="skill-grid">
+                    <div class="skill-tile"><i class="devicon-javascript-plain"></i><span>JavaScript</span></div>
+                    <div class="skill-tile"><i class="devicon-python-plain"></i><span>Python</span></div>
+                    <div class="skill-tile"><i class="devicon-csharp-plain"></i><span>C#</span></div>
+                    <div class="skill-tile"><i class="devicon-html5-plain"></i><span>HTML5</span></div>
+                    <div class="skill-tile"><i class="devicon-css3-plain"></i><span>CSS3</span></div>
+                </div>
+            </section>
+
+            <section class="skill-category">
+                <h3 class="text-2xl font-bold mb-6 text-center">AI & Machine Learning</h3>
+                <div class="skill-grid">
+                    <div class="skill-tile"><i class="devicon-tensorflow-original"></i><span>TensorFlow</span></div>
+                    <div class="skill-tile"><i class="devicon-pytorch-original"></i><span>PyTorch</span></div>
+                    <div class="skill-tile">🧠<span>LangChain</span></div>
+                </div>
+            </section>
+
+             <section class="skill-category">
+                <h3 class="text-2xl font-bold mb-6 text-center">Web & Frontend</h3>
+                <div class="skill-grid">
+                    <div class="skill-tile"><i class="devicon-react-original"></i><span>React</span></div>
+                    <div class="skill-tile"><i class="devicon-nextjs-original"></i><span>Next.js</span></div>
+                    <div class="skill-tile"><i class="devicon-threejs-original"></i><span>Three.js</span></div>
+                    <div class="skill-tile"><i class="devicon-tailwindcss-plain"></i><span>Tailwind</span></div>
+                    <div class="skill-tile"><i class="devicon-firebase-plain"></i><span>Firebase</span></div>
+                    <div class="skill-tile">🕸️<span>Playwright</span></div>
+                </div>
+            </section>
+
+             <section class="skill-category">
+                <h3 class="text-2xl font-bold mb-6 text-center">Game Dev & Tools</h3>
+                <div class="skill-grid">
+                    <div class="skill-tile"><i class="devicon-unity-original"></i><span>Unity</span></div>
+                    <div class="skill-tile"><i class="devicon-aframe-plain"></i><span>A-Frame</span></div>
+                    <div class="skill-tile"><i class="devicon-blender-original"></i><span>Blender</span></div>
+                    <div class="skill-tile"><i class="devicon-git-plain"></i><span>Git</span></div>
+                    <div class="skill-tile"><i class="devicon-vscode-plain"></i><span>VS Code</span></div>
+                </div>
+            </section>
+
            <div class="section-divider"></div>
-           <section class="text-center"><h2 class="text-xl sm:text-2xl font-bold mb-4 text-white">Let's Connect</h2><div class="flex justify-center items-center space-x-6 text-3xl"><a href="mailto:lyric@lyricodes.com" class="text-gray-400 hover:text-white transition-all"><i class="fas fa-envelope"></i></a><a href="#" class="text-gray-400 hover:text-white transition-all"><i class="fab fa-github"></i></a><a href="#" class="text-gray-400 hover:text-white transition-all"><i class="fab fa-linkedin"></i></a></div></section>
+           <section class="text-center">
+                <h2 class="text-2xl font-bold mb-4 text-white">Let's Connect</h2>
+                <div class="flex justify-center items-center space-x-6 text-3xl">
+                    <a href="mailto:lyric@lyricodes.com" class="text-gray-400 hover:text-white transition-all"><i class="fas fa-envelope"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all"><i class="fab fa-github"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -168,14 +190,14 @@
             const scanner = document.getElementById('scanner');
             const dossier = document.getElementById('dossier-content');
             const closeDossierBtn = document.getElementById('closeDossier');
-            const instructionText = document.getElementById('instruction-text');
 
-            let startPosition = { x: 0, y: 0 };
+            let startPosition = {};
             
-            let floatingTween = gsap.to(idCard, { y: "+=10", rotationZ: -1, duration: 4, repeat: -1, yoyo: true, ease: "sine.inOut" });
+            gsap.set(idCard, {xPercent: -50, left: "50%"}); // Center the card initially
+            
+            let floatingTween = gsap.to(idCard, { y: "+=10", rotationZ: -0.5, duration: 4, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
             Draggable.create(idCard, {
-                type: "x,y",
                 onPress: function() {
                     floatingTween.pause();
                     gsap.to(idCard, { scale: 1.05, duration: 0.2 });
@@ -188,24 +210,16 @@
                 },
                 onRelease: function() {
                     scanner.classList.remove('hovering');
-                    
                     if (this.hitTest(scanner, "50%")) {
-                        // --- EDITED: Enhanced Scan Animation ---
                         const tl = gsap.timeline();
                         tl.to(scanner, {
-                            borderColor: 'var(--light-pink)',
-                            duration: 0.1,
-                            repeat: 3,
-                            yoyo: true
+                            borderColor: 'var(--light-pink)', scale: 1.05,
+                            duration: 0.1, repeat: 3, yoyo: true
                         }).to(idCard, {
-                            scale: 0,
-                            opacity: 0,
-                            duration: 0.5,
-                            ease: 'power2.in',
+                            scale: 0, opacity: 0, duration: 0.5, ease: 'power2.in',
                             onComplete: () => {
                                 idCard.style.display = 'none';
                                 dossier.classList.add('visible');
-                                instructionText.style.display = 'none'; // Hide instructions
                             }
                         }, "-=0.2");
                     } else {
@@ -220,7 +234,6 @@
 
             closeDossierBtn.addEventListener('click', () => {
                 dossier.classList.remove('visible');
-                instructionText.style.display = 'block'; // Show instructions again
                 idCard.style.display = 'flex';
                  gsap.to(idCard, {
                     x: startPosition.x, y: startPosition.y,
