@@ -3,414 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holographic ID Card</title>
+
+    <title>About | LyriCodes Portfolio</title>
+    <meta name="description" content="The personal holographic ID of LyriCodes, a creative developer specializing in AI, 3D graphics, and immersive web experiences.">
+    <meta name="author" content="LyriCodes">
+    <link rel="canonical" href="https://portfolio-roan-one-39.vercel.app/about.html">
+
+    <meta property="og:title" content="About LyriCodes">
+    <meta property="og:description" content="The personal holographic ID of a creative developer.">
+    <meta property="og:image" content="https://i.imgur.com/your-preview-image.png"> <meta property="og:url" content="https://portfolio-roan-one-39.vercel.app/about.html">
+    <meta property="og:type" content="profile">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
-            --holographic-blue: rgba(0, 255, 255, 0.7);
-            --holographic-pink: rgba(255, 0, 255, 0.7);
-            --holographic-green: rgba(0, 255, 0, 0.7);
+            /* LyriCodes Theme Palette */
+            --hot-pink: #ff069d;
+            --neon-pink: #ff00ff;
+            --light-pink: #ff9de2;
+            --body-bg: #110011;
+            --card-bg: rgba(20, 0, 10, 0.7);
+            --border-color: rgba(255, 6, 157, 0.3);
         }
         
         body {
             overflow: hidden;
-            touch-action: none;
-            background: linear-gradient(135deg, #111827, #1f2937);
+            background: var(--body-bg);
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 1000px;
+            perspective: 1200px;
         }
         
         .id-card {
-            width: 300px;
-            height: 450px;
+            width: 320px;
+            height: 500px;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.8s;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
             cursor: grab;
-            user-select: none;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-            border-radius: 15px;
+            box-shadow: 0 0 40px var(--border-color);
+            border-radius: 20px;
             overflow: hidden;
         }
         
-        .id-card:active {
-            cursor: grabbing;
-        }
-        
-        .id-card.flipped {
-            transform: rotateY(180deg);
-        }
+        .id-card:active { cursor: grabbing; }
+        .id-card.flipped { transform: rotateY(180deg); }
         
         .id-card-front, .id-card-back {
             position: absolute;
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            background: rgba(20, 20, 40, 0.7);
-            border-radius: 15px;
-            padding: 20px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--light-pink);
         }
         
         .id-card-back {
             transform: rotateY(180deg);
             justify-content: center;
             align-items: center;
+            gap: 20px;
         }
         
         .holographic-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                135deg,
-                var(--holographic-blue) 0%,
-                var(--holographic-pink) 50%,
-                var(--holographic-green) 100%
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg,
+                rgba(255, 157, 226, 0.1) 0%,
+                rgba(255, 0, 255, 0.15) 50%,
+                rgba(17, 0, 17, 0.2) 100%
             );
-            opacity: 0.1;
             mix-blend-mode: overlay;
             pointer-events: none;
-        }
-        
-        .holographic-line {
-            position: absolute;
-            height: 1px;
-            width: 100%;
-            background: linear-gradient(90deg, transparent, var(--holographic-blue), transparent);
-            animation: scan 3s linear infinite;
             opacity: 0.5;
+        }
+
+        .holographic-line {
+            position: absolute; height: 1.5px; width: 150%;
+            left: -25%;
+            background: linear-gradient(90deg, transparent, var(--light-pink), transparent);
+            animation: scan 4s linear infinite;
+            animation-delay: 1s;
+            opacity: 0.7;
             pointer-events: none;
         }
         
         .photo {
-            width: 100px;
-            height: 100px;
+            width: 120px; height: 120px;
             border-radius: 50%;
             margin: 0 auto 15px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            position: relative;
+            border: 4px solid var(--border-color);
             overflow: hidden;
-            background: rgba(255, 255, 255, 0.1);
+            background-color: #333; /* Placeholder color */
         }
         
         .photo img {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
         }
         
-        .qr-code {
-            width: 180px;
-            height: 180px;
+        .qr-code-container {
             background: white;
             padding: 10px;
             border-radius: 10px;
-            position: relative;
-            overflow: hidden;
         }
-        
-        .qr-code::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                135deg,
-                rgba(0, 255, 255, 0.3) 0%,
-                rgba(255, 0, 255, 0.3) 50%,
-                rgba(0, 255, 0, 0.3) 100%
-            );
-            mix-blend-mode: overlay;
-        }
-        
-        .qr-pattern {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            grid-gap: 2px;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .qr-cell {
-            background: black;
-        }
-        
-        .qr-cell:nth-child(1), .qr-cell:nth-child(7), 
-        .qr-cell:nth-child(43), .qr-cell:nth-child(49) {
-            background: #3b82f6;
-        }
-        
+
         .flip-button {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
+            position: absolute; bottom: 15px; right: 15px;
             background: rgba(255, 255, 255, 0.1);
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            border: 1px solid var(--border-color);
+            width: 35px; height: 35px; border-radius: 50%;
+            color: white; cursor: pointer;
+            display: flex; justify-content: center; align-items: center;
             z-index: 10;
         }
-        
-        .drag-handle {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 18px;
-            z-index: 10;
-        }
+        .flip-button:hover { background: rgba(255, 255, 255, 0.2); }
         
         .info-row {
-            display: flex;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
         }
-        
+        .info-row:last-child { border-bottom: none; }
+
         .label {
             font-weight: bold;
-            color: rgba(255, 255, 255, 0.7);
-            width: 100px;
-            font-size: 12px;
+            color: var(--light-pink);
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            opacity: 0.7;
         }
         
         .value {
             color: white;
-            flex-grow: 1;
-            font-size: 14px;
+            font-size: 16px;
+            text-shadow: 0 0 5px var(--hot-pink);
         }
         
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            position: relative;
-        }
+        .header { text-align: center; margin-bottom: 20px; }
         
         .title {
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 20px; font-weight: bold;
+            color: white; margin-bottom: 5px;
+            text-transform: uppercase; letter-spacing: 3px;
+            text-shadow: 0 0 10px var(--hot-pink);
         }
-        
-        .subtitle {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.6);
-        }
-        
-        .corner {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            border: 2px solid var(--holographic-blue);
-            opacity: 0.7;
-        }
-        
-        .corner-tl {
-            top: 0;
-            left: 0;
-            border-right: none;
-            border-bottom: none;
-            border-radius: 10px 0 0 0;
-        }
-        
-        .corner-tr {
-            top: 0;
-            right: 0;
-            border-left: none;
-            border-bottom: none;
-            border-radius: 0 10px 0 0;
-        }
-        
-        .corner-bl {
-            bottom: 0;
-            left: 0;
-            border-right: none;
-            border-top: none;
-            border-radius: 0 0 0 10px;
-        }
-        
-        .corner-br {
-            bottom: 0;
-            right: 0;
-            border-left: none;
-            border-top: none;
-            border-radius: 0 0 10px 0;
-        }
+
+        .subtitle { font-size: 12px; color: var(--light-pink); }
         
         .glow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: radial-gradient(circle at center, rgba(0, 255, 255, 0.2) 0%, transparent 70%);
+            position: absolute; width: 100%; height: 100%;
+            top: 0; left: 0;
+            background: radial-gradient(circle at center, var(--border-color) 0%, transparent 70%);
             pointer-events: none;
             animation: pulse 4s infinite alternate;
         }
         
+        .floating-back-button {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem; /* Changed to left for better placement */
+            z-index: 1000;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--light-pink);
+            padding: 0.75rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px var(--border-color);
+        }
+        .floating-back-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px var(--hot-pink);
+        }
+
         @keyframes pulse {
-            0% { opacity: 0.3; }
-            100% { opacity: 0.7; }
+            from { opacity: 0.4; transform: scale(0.98); }
+            to { opacity: 0.8; transform: scale(1); }
         }
         
         @keyframes scan {
-            0% { top: 0; opacity: 0; }
-            1% { opacity: 0.7; }
-            99% { opacity: 0.7; }
-            100% { top: 100%; opacity: 0; }
+            0% { top: -10%; opacity: 0; }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { top: 110%; opacity: 0; }
         }
         
-        .shine {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                120deg,
-                rgba(255, 255, 255, 0) 40%,
-                rgba(255, 255, 255, 0.05) 50%,
-                rgba(255, 255, 255, 0) 60%
-            );
-            pointer-events: none;
-        }
-        
-        .expiry {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .barcode {
-            width: 100%;
-            height: 40px;
-            background: repeating-linear-gradient(
-                90deg,
-                black,
-                black 2px,
-                white 2px,
-                white 4px
-            );
-            margin-top: 20px;
-            position: relative;
-        }
-        
-        .barcode::after {
-            content: "SCAN ME";
-            position: absolute;
-            bottom: -20px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            color: white;
-            font-size: 10px;
-            letter-spacing: 2px;
-        }
-        
-        @media (max-width: 400px) {
-            .id-card {
-                width: 280px;
-                height: 420px;
-            }
-        }
     </style>
 </head>
 <body>
+    <a href="index.html" class="floating-back-button">← Back to Terminal</a>
+
     <div class="id-card" id="idCard">
         <div class="holographic-overlay"></div>
         <div class="holographic-line"></div>
         <div class="glow"></div>
-        <div class="shine"></div>
         
-        <div class="corner corner-tl"></div>
-        <div class="corner corner-tr"></div>
-        <div class="corner corner-bl"></div>
-        <div class="corner corner-br"></div>
-        
-        <div class="drag-handle">
-            <i class="fas fa-arrows-alt"></i>
-        </div>
-        
-        <button class="flip-button" id="flipButton">
+        <button class="flip-button" id="flipButton" aria-label="Flip card">
             <i class="fas fa-sync-alt"></i>
         </button>
         
         <div class="id-card-front">
             <div class="header">
-                <div class="title">IDENTIFICATION</div>
-                <div class="subtitle">ACCESS LEVEL: DELTA</div>
+                <div class="title">LyriCodes</div>
+                <div class="subtitle">IDENTITY PROTOCOL</div>
             </div>
             
             <div class="photo">
-                <img src="me.jpg" alt="Profile">
+                <img src="https://i.imgur.com/3p2au6v.png" alt="A neon-lit abstract portrait representing LyriCodes">
             </div>
             
             <div class="info-row">
-                <div class="label">NAME:</div>
-                <div class="value">LYRIC OLIVIA JENSEN</div>
+                <div class="label">Designation:</div>
+                <div class="value">Creative Developer</div>
             </div>
             
             <div class="info-row">
-                <div class="label">ID NUMBER:</div>
-                <div class="value">DELTA-7X9-42B</div>
+                <div class="label">ID Number:</div>
+                <div class="value">LC-2025-X01</div>
             </div>
             
             <div class="info-row">
-                <div class="label">DEPARTMENT:</div>
-                <div class="value">IT - RESEARCH & DEVELOPMENT</div>
+                <div class="label">Specialization:</div>
+                <div class="value">Immersive Experiences</div>
             </div>
-            
-            <div class="info-row">
-                <div class="label">SECURITY:</div>
-                <div class="value">LEVEL 4 CLEARANCE</div>
-            </div>
-            
-            <div class="expiry">
-                VALID UNTIL: 02-26
-            </div>
-            
-            <div class="barcode"></div>
         </div>
         
         <div class="id-card-back">
-            <div class="qr-code">
-                <div class="qr-pattern">
-                    <!-- This is a simplified QR code pattern for demonstration -->
-                    <div class="qr-cell" style="grid-column: span 7; height: 7px;"></div>
-                    <div class="qr-cell" style="grid-row: span 7; width: 7px;"></div>
-                    <div class="qr-cell" style="grid-column: 3 / span 3; grid-row: 3 / span 3;"></div>
-                    <div class="qr-cell" style="grid-column: 2; grid-row: 6;"></div>
-                    <div class="qr-cell" style="grid-column: 6; grid-row: 2;"></div>
-                    <div class="qr-cell" style="grid-column: 4; grid-row: 5;"></div>
-                    <div class="qr-cell" style="grid-column: 5; grid-row: 4;"></div>
-                    <div class="qr-cell" style="grid-column: span 7; height: 7px; grid-row: 7;"></div>
-                </div>
+            <div class="qr-code-container">
+                <canvas id="qr-canvas"></canvas>
             </div>
-            <div style="margin-top: 20px; text-align: center; color: white; font-size: 12px;">
-                SCAN FOR VERIFICATION
+             <div style="text-align: center; color: white; font-size: 12px; letter-spacing: 1px;">
+                SCAN FOR DATA LINK
             </div>
         </div>
     </div>
@@ -420,124 +261,67 @@
             const idCard = document.getElementById('idCard');
             const flipButton = document.getElementById('flipButton');
             
-            // Flip functionality
-            flipButton.addEventListener('click', function(e) {
+            // --- QR Code Generation ---
+            new QRious({
+                element: document.getElementById('qr-canvas'),
+                value: 'https://portfolio-roan-one-39.vercel.app/', // Links to your main page
+                size: 180,
+                background: 'white',
+                foreground: 'black',
+                level: 'H'
+            });
+
+            // --- Flip Functionality ---
+            flipButton.addEventListener('click', (e) => {
                 e.stopPropagation();
                 idCard.classList.toggle('flipped');
             });
             
-            // Dragging functionality
-            let isDragging = false;
-            let startX, startY, initialX, initialY;
-            
-            idCard.addEventListener('mousedown', startDrag);
-            idCard.addEventListener('touchstart', startDrag, { passive: false });
-            
-            function startDrag(e) {
-                if (e.target.closest('.flip-button')) return;
-                
-                isDragging = true;
-                
-                // Get initial position
-                const rect = idCard.getBoundingClientRect();
-                initialX = rect.left;
-                initialY = rect.top;
-                
-                // Get mouse/touch position
-                if (e.type === 'mousedown') {
-                    startX = e.clientX;
-                    startY = e.clientY;
-                } else {
-                    startX = e.touches[0].clientX;
-                    startY = e.touches[0].clientY;
-                }
-                
-                // Prevent default for touch events to avoid scrolling
-                if (e.type === 'touchstart') {
-                    e.preventDefault();
-                }
-                
-                document.addEventListener('mousemove', drag);
-                document.addEventListener('touchmove', drag, { passive: false });
-                document.addEventListener('mouseup', endDrag);
-                document.addEventListener('touchend', endDrag);
-            }
-            
-            function drag(e) {
-                if (!isDragging) return;
-                
-                e.preventDefault();
-                
-                let currentX, currentY;
-                
-                if (e.type === 'mousemove') {
-                    currentX = e.clientX;
-                    currentY = e.clientY;
-                } else {
-                    currentX = e.touches[0].clientX;
-                    currentY = e.touches[0].clientY;
-                }
-                
-                const dx = currentX - startX;
-                const dy = currentY - startY;
-                
-                idCard.style.left = `${initialX + dx}px`;
-                idCard.style.top = `${initialY + dy}px`;
-                idCard.style.position = 'absolute';
-                idCard.style.transform = idCard.classList.contains('flipped') ? 
-                    'rotateY(180deg)' : '';
-            }
-            
-            function endDrag() {
-                isDragging = false;
-                document.removeEventListener('mousemove', drag);
-                document.removeEventListener('touchmove', drag);
-                document.removeEventListener('mouseup', endDrag);
-                document.removeEventListener('touchend', endDrag);
-            }
-            
-            // Add slight floating animation when not being dragged
+            // --- GSAP Floating Animation ---
             gsap.to(idCard, {
-                y: 5,
-                duration: 3,
+                y: -10,
+                x: 10,
+                rotationZ: 1,
+                duration: 4,
                 repeat: -1,
                 yoyo: true,
                 ease: "sine.inOut"
             });
             
-            // Add holographic tilt effect
+            // --- Holographic Tilt Effect ---
+            let isDragging = false; // Prevent tilt while dragging
+            idCard.addEventListener('mousedown', () => { isDragging = true; });
+            document.addEventListener('mouseup', () => { isDragging = false; });
+
             document.addEventListener('mousemove', (e) => {
-                if (isDragging) return;
+                if (isDragging || idCard.classList.contains('flipped')) return;
                 
-                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                const rect = idCard.getBoundingClientRect();
+                const x = e.clientX - (rect.left + rect.width / 2);
+                const y = e.clientY - (rect.top + rect.height / 2);
                 
-                idCard.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+                const rotateY = x / 30; // Control sensitivity
+                const rotateX = -y / 30;
+                
+                gsap.to(idCard, {
+                    rotationY: rotateY,
+                    rotationX: rotateX,
+                    duration: 0.7,
+                    ease: "power2.out"
+                });
             });
-            
-            // Reset position when mouse leaves
+
+            // Reset position when mouse leaves the window
             document.addEventListener('mouseleave', () => {
-                if (!isDragging) {
-                    idCard.style.transform = '';
+                 if (!isDragging) {
+                    gsap.to(idCard, {
+                        rotationY: 0,
+                        rotationX: 0,
+                        duration: 1,
+                        ease: "elastic.out(1, 0.3)"
+                    });
                 }
             });
-            
-            // Mobile tilt effect
-            if (window.DeviceOrientationEvent) {
-                window.addEventListener('deviceorientation', (e) => {
-                    if (isDragging) return;
-                    
-                    const beta = e.beta;  // -180 to 180 (front/back tilt)
-                    const gamma = e.gamma; // -90 to 90 (left/right tilt)
-                    
-                    if (beta !== null && gamma !== null) {
-                        const yAxis = Math.min(Math.max(beta / 5, -15), 15);
-                        const xAxis = Math.min(Math.max(gamma / 5, -15), 15);
-                        
-                        idCard.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-                    }
-                });
-            }
         });
     </script>
 </body>
