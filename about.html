@@ -10,8 +10,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
     
     <style>
         :root {
@@ -23,83 +24,245 @@
             --border-color: rgba(255, 6, 157, 0.3);
             --glow-shadow: 0 0 8px var(--hot-pink);
             --gradient: linear-gradient(90deg, var(--hot-pink), var(--purple));
+            --scan-glow: 0 0 15px rgba(255, 6, 157, 0.7);
         }
         body {
-            overflow: hidden; background: var(--body-bg); height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            perspective: 1500px; font-family: 'Inter', sans-serif;
+            overflow: hidden; 
+            background: var(--body-bg); 
+            height: 100vh;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            perspective: 1500px; 
+            font-family: 'Inter', sans-serif;
+            touch-action: none;
         }
         #matrix-canvas {
-            position: fixed; top: 0; left: 0;
-            z-index: -1; width: 100vw; height: 100vh;
+            position: fixed; 
+            top: 0; 
+            left: 0;
+            z-index: -1; 
+            width: 100vw; 
+            height: 100vh;
         }
 
         /* --- INTERACTIVE ELEMENTS --- */
         #idCard {
-            position: absolute; width: 250px; height: 400px;
-            background: var(--content-bg); backdrop-filter: blur(5px);
-            border: 1px solid var(--border-color); border-radius: 16px;
-            box-shadow: 0 0 30px var(--border-color); padding: 20px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: var(--light-pink); cursor: grab; z-index: 30;
+            position: absolute; 
+            width: 280px; 
+            height: 420px;
+            background: var(--content-bg); 
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color); 
+            border-radius: 16px;
+            box-shadow: var(--glow-shadow); 
+            padding: 24px;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            color: var(--light-pink); 
+            cursor: grab; 
+            z-index: 30;
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
         }
+        #idCard:active {
+            cursor: grabbing;
+            box-shadow: 0 0 30px var(--hot-pink);
+        }
+        #idCard:hover {
+            transform: translateZ(10px);
+        }
+        
         #scanner {
-            position: fixed; top: 50%; right: 5vw; transform: translateY(-50%);
-            width: 100px; height: 200px;
-            background: rgba(41, 41, 56, 0.5); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 16px;
-            display: flex; justify-content: center; align-items: center;
-            transition: all 0.3s ease; z-index: 20;
+            position: fixed; 
+            top: 50%; 
+            right: 5vw; 
+            transform: translateY(-50%);
+            width: 120px; 
+            height: 240px;
+            background: rgba(41, 41, 56, 0.5); 
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            border-radius: 16px;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            transition: all 0.3s ease; 
+            z-index: 20;
+            box-shadow: inset 0 0 30px rgba(255, 6, 157, 0.3);
         }
-        #scanner.hovering { box-shadow: 0 0 30px var(--hot-pink); border-color: var(--border-color); }
+        #scanner.hovering { 
+            box-shadow: 0 0 40px var(--hot-pink), inset 0 0 30px rgba(255, 6, 157, 0.5); 
+            border-color: var(--hot-pink); 
+        }
         #scanner .scan-line {
-            position: absolute; width: 90%; height: 2px;
-            background: var(--light-pink); box-shadow: 0 0 10px var(--light-pink);
-            animation: scan-anim 2s ease-in-out infinite;
+            position: absolute; 
+            width: 90%; 
+            height: 2px;
+            background: var(--light-pink); 
+            box-shadow: var(--scan-glow);
+            animation: scan-anim 1.8s ease-in-out infinite;
+            opacity: 0.8;
         }
-        @keyframes scan-anim { 0% {top: 5%;} 50% {top: 95%;} 100% {top: 5%;} }
+        @keyframes scan-anim { 
+            0% { top: 5%; opacity: 0; } 
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 95%; opacity: 0; } 
+        }
         
         #indicatorLights {
-            position: fixed; top: 40px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 10px; z-index: 25;
+            position: fixed; 
+            top: 40px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            display: flex; 
+            gap: 12px; 
+            z-index: 25;
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .light {
-            width: 15px; height: 15px; border-radius: 50%;
-            background: #444; border: 2px solid #222;
-            transition: all 0.2s;
+            width: 16px; 
+            height: 16px; 
+            border-radius: 50%;
+            background: #333; 
+            border: 2px solid #111;
+            transition: all 0.3s;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
         }
 
         /* --- BLAST DOORS --- */
         .blast-door {
-            position: fixed; top: 0; width: 50vw; height: 100vh;
-            background: #111827;
-            border-color: #374151;
+            position: fixed; 
+            top: 0; 
+            width: 50vw; 
+            height: 100vh;
+            background: linear-gradient(to right, #0f172a, #1e293b);
+            border-color: #334155;
             z-index: 10;
+            transform-style: preserve-3d;
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.7);
         }
-        #doorLeft { left: 0; border-right-width: 4px; }
-        #doorRight { right: 0; border-left-width: 4px; }
+        #doorLeft { 
+            left: 0; 
+            border-right: 3px solid;
+            transform-origin: left center;
+        }
+        #doorRight { 
+            right: 0; 
+            border-left: 3px solid;
+            transform-origin: right center;
+        }
+        .door-panel {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.03),
+                rgba(255, 255, 255, 0.03) 1px,
+                transparent 1px,
+                transparent 10px
+            );
+        }
 
         /* --- DOSSIER CONTENT (BEHIND DOORS) --- */
         #dossier-content {
-            position: relative; width: 100%; height: 100%; max-width: 1200px;
-            padding: 4rem 2rem; overflow-y: auto; opacity: 0;
+            position: relative; 
+            width: 100%; 
+            height: 100%; 
+            max-width: 1200px;
+            padding: 4rem 2rem; 
+            overflow-y: auto; 
+            opacity: 0;
+            pointer-events: none;
+        }
+        #dossier-content.active {
+            pointer-events: all;
         }
         #dossier-content h1, #dossier-content h2 {
-            font-family: 'Space Mono', monospace; color: white;
+            font-family: 'Space Mono', monospace; 
+            color: white;
             letter-spacing: 1px;
             background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(147, 51, 234, 0.3);
         }
-        .section-divider { height: 1px; background: var(--gradient); margin: 2rem 0; opacity: 0.5; }
+        .section-divider { 
+            height: 1px; 
+            background: var(--gradient); 
+            margin: 2rem 0; 
+            opacity: 0.3;
+        }
         
         .floating-back-button {
-            position: fixed; bottom: 2rem; right: 2rem; z-index: 1000;
-            background: var(--content-bg); border: 1px solid var(--border-color);
-            color: var(--light-pink); padding: 0.75rem 1rem; border-radius: 50px;
-            cursor: pointer; font-family: 'Space Mono', monospace;
-            transition: all 0.3s ease; box-shadow: 0 0 20px var(--border-color);
-            opacity: 0; visibility: hidden; /* Hidden until doors open */
+            position: fixed; 
+            bottom: 2rem; 
+            right: 2rem; 
+            z-index: 1000;
+            background: var(--content-bg); 
+            border: 1px solid var(--border-color);
+            color: var(--light-pink); 
+            padding: 0.75rem 1.5rem; 
+            border-radius: 50px;
+            cursor: pointer; 
+            font-family: 'Space Mono', monospace;
+            transition: all 0.3s ease; 
+            box-shadow: var(--glow-shadow);
+            opacity: 0; 
+            visibility: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .floating-back-button:hover {
+            transform: translateX(-5px);
+            background: rgba(255, 6, 157, 0.1);
+        }
+        
+        /* ID Card styling */
+        .id-photo {
+            width: 100px; 
+            height: 100px; 
+            border-radius: 50%; 
+            border: 2px solid var(--border-color); 
+            overflow: hidden; 
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .id-photo::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,6,157,0.3) 0%, rgba(147,51,234,0.3) 100%);
+            mix-blend-mode: overlay;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #idCard {
+                width: 240px;
+                height: 360px;
+                padding: 16px;
+            }
+            #scanner {
+                width: 80px;
+                height: 160px;
+                right: 20px;
+            }
+            .id-photo {
+                width: 80px;
+                height: 80px;
+            }
         }
     </style>
 </head>
@@ -107,60 +270,91 @@
     <canvas id="matrix-canvas"></canvas>
 
     <div id="idCard">
-        <div class="w-24 h-24 rounded-full border-2 border-[var(--border-color)] overflow-hidden mb-4">
+        <div class="id-photo">
             <img src="https://i.imgur.com/3p2au6v.png" alt="Lyric Olivia Jensen" class="w-full h-full object-cover">
         </div>
-        <h3 class="text-lg font-bold text-white text-center">Lyric Olivia Jensen</h3>
-        <p class="text-xs text-center opacity-70 mt-1">ID: LC-2025-X01</p>
-        <p class="text-xs text-center opacity-70">STATUS: ACTIVE</p>
+        <h3 class="text-xl font-bold text-white text-center mb-1">Lyric Olivia Jensen</h3>
+        <p class="text-sm text-center opacity-80">Creative Technologist</p>
+        <div class="mt-4 w-full h-px bg-gradient-to-r from-transparent via-[var(--hot-pink)] to-transparent"></div>
+        <p class="text-xs text-center opacity-70 mt-4">ID: LC-2025-X01</p>
+        <p class="text-xs text-center opacity-70">STATUS: <span class="text-[var(--light-pink)]">ACTIVE</span></p>
+        <p class="text-xs text-center opacity-70 mt-4">DRAG TO SCAN →</p>
     </div>
 
-    <div id="scanner"><div class="scan-line"></div></div>
-    <div id="indicatorLights">
-        <div class="light"></div><div class="light"></div>
-        <div class="light"></div><div class="light"></div>
+    <div id="scanner">
+        <div class="scan-line"></div>
+        <div class="absolute top-4 left-1/2 transform -translate-x-1/2 text-xs opacity-50">SCANNER</div>
     </div>
     
-    <div id="doorLeft" class="blast-door"></div>
-    <div id="doorRight" class="blast-door"></div>
+    <div id="indicatorLights">
+        <div class="light" data-status="off"></div>
+        <div class="light" data-status="off"></div>
+        <div class="light" data-status="off"></div>
+        <div class="light" data-status="off"></div>
+    </div>
+    
+    <div id="doorLeft" class="blast-door">
+        <div class="door-panel"></div>
+    </div>
+    <div id="doorRight" class="blast-door">
+        <div class="door-panel"></div>
+    </div>
 
     <div id="dossier-content">
         <div class="w-full max-w-5xl mx-auto">
-            <section class="text-center">
-                <h1 class="text-4xl sm:text-5xl font-bold">ACCESS GRANTED</h1>
-                <h2 class="text-2xl sm:text-3xl mt-2">DOSSIER: LYRICODES</h2>
+            <section class="text-center mb-12">
+                <h1 class="text-4xl sm:text-5xl font-bold mb-2">ACCESS GRANTED</h1>
+                <h2 class="text-2xl sm:text-3xl">DOSSIER: LYRICODES</h2>
+                <div class="flex justify-center mt-6">
+                    <div class="w-24 h-1 bg-gradient-to-r from-[var(--hot-pink)] to-[var(--purple)]"></div>
+                </div>
             </section>
-            
-            <div class="section-divider"></div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 text-lg leading-relaxed">
                 <div class="md:col-span-2">
                     <h3 class="text-2xl font-bold mb-4 font-mono text-white">About Me</h3>
-                    <p>Welcome to my corner of the internet! I’m a passionate and driven creator with a deep fascination for the intersection of AI, 3D modeling, and web development. My journey involves crafting immersive digital experiences, from interactive virtual environments to cutting-edge generative AI projects.</p>
-                    <p class="mt-4">Currently pursuing a Bachelor’s degree in Computer Science with a concentration in Machine Learning and Artificial Intelligence, I specialize in taking complex systems and breaking them into intuitive, interactive tools—whether that's for productivity, storytelling, or research.</p>
+                    <p class="mb-4">Welcome to my corner of the internet! I'm a passionate and driven creator with a deep fascination for the intersection of AI, 3D modeling, and web development. My journey involves crafting immersive digital experiences, from interactive virtual environments to cutting-edge generative AI projects.</p>
+                    <p class="mb-4">Currently pursuing a Bachelor's degree in Computer Science with a concentration in Machine Learning and Artificial Intelligence, I specialize in taking complex systems and breaking them into intuitive, interactive tools—whether that's for productivity, storytelling, or research.</p>
+                    <p>When I'm not coding, you can find me experimenting with digital art, exploring new technologies, or contributing to open-source projects that make technology more accessible.</p>
                 </div>
                 <div class="md:col-span-1">
                      <h3 class="text-2xl font-bold mb-4 font-mono text-white">My Approach</h3>
-                     <blockquote class="italic border-l-4 pl-4" style="border-image: var(--gradient) 1;">
+                     <blockquote class="italic border-l-4 pl-4 py-2 mb-6" style="border-image: var(--gradient) 1;">
                         "My work is fueled by curiosity and the desire to make systems more intuitive for people who think differently. I build for the overwhelmed, the over-stimulated, and the underestimated."
                     </blockquote>
+                    <div class="bg-[var(--content-bg)] p-4 rounded-lg border border-[var(--border-color)]">
+                        <h4 class="font-bold mb-2 text-[var(--light-pink)]">Core Skills:</h4>
+                        <ul class="text-sm space-y-1">
+                            <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-[var(--hot-pink)] mr-2"></span> AI & Machine Learning</li>
+                            <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-[var(--hot-pink)] mr-2"></span> WebGL & 3D Graphics</li>
+                            <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-[var(--hot-pink)] mr-2"></span> Creative Coding</li>
+                            <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-[var(--hot-pink)] mr-2"></span> Interactive Design</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             
-            <div class="section-divider"></div>
+            <div class="section-divider my-12"></div>
             
             <section class="text-center">
-                 <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
-                 <div class="flex justify-center items-center space-x-6 text-4xl">
-                    <a href="mailto:lyric@lyricodes.com" class="text-gray-400 hover:text-[var(--light-pink)] transition-all" aria-label="Email"><i class="fas fa-envelope"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-[var(--light-pink)] transition-all" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-all" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                 <h2 class="text-3xl font-bold mb-8">Let's Connect</h2>
+                 <div class="flex justify-center items-center space-x-8 text-4xl">
+                    <a href="mailto:lyric@lyricodes.com" class="text-gray-400 hover:text-[var(--light-pink)] transition-all hover:scale-110" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-[var(--light-pink)] transition-all hover:scale-110" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-[var(--light-pink)] transition-all hover:scale-110" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-[var(--light-pink)] transition-all hover:scale-110" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                 </div>
             </section>
         </div>
     </div>
     
-    <a href="index.html" class="floating-back-button text-xs sm:text-base">← Back to Terminal</a>
+    <a href="index.html" class="floating-back-button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to Terminal
+    </a>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -172,21 +366,50 @@
             const lights = document.querySelectorAll('#indicatorLights .light');
             const doorLeft = document.getElementById('doorLeft');
             const doorRight = document.getElementById('doorRight');
+            
+            // --- SOUND EFFECTS ---
+            const soundEffects = {
+                scanBeep: new Audio('https://assets.codepen.io/3364143/beep-07a.mp3'),
+                accessGranted: new Audio('https://assets.codepen.io/3364143/access-granted.mp3'),
+                doorOpen: new Audio('https://assets.codepen.io/3364143/door-open.mp3'),
+                hover: new Audio('https://assets.codepen.io/3364143/hover.mp3')
+            };
+            
+            // Preload sounds
+            Object.values(soundEffects).forEach(sound => {
+                sound.volume = 0.3;
+                sound.load();
+            });
 
             // --- INITIAL STATE ---
             let startPosition = {};
             gsap.set(idCard, {xPercent: -50, yPercent: -50, top: "40%", left: "50%"});
+            
+            // Add slight rotation to doors for depth
+            gsap.set(doorLeft, { rotationY: 5 });
+            gsap.set(doorRight, { rotationY: -5 });
 
             // --- DRAGGABLE LOGIC ---
             Draggable.create(idCard, {
+                type: "x,y",
+                bounds: window,
                 onPress: function() {
-                    gsap.to(idCard, { scale: 1.1, duration: 0.2 });
+                    soundEffects.hover.currentTime = 0;
+                    soundEffects.hover.play();
+                    gsap.to(idCard, { 
+                        scale: 1.1, 
+                        duration: 0.2,
+                        boxShadow: '0 0 40px var(--hot-pink)'
+                    });
                     startPosition.x = this.x;
                     startPosition.y = this.y;
                 },
                 onDrag: function() {
-                    if (this.hitTest(scanner, "50%")) { scanner.classList.add('hovering'); } 
-                    else { scanner.classList.remove('hovering'); }
+                    if (this.hitTest(scanner, "50%")) { 
+                        scanner.classList.add('hovering');
+                    } else { 
+                        scanner.classList.remove('hovering'); 
+                    }
                 },
                 onRelease: function() {
                     scanner.classList.remove('hovering');
@@ -195,7 +418,14 @@
                         runAirlockSequence(this);
                     } else {
                         // FAIL: Return card to start
-                        gsap.to(idCard, { x: startPosition.x, y: startPosition.y, scale: 1, duration: 0.5, ease: "power2.out" });
+                        gsap.to(idCard, { 
+                            x: startPosition.x, 
+                            y: startPosition.y, 
+                            scale: 1, 
+                            boxShadow: '0 0 20px var(--hot-pink)',
+                            duration: 0.5, 
+                            ease: "back.out(1.7)" 
+                        });
                     }
                 }
             });
@@ -204,53 +434,169 @@
             function runAirlockSequence(dragInstance) {
                 // Disable dragging during animation
                 dragInstance.disable();
+                
+                // Calculate scanner center position
+                const scannerRect = scanner.getBoundingClientRect();
+                const scannerCenterX = scannerRect.left + scannerRect.width/2 - window.innerWidth/2;
+                const scannerCenterY = scannerRect.top + scannerRect.height/2 - window.innerHeight/2;
 
-                const tl = gsap.timeline();
+                const tl = gsap.timeline({
+                    onStart: () => {
+                        document.body.style.cursor = 'wait';
+                    },
+                    onComplete: () => {
+                        document.body.style.cursor = 'default';
+                        dossier.classList.add('active');
+                    }
+                });
                 
                 // 1. Card snaps to scanner, lights start beeping
                 tl.to(idCard, { 
-                    x: scanner.getBoundingClientRect().left - (window.innerWidth/2) + (scanner.offsetWidth/2), // Center on scanner
-                    y: scanner.getBoundingClientRect().top - (window.innerHeight/2) + (scanner.offsetHeight/2),
+                    x: scannerCenterX,
+                    y: scannerCenterY,
                     scale: 1, 
-                    duration: 0.3, 
-                    ease: "power2.inOut" 
+                    duration: 0.4, 
+                    ease: "power2.inOut",
+                    boxShadow: '0 0 30px var(--hot-pink)'
                 })
-                .to(lights[0], { background: '#ef4444', duration: 0.2 }, "-=0.1") // Red
-                .to(lights[1], { background: '#ef4444', duration: 0.2 }, "+=0.3") // Red
-                .to(lights[2], { background: '#f59e0b', duration: 0.2 }, "+=0.3") // Yellow
+                .to(lights[0], { 
+                    backgroundColor: '#ef4444', 
+                    boxShadow: '0 0 10px #ef4444',
+                    duration: 0.2,
+                    onStart: () => { soundEffects.scanBeep.currentTime = 0; soundEffects.scanBeep.play(); }
+                }, "-=0.1")
+                .to(lights[1], { 
+                    backgroundColor: '#ef4444', 
+                    boxShadow: '0 0 10px #ef4444',
+                    duration: 0.2,
+                    onStart: () => { soundEffects.scanBeep.currentTime = 0; soundEffects.scanBeep.play(); }
+                }, "+=0.3")
+                .to(lights[2], { 
+                    backgroundColor: '#f59e0b', 
+                    boxShadow: '0 0 10px #f59e0b',
+                    duration: 0.2,
+                    onStart: () => { soundEffects.scanBeep.currentTime = 0; soundEffects.scanBeep.play(); }
+                }, "+=0.3")
 
                 // 2. Final green light, card dissolves
-                .to(lights[3], { background: '#22c55e', boxShadow: '0 0 15px #22c55e', duration: 0.2 }, "+=0.3")
-                .to(idCard, { opacity: 0, scale: 0.8, duration: 0.3, ease: 'power1.in' }, "-=0.2")
+                .to(lights[3], { 
+                    backgroundColor: '#10b981', 
+                    boxShadow: '0 0 15px #10b981',
+                    duration: 0.3,
+                    onStart: () => { soundEffects.accessGranted.currentTime = 0; soundEffects.accessGranted.play(); }
+                }, "+=0.3")
+                .to(idCard, { 
+                    opacity: 0, 
+                    scale: 0.8, 
+                    duration: 0.4, 
+                    ease: 'power2.in',
+                    boxShadow: '0 0 50px var(--hot-pink)'
+                }, "-=0.2")
 
-                // 3. Doors open
-                .to(doorLeft, { x: "-100vw", duration: 1.5, ease: "power2.inOut" }, "+=0.2")
-                .to(doorRight, { x: "100vw", duration: 1.5, ease: "power2.inOut" }, "<")
+                // 3. Doors open with perspective effect
+                .to([doorLeft, doorRight], {
+                    boxShadow: '0 0 50px rgba(255, 6, 157, 0.5)',
+                    duration: 0.5
+                }, "-=0.2")
+                .to(doorLeft, { 
+                    x: "-100vw", 
+                    rotationY: -60,
+                    duration: 1.5, 
+                    ease: "power3.inOut",
+                    onStart: () => { soundEffects.doorOpen.currentTime = 0; soundEffects.doorOpen.play(); }
+                }, "+=0.2")
+                .to(doorRight, { 
+                    x: "100vw", 
+                    rotationY: 60,
+                    duration: 1.5, 
+                    ease: "power3.inOut" 
+                }, "<")
 
                 // 4. Content and back button appear
-                .to(dossier, { opacity: 1, duration: 1, ease: 'power1.in' }, "-=0.8")
-                .to(backButton, { opacity: 1, visibility: 'visible', duration: 0.5 }, "-=0.5");
+                .to(dossier, { 
+                    opacity: 1, 
+                    duration: 1, 
+                    ease: 'power2.out'
+                }, "-=1.0")
+                .to(backButton, { 
+                    opacity: 1, 
+                    visibility: 'visible', 
+                    duration: 0.5,
+                    ease: 'back.out(1.7)'
+                }, "-=0.5");
             }
 
-            // --- MATRIX BACKGROUND (for ambiance) ---
+            // --- MATRIX BACKGROUND ---
             const canvas = document.getElementById('matrix-canvas');
             const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            const chars = 'LYRICODES 10101 ♕<//>{}[]';
-            const fontSize = 14; const columns = canvas.width / fontSize;
-            const drops = Array.from({ length: columns }).fill(1);
+            
+            // Set canvas to full window size
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+            
+            // Matrix characters - personalization
+            const chars = 'LYRICODES 10101 ♕<>{}[]$%&@#*';
+            const fontSize = 16;
+            const columns = Math.floor(canvas.width / fontSize);
+            
+            // Each drop is a y-position for a column
+            const drops = Array(columns).fill(0);
+            
+            // Adjust some drops to start further down
+            for (let i = 0; i < columns; i++) {
+                drops[i] = Math.random() * -100;
+            }
+            
             function drawMatrix() {
-                ctx.fillStyle = 'rgba(17, 0, 17, 0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                // Semi-transparent overlay to create trail effect
+                ctx.fillStyle = 'rgba(17, 0, 17, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Set text style
                 ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--hot-pink').trim();
-                ctx.font = fontSize + 'px monospace';
-                for(let i=0; i<drops.length; i++) {
-                    const text = chars[Math.floor(Math.random()*chars.length)];
-                    ctx.fillText(text, i*fontSize, drops[i]*fontSize);
-                    if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i]=0;
+                ctx.font = `${fontSize}px 'Space Mono', monospace`;
+                
+                // Draw characters
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    
+                    // Draw character with varying opacity based on position
+                    const yPos = drops[i] * fontSize;
+                    const opacity = Math.min(1, yPos / (canvas.height * 0.7));
+                    ctx.globalAlpha = opacity;
+                    
+                    ctx.fillText(text, i * fontSize, yPos);
+                    
+                    // Reset character with some randomness
+                    if (yPos > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    
                     drops[i]++;
                 }
+                
+                // Reset global alpha
+                ctx.globalAlpha = 1;
             }
-            setInterval(drawMatrix, 50);
+            
+            // Adjust animation speed for performance
+            let lastTime = 0;
+            const matrixInterval = 40; // ms
+            
+            function animateMatrix(timestamp) {
+                if (timestamp - lastTime > matrixInterval) {
+                    drawMatrix();
+                    lastTime = timestamp;
+                }
+                requestAnimationFrame(animateMatrix);
+            }
+            
+            // Start animation
+            animateMatrix(0);
         });
     </script>
 </body>
