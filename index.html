@@ -3,7 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lyricodes Terminal v2.4</title>
+    
+    <title>LyriCodes | Interactive Developer Portfolio</title>
+    <meta name="description" content="The interactive terminal of LyriCodes, a creative developer specializing in AI, 3D graphics, and immersive web experiences. Explore projects, learn more, and get in touch.">
+    <meta name="keywords" content="LyriCodes, portfolio, developer, creative developer, web developer, AI, 3D graphics, JavaScript, Python, interactive, terminal, front-end developer">
+    <meta name="author" content="LyriCodes">
+    <link rel="canonical" href="https://portfolio-roan-one-39.vercel.app/">
+
+    <meta property="og:title" content="LyriCodes | Interactive Portfolio">
+    <meta property="og:description" content="An interactive terminal portfolio showcasing the work of a creative developer.">
+    <meta property="og:image" content="https://i.imgur.com/your-preview-image.png"> <meta property="og:url" content="https://portfolio-roan-one-39.vercel.app/">
+    <meta property="og:type" content="website">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,9 +46,7 @@
         }
         .terminal-wrapper:hover { box-shadow: 0 25px 50px -12px rgba(255, 0, 150, 0.5); }
         .terminal-wrapper:active { cursor: grabbing; }
-        
-        /* Neon Header & Typing Animation */
-        .neon-header { text-align: center; padding: 0.75rem 0; min-height: 80px; } /* min-height to prevent layout shift */
+        .neon-header { text-align: center; padding: 0.75rem 0; min-height: 80px; }
         .neon-header h1 {
             font-family: 'Dancing Script', cursive;
             font-weight: 700;
@@ -58,8 +67,6 @@
             box-shadow: 0 0 5px var(--light-pink), 0 0 10px var(--hot-pink);
         }
         @keyframes blink { 50% { opacity: 0; } }
-
-        /* Command Buttons */
         #command-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -87,7 +94,6 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
-
         .terminal-output {
             text-shadow: 0 0 5px var(--hot-pink);
             background-color: rgba(0,0,0,0.2);
@@ -97,7 +103,6 @@
             text-shadow: 0 0 5px var(--hot-pink);
         }
         .command-input::placeholder { color: rgba(255, 6, 157, 0.4); }
-
         #matrix-canvas {
             position: fixed; top: 0; left: 0;
             z-index: -1; width: 100vw; height: 100vh;
@@ -141,17 +146,14 @@
             <div class="px-4 py-3 flex items-center border-t" style="border-color: var(--border-color); background-color: rgba(20,0,10,0.9);">
                 <span class="mr-2" style="color: var(--neon-pink); text-shadow: 0 0 8px var(--neon-pink);">♕</span>
                 <input 
-                    id="command-input" 
-                    type="text" 
+                    id="command-input" type="text"
                     class="command-input flex-1 bg-transparent outline-none font-mono"
-                    autocomplete="off" spellcheck="false"
-                    placeholder="Type command or use buttons..." autofocus >
+                    autocomplete="off" spellcheck="false" placeholder="Type command or use buttons..." autofocus>
             </div>
         </div>
     </div>
 
     <script>
-        // --- 1. SETUP & ELEMENTS ---
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         const outputElement = document.getElementById('terminal-output');
@@ -159,7 +161,6 @@
         const neonTitleElement = document.getElementById('neon-title');
         const commandButtons = document.querySelectorAll('.command-btn');
 
-        // --- 2. MATRIX BACKGROUND ---
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         const chars = 'LYRICO DES♕💖👩💻█▓▒░║‗╔╦╗╚╩╝';
@@ -180,16 +181,15 @@
         }
         const matrixInterval = setInterval(drawMatrix, 50);
 
-        // --- 3. COMMANDS & BOOT SEQUENCE ---
         const commands = {
             'p': {
-                action: () => addResponse('Initializing femme tech showcase... Stand by.', () => window.location.href = 'projects.html')
+                action: () => addResponse('Initializing portfolio showcase... Stand by.', () => window.location.href = 'projects.html')
             },
             'a': {
                 action: () => addResponse('Accessing neural imprint... Please wait.', () => window.location.href = 'about.html')
             },
             'c': {
-                action: () => addResponse('Opening secure DMs... Channel established.', () => window.location.href = 'contact.html')
+                action: () => addResponse('Opening secure channel... Connection established.', () => window.location.href = 'contact.html')
             },
             'clear': {
                 action: () => outputElement.innerHTML = ''
@@ -207,11 +207,11 @@
             { text: "[clear] - Purge terminal display\n", delay: 200 }
         ];
 
-        // --- 4. CORE LOGIC ---
         function processCommand(command) {
             addResponse(`♕ ${command}`, false);
-            if (command in commands) {
-                commands[command].action();
+            const cmd = commands[command];
+            if (cmd) {
+                cmd.action();
             } else {
                 addResponse(`Directive not recognized: [${command}]`);
             }
@@ -256,12 +256,12 @@
             const title = "LyriCodes";
             neonTitleElement.innerHTML = '<span class="typing-cursor"></span>';
             for (let i = 0; i < title.length; i++) {
-                await new Promise(resolve => setTimeout(resolve, 150)); // Typing speed
+                await new Promise(resolve => setTimeout(resolve, 150));
                 neonTitleElement.innerHTML = title.substring(0, i + 1) + '<span class="typing-cursor"></span>';
             }
-            await new Promise(resolve => setTimeout(resolve, 500)); // Pause with cursor
-            neonTitleElement.innerHTML = title; // Remove cursor
-            await new Promise(resolve => setTimeout(resolve, 500)); // Final pause before boot
+            await new Promise(resolve => setTimeout(resolve, 500));
+            neonTitleElement.innerHTML = title;
+            await new Promise(resolve => setTimeout(resolve, 500));
         }
         
         function setControlsDisabled(isDisabled) {
@@ -269,7 +269,6 @@
             commandButtons.forEach(btn => btn.disabled = isDisabled);
         }
 
-        // --- 5. EVENT LISTENERS & INITIALIZATION ---
         inputElement.addEventListener('keyup', (e) => {
             if (e.key !== 'Enter') return;
             const command = inputElement.value.toLowerCase().trim();
@@ -284,13 +283,12 @@
             });
         });
 
-        // --- 6. DRAGGABLE TERMINAL LOGIC ---
         const terminalWrapper = document.querySelector('.terminal-wrapper');
         let rotation = { x: 5, y: -5 };
         let isDragging = false;
         let startX, startY;
         terminalWrapper.addEventListener('mousedown', e => {
-            if (e.target.closest('.command-btn, #command-input')) return; // Don't drag on buttons/input
+            if (e.target.closest('.command-btn, #command-input')) return;
             isDragging = true;
             startX = e.clientX;
             startY = e.clientY;
