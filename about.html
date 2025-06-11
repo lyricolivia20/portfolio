@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holographic ID Scanner | LyriCodes Portfolio</title>
-    <meta name="description" content="Interactive holographic ID scanner experience - drag the card to reveal the full dossier">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About | LyriCodes Portfolio</title>
+    <meta name="description" content="The personal holographic ID of LyriCodes, a creative technologist. Drag the ID card to the scanner to reveal the full dossier.">
+    <meta name="author" content="Lyric Olivia Jensen" />
+    <link rel="canonical" href="https://portfolio-roan-one-39.vercel.app/about.html" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
@@ -29,631 +31,295 @@
             --border-color: rgba(0, 204, 255, 0.2);
         }
         
+        /* FIX: Body overflow is handled by JS now */
         body {
-            overflow-x: hidden;
             background: var(--midnight-bg);
             min-height: 100vh;
             font-family: 'JetBrains Mono', monospace;
             color: var(--light-blue);
             touch-action: none;
+            overflow-x: hidden;
+            overflow-y: hidden; /* Initial state */
         }
         
         #matrix-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            width: 100vw;
-            height: 100vh;
+            position: fixed; top: 0; left: 0;
+            z-index: -1; width: 100vw; height: 100vh;
             opacity: 0.2;
         }
         
         /* --- ID Card --- */
         #idCard {
-            position: absolute;
-            width: 300px;
-            height: 440px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-pulse);
-            border-radius: 20px;
-            box-shadow: var(--glow), 0 0 0 3px rgba(0, 204, 255, 0.1);
-            backdrop-filter: blur(12px);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--light-blue);
-            cursor: grab;
-            z-index: 30;
+            position: absolute; width: 300px; height: 440px;
+            background: var(--card-bg); border: 1px solid var(--border-pulse);
+            border-radius: 20px; box-shadow: var(--glow), 0 0 0 3px rgba(0, 204, 255, 0.1);
+            backdrop-filter: blur(12px); padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            color: var(--light-blue); cursor: grab; z-index: 30;
             transform-style: preserve-3d;
             transition: all 0.3s ease;
         }
-        
         #idCard:active {
             cursor: grabbing;
             transform: scale(1.05) translateZ(10px);
             box-shadow: 0 0 40px var(--neon-pink), 0 0 30px rgba(0, 204, 255, 0.5);
         }
-        
         #idCard:hover {
             transform: translateZ(15px);
             box-shadow: var(--glow), 0 0 40px rgba(0, 204, 255, 0.4);
         }
-        
         .id-photo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 2px solid rgba(0, 204, 255, 0.7);
-            overflow: hidden;
-            margin: 25px 0;
-            position: relative;
+            width: 120px; height: 120px; border-radius: 50%;
+            border: 2px solid rgba(0, 204, 255, 0.7); overflow: hidden;
+            margin: 25px 0; position: relative;
             box-shadow: 0 0 30px rgba(0, 204, 255, 0.3), inset 0 0 30px rgba(0, 204, 255, 0.1);
         }
-        
         .id-photo::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: 50%;
-            background: conic-gradient(
-                from 0deg at 50% 50%,
-                rgba(255, 0, 204, 0) 0%,
-                rgba(255, 0, 204, 0.7) 25%,
-                rgba(0, 204, 255, 0.7) 50%,
-                rgba(255, 0, 204, 0.7) 75%,
-                rgba(255, 0, 204, 0) 100%
-            );
-            animation: rotateBorder 4s linear infinite;
-            z-index: -1;
-            filter: blur(3px);
+            content: ''; position: absolute; inset: -2px; border-radius: 50%;
+            background: conic-gradient(from 0deg at 50% 50%, rgba(255,0,204,0) 0%, rgba(255,0,204,0.7) 25%, rgba(0,204,255,0.7) 50%, rgba(255,0,204,0.7) 75%, rgba(255,0,204,0) 100%);
+            animation: rotateBorder 4s linear infinite; z-index: -1; filter: blur(3px);
         }
-        
-        @keyframes rotateBorder {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        .id-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: relative;
-            z-index: 1;
-        }
+        @keyframes rotateBorder { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .id-photo img { width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 1; }
         
         /* --- Scanner --- */
-        #scanner {
-            position: fixed;
-            top: 50%;
-            right: 8vw;
+        #scannerUnit {
+            position: fixed; top: 50%; right: 8vw;
             transform: translateY(-50%);
-            width: 160px;
-            height: 260px;
-            background: rgba(10, 5, 30, 0.4);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--neon-blue);
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
-            z-index: 20;
-            box-shadow: inset 0 0 40px rgba(0, 204, 255, 0.2), 
-                        0 0 30px rgba(0, 204, 255, 0.2);
-            overflow: hidden;
+            display: flex; flex-direction: column; align-items: center;
+            gap: 16px; z-index: 20;
         }
-        
-        #scanner.hovering {
-            box-shadow: 0 0 60px var(--neon-blue), 
-                        inset 0 0 60px rgba(0, 204, 255, 0.4);
-        }
-        
-        #scanner .scan-line {
-            position: absolute;
-            width: 90%;
-            height: 3px;
-            background: var(--neon-blue);
-            box-shadow: 0 0 25px var(--neon-blue);
-            animation: scan-anim 3s ease-in-out infinite;
-            opacity: 0.9;
-        }
-        
-        #scanner .scan-grid {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(rgba(0, 204, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 204, 255, 0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.7;
-        }
-        
-        #scanner .scan-label {
-            position: absolute;
-            top: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
-            letter-spacing: 2px;
-            color: var(--light-blue);
-            text-shadow: 0 0 5px var(--neon-blue);
-            opacity: 0.9;
-        }
-        
-        @keyframes scan-anim {
-            0% { top: 5%; opacity: 0; }
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { top: 95%; opacity: 0; }
-        }
-        
-        /* --- Indicator Lights --- */
         #indicatorLights {
-            position: fixed;
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-            z-index: 25;
-            padding: 10px 20px;
-            background: rgba(10, 2, 25, 0.7);
-            border-radius: 50px;
+            display: flex; gap: 15px; padding: 10px 20px;
+            background: rgba(10, 2, 25, 0.7); border-radius: 50px;
             border: 1px solid rgba(255, 0, 204, 0.2);
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
         }
-        
         .light {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #0f001f;
-            border: 2px solid var(--deep-blue);
-            transition: all 0.3s;
-            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.7);
+            width: 18px; height: 18px; border-radius: 50%;
+            background: #0f001f; border: 2px solid var(--deep-blue);
+            transition: all 0.3s; box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.7);
         }
-        
-        /* --- Blast Doors --- */
-        .blast-door {
-            position: fixed;
-            top: 0;
-            width: 50vw;
-            height: 100vh;
-            background: linear-gradient(to right, #0b011e, #1a0044);
-            z-index: 10;
-            transform-style: preserve-3d;
-            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.8);
-            transform-origin: center top;
-        }
-        
-        #doorLeft {
-            left: 0;
-            border-right: 4px solid var(--neon-pink);
-        }
-        
-        #doorRight {
-            right: 0;
-            border-left: 4px solid var(--neon-pink);
-        }
-        
-        .door-panel {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(135deg, rgba(255, 0, 204, 0.1) 25%, transparent 25%) -50px 0,
-                linear-gradient(225deg, rgba(255, 0, 204, 0.1) 25%, transparent 25%) -50px 0,
-                linear-gradient(315deg, rgba(255, 0, 204, 0.1) 25%, transparent 25%),
-                linear-gradient(45deg, rgba(255, 0, 204, 0.1) 25%, transparent 25%);
-            background-size: 120px 120px;
-        }
-        
-        /* --- Dossier Content --- */
-        #dossier-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            min-height: 100vh;
-            padding: 5rem 2rem;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 5;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(30, 0, 63, 0.2) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 204, 0.1) 0%, transparent 40%),
-                var(--midnight-bg);
-        }
-        
-        #dossier-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300ccff' fill-opacity='0.02'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10-10-4.477-10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10S10 15.523 10 10z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            z-index: -1;
-        }
-        
-        #dossier-content.active {
-            pointer-events: all;
-            opacity: 1;
-        }
-        
-        #dossier-content h1, #dossier-content h2 {
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 15px rgba(255, 0, 204, 0.4);
-        }
-        
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--light-blue), transparent);
-            margin: 3rem auto;
-            opacity: 0.3;
-            max-width: 900px;
-        }
-        
-        /* Content Card Styles */
-        .content-card {
-            background: var(--content-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            backdrop-filter: blur(8px);
+        #scanner {
+            width: 160px; height: 260px;
+            background: rgba(10, 5, 30, 0.4); backdrop-filter: blur(20px);
+            border: 1px solid var(--neon-blue); border-radius: 12px;
+            display: flex; justify-content: center; align-items: center;
             transition: all 0.3s ease;
-        }
-        
-        .content-card:hover {
-            border-color: rgba(255, 0, 204, 0.3);
-            box-shadow: 0 0 30px rgba(255, 0, 204, 0.1);
-            transform: translateY(-5px);
-        }
-        
-        .skill-item {
-            position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 0.75rem;
-        }
-        
-        .skill-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--neon-blue);
-            box-shadow: 0 0 10px var(--neon-blue);
-        }
-        
-        /* --- Back Button --- */
-        .floating-back-button {
-            position: fixed;
-            bottom: 2.5rem;
-            right: 2.5rem;
-            z-index: 1000;
-            background: rgba(10, 5, 30, 0.7);
-            border: 1px solid var(--neon-blue);
-            color: var(--light-blue);
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
-            opacity: 0;
-            visibility: hidden;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .floating-back-button:hover {
-            transform: translateX(-10px);
-            background: rgba(255, 0, 204, 0.1);
-            border-color: var(--neon-pink);
-            box-shadow: 0 0 30px var(--neon-pink);
-        }
-        
-        /* --- Floating Particles --- */
-        .particles-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            box-shadow: inset 0 0 40px rgba(0, 204, 255, 0.2), 0 0 30px rgba(0, 204, 255, 0.2);
             overflow: hidden;
         }
+        #scanner.hovering { box-shadow: 0 0 60px var(--neon-blue), inset 0 0 60px rgba(0, 204, 255, 0.4); }
+        #scanner .scan-line {
+            position: absolute; width: 90%; height: 3px;
+            background: var(--neon-blue); box-shadow: 0 0 25px var(--neon-blue);
+            animation: scan-anim 3s ease-in-out infinite; opacity: 0.9;
+        }
+        #scanner .scan-grid {
+            position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0,204,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,204,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px; opacity: 0.7;
+        }
+        #scanner .scan-label {
+            position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
+            font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 2px;
+            color: var(--light-blue); text-shadow: 0 0 5px var(--neon-blue); opacity: 0.9;
+        }
+        @keyframes scan-anim { 0% { top: 5%; opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { top: 95%; opacity: 0; } }
+
+        /* --- Blast Doors --- */
+        .blast-door {
+            position: fixed; top: 0; width: 50vw; height: 100vh;
+            background: linear-gradient(to right, #0b011e, #1a0044);
+            z-index: 10; transform-style: preserve-3d;
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.8);
+        }
+        #doorLeft { left: 0; border-right: 4px solid var(--neon-pink); }
+        #doorRight { right: 0; border-left: 4px solid var(--neon-pink); }
+        .door-panel {
+            position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(135deg,rgba(255,0,204,0.05) 25%,transparent 25%) -50px 0, linear-gradient(225deg,rgba(255,0,204,0.05) 25%,transparent 25%) -50px 0, linear-gradient(315deg,rgba(255,0,204,0.05) 25%,transparent 25%), linear-gradient(45deg,rgba(255,0,204,0.05) 25%,transparent 25%);
+            background-size: 120px 120px;
+        }
+
+        /* --- Dossier Content --- */
+        #dossier-wrapper { /* New wrapper for scrolling */
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100vh;
+            overflow-x: hidden; overflow-y: auto;
+            opacity: 0; pointer-events: none; z-index: 5;
+        }
+        #dossier-wrapper.active { pointer-events: all; }
+        #dossier-content {
+            width: 100%; min-height: 100%;
+            padding: 5rem 2rem;
+            background: radial-gradient(circle at 20% 30%, rgba(30,0,63,0.2) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(255,0,204,0.1) 0%, transparent 40%), var(--midnight-bg);
+        }
+        #dossier-content h1, #dossier-content h2 {
+            font-family: 'Orbitron', sans-serif; letter-spacing: 1px;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(255, 0, 204, 0.4);
+        }
+        .section-divider {
+            height: 1px; background: linear-gradient(to right, transparent, var(--light-blue), transparent);
+            margin: 3rem auto; opacity: 0.3; max-width: 900px;
+        }
+        .content-card {
+            background: var(--content-bg); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 2rem;
+            backdrop-filter: blur(8px); transition: all 0.3s ease;
+        }
+        .content-card:hover { border-color: rgba(255,0,204,0.3); box-shadow: 0 0 30px rgba(255,0,204,0.1); transform: translateY(-5px); }
+        .skill-item { position: relative; padding-left: 1.5rem; margin-bottom: 0.75rem; }
+        .skill-item::before {
+            content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue);
+        }
         
+        /* --- Floating UI --- */
+        .floating-back-button {
+            position: fixed; bottom: 2.5rem; right: 2.5rem;
+            z-index: 1000; background: rgba(10, 5, 30, 0.7);
+            border: 1px solid var(--neon-blue); color: var(--light-blue);
+            padding: 1rem 2rem; border-radius: 50px; cursor: pointer;
+            font-family: 'Orbitron', sans-serif; font-size: 0.9rem; letter-spacing: 1px;
+            transition: all 0.3s ease; box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+            opacity: 0; visibility: hidden; display: flex; align-items: center; gap: 10px;
+        }
+        .floating-back-button:hover {
+            transform: translateX(-10px); background: rgba(255, 0, 204, 0.1);
+            border-color: var(--neon-pink); box-shadow: 0 0 30px var(--neon-pink);
+        }
+        
+        /* Particles for background */
+        .particles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden; }
         .particle {
-            position: absolute;
-            background: var(--neon-pink);
-            border-radius: 50%;
-            filter: blur(1px);
-            opacity: 0.5;
+            position: absolute; background: var(--neon-pink);
+            border-radius: 50%; filter: blur(1px); opacity: 0.5;
             animation: floatParticles linear infinite;
         }
+        @keyframes floatParticles { 0% { transform: translateY(0) rotate(0deg); opacity: 0.5; } 100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; } }
         
-        @keyframes floatParticles {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0.5;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-        
-        /* --- Responsive Adjustments --- */
+        /* Responsive */
         @media (max-width: 768px) {
-            #idCard {
-                width: 260px;
-                height: 380px;
-                padding: 15px;
-            }
-            
-            #scanner {
-                width: 120px;
-                height: 200px;
-                right: 20px;
-            }
-            
-            .id-photo {
-                width: 90px;
-                height: 90px;
-                margin: 15px 0;
-            }
-            
-            #dossier-content {
-                padding: 4rem 1rem;
-            }
-            
-            .content-card {
-                padding: 1.5rem;
-            }
-            
-            .floating-back-button {
-                padding: 0.75rem 1.5rem;
-                font-size: 0.8rem;
-                bottom: 1.5rem;
-                right: 1.5rem;
-            }
+            #idCard { width: 260px; height: 380px; padding: 15px; }
+            #scannerUnit { right: 20px; }
+            #scanner { width: 120px; height: 200px; }
+            .id-photo { width: 90px; height: 90px; margin: 15px 0; }
+            #dossier-wrapper { padding: 4rem 1rem 1rem; } /* Adjusted padding for mobile */
+            .content-card { padding: 1.5rem; }
+            .floating-back-button { padding: 0.75rem 1.5rem; font-size: 0.8rem; bottom: 1.5rem; right: 1.5rem; }
         }
     </style>
 </head>
 <body>
-    <!-- Background Elements -->
     <canvas id="matrix-canvas"></canvas>
     <div class="particles-container" id="particles"></div>
     
-    <!-- Main Interactive Elements -->
     <div id="idCard">
-        <div class="id-photo">
-            <img src="https://i.imgur.com/3p2au6v.png" alt="Lyric Olivia Jensen">
-        </div>
-        <h3 class="text-2xl font-bold text-center text-gray-100 mb-1">Lyric Olivia Jensen</h3>
-        <p class="text-sm text-center opacity-90 font-mono">// Creative Technologist</p>
+        <div class="id-photo"><img src="https://i.imgur.com/3p2au6v.png" alt="Lyric Olivia Jensen"></div>
+        <h3 class="text-2xl font-bold text-center text-gray-100 mb-1" style="font-family: 'Orbitron', sans-serif;">Lyric Olivia Jensen</h3>
+        <p class="text-sm text-center opacity-90">// Creative Technologist</p>
         <div class="mt-6 w-full h-px bg-gradient-to-r from-transparent via-current to-transparent opacity-20"></div>
         <div class="mt-4 text-center">
-            <p class="text-xs opacity-70 font-mono">ID: LC-2025-X01</p>
-            <p class="text-xs opacity-70 font-mono mt-1">CLEARANCE: <span class="font-bold" style="color: var(--light-blue)">LEVEL 4</span></p>
-            <p class="text-xs opacity-70 font-mono mt-1">STATUS: <span class="font-bold" style="color: var(--neon-blue)">ACTIVE</span></p>
+            <p class="text-xs opacity-70">ID: LC-2025-X01</p>
+            <p class="text-xs opacity-70 mt-1">CLEARANCE: <span class="font-bold" style="color: var(--light-blue)">LEVEL 4</span></p>
+            <p class="text-xs opacity-70 mt-1">STATUS: <span class="font-bold" style="color: var(--neon-blue)">ACTIVE</span></p>
         </div>
-        <p class="text-xs text-center opacity-90 mt-6 animate-pulse font-mono flicker">[ DRAG TO SCAN → ]</p>
+        <p class="text-xs text-center opacity-90 mt-6 animate-pulse">[ DRAG TO SCAN → ]</p>
     </div>
     
-    <div id="scanner">
-        <div class="scan-grid"></div>
-        <div class="scan-line"></div>
-        <div class="scan-label">IDENTITY SCANNER</div>
+    <div id="scannerUnit">
+        <div id="indicatorLights">
+            <div class="light"></div> <div class="light"></div> <div class="light"></div> <div class="light"></div>
+        </div>
+        <div id="scanner">
+            <div class="scan-grid"></div>
+            <div class="scan-line"></div>
+            <div class="scan-label">IDENTITY</div>
+        </div>
     </div>
     
-    <div id="indicatorLights">
-        <div class="light" data-status="off"></div>
-        <div class="light" data-status="off"></div>
-        <div class="light" data-status="off"></div>
-        <div class="light" data-status="off"></div>
-    </div>
+    <div id="doorLeft" class="blast-door"><div class="door-panel"></div></div>
+    <div id="doorRight" class="blast-door"><div class="door-panel"></div></div>
     
-    <!-- Doors -->
-    <div id="doorLeft" class="blast-door">
-        <div class="door-panel"></div>
-    </div>
-    <div id="doorRight" class="blast-door">
-        <div class="door-panel"></div>
-    </div>
-    
-    <!-- Dossier Content (hidden until scan) -->
-    <div id="dossier-content">
-        <div class="max-w-6xl mx-auto px-4">
-            <section class="text-center mb-16">
-                <h1 class="text-5xl md:text-6xl font-bold mb-4">D O S S I E R</h1>
-                <div class="flex justify-center">
-                    <div class="w-40 h-1 rounded-full bg-gradient-to-r from-transparent via-current to-transparent opacity-30"></div>
-                </div>
-            </section>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-                <!-- About Section -->
-                <div class="content-card md:col-span-2">
-                    <div class="flex items-center mb-6 gap-4">
-                        <div class="w-16 h-16 rounded-full overflow-hidden">
-                            <img src="https://i.imgur.com/3p2au6v.png" alt="Avatar" class="w-full h-full object-cover">
+    <div id="dossier-wrapper">
+        <div id="dossier-content">
+            <div class="max-w-6xl mx-auto px-4">
+                <section class="text-center mb-16">
+                    <h1 class="text-5xl md:text-6xl font-bold mb-4">ACCESS GRANTED</h1>
+                    <h2 class="text-2xl md:text-3xl">DOSSIER: LYRICODES</h2>
+                    <div class="flex justify-center mt-6"><div class="w-40 h-1 rounded-full" style="background: var(--gradient-accent)"></div></div>
+                </section>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+                    <div class="content-card md:col-span-2">
+                        <div class="flex items-center mb-6 gap-4">
+                            <div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.imgur.com/3p2au6v.png" alt="Avatar" class="w-full h-full object-cover"></div>
+                            <div>
+                                <h2 class="text-2xl md:text-3xl font-bold">Lyric Olivia Jensen</h2>
+                                <p class="text-sm opacity-80">// Creative Technologist</p>
+                            </div>
                         </div>
-                        <div>
-                            <h2 class="text-2xl md:text-3xl font-bold">Lyric Olivia Jensen</h2>
-                            <p class="text-sm opacity-80 font-mono">// Creative Technologist</p>
+                        <p class="mb-4 leading-relaxed"><span class="text-xl font-bold font-mono">&gt;&gt;</span> Welcome to my digital dossier. I'm a multidisciplinary creator specializing in the intersection of artificial intelligence, interactive media, and computational design. My work focuses on building bridges between complex technology and human experience.</p>
+                        <p class="leading-relaxed">Currently pursuing advanced studies in Computer Science with a focus on AI and Machine Learning at Stanford University, I work at the crossroads of code, creativity, and cognitive science. My projects range from neural network visualization tools to generative art installations that explore the nature of human-machine collaboration.</p>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h3 class="text-2xl font-bold mb-6" style="text-shadow: 0 0 10px var(--neon-blue);">Core Skills</h3>
+                        <div class="space-y-4">
+                            <div class="skill-item"><h4 class="font-bold text-gray-100">AI & Machine Learning</h4><p class="text-sm opacity-80">TensorFlow, PyTorch, NLP</p></div>
+                            <div class="skill-item"><h4 class="font-bold text-gray-100">Creative Development</h4><p class="text-sm opacity-80">Three.js, WebGL, GLSL, AR/VR</p></div>
+                            <div class="skill-item"><h4 class="font-bold text-gray-100">Fullstack Engineering</h4><p class="text-sm opacity-80">React, Node.js, GraphQL</p></div>
+                            <div class="skill-item"><h4 class="font-bold text-gray-100">Generative Systems</h4><p class="text-sm opacity-80">Processing, p5.js</p></div>
                         </div>
                     </div>
                     
-                    <p class="mb-4 leading-relaxed">
-                         <span class="text-xl font-bold font-mono">>></span> Welcome to my digital dossier. I'm a multidisciplinary creator specializing in the intersection of artificial intelligence, interactive media, and computational design. My work focuses on building bridges between complex technology and human experience.
-                    </p>
+                    <div class="content-card">
+                        <h3 class="text-2xl font-bold mb-6" style="text-shadow: 0 0 10px var(--neon-pink);">Current Focus</h3>
+                        <div class="space-y-6">
+                            <div><h4 class="font-bold text-gray-100 mb-2">Cognitive Interfaces</h4><p class="text-sm opacity-80">Developing adaptive UI systems that respond to cognitive load and user attention patterns.</p></div>
+                            <div><h4 class="font-bold text-gray-100 mb-2">Neuroaesthetics</h4><p class="text-sm opacity-80">Researching how generative art influences focus states in ADHD brains.</p></div>
+                            <div><h4 class="font-bold text-gray-100 mb-2">AI-Assisted Creativity</h4><p class="text-sm opacity-80">Building tools that augment human creativity rather than replace it.</p></div>
+                        </div>
+                    </div>
                     
-                    <p class="leading-relaxed">
-                        Currently pursuing advanced studies in Computer Science with a focus on AI and Machine Learning at Stanford University, I work at the crossroads of code, creativity, and cognitive science. My projects range from neural network visualization tools to generative art installations that explore the nature of human-machine collaboration.
-                    </p>
-                </div>
-                
-                <!-- Core Skills -->
-                <div class="content-card">
-                    <h3 class="text-2xl font-bold mb-6" style="text-shadow: 0 0 10px rgba(0, 204, 255, 0.5);">Core Skills</h3>
-                    <div class="space-y-4">
-                        <div class="skill-item">
-                            <h4 class="font-bold text-gray-100">AI & Machine Learning</h4>
-                            <p class="text-sm opacity-80">TensorFlow, PyTorch, NLP, Computer Vision</p>
+                    <div class="md:col-span-2 text-center mt-8">
+                        <h3 class="text-2xl font-bold mb-6">Access Channels</h3>
+                        <div class="flex justify-center gap-8 text-3xl">
+                            <a href="#" class="text-gray-400 hover:text-blue-400 transition-all hover:scale-110"><i class="fab fa-github"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-blue-500 transition-all hover:scale-110"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-pink-500 transition-all hover:scale-110"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-indigo-400 transition-all hover:scale-110"><i class="fab fa-discord"></i></a>
+                            <a href="mailto:lyric@lyricodes.com" class="text-gray-400 hover:text-red-400 transition-all hover:scale-110"><i class="fas fa-envelope"></i></a>
                         </div>
-                        <div class="skill-item">
-                            <h4 class="font-bold text-gray-100">Creative Development</h4>
-                            <p class="text-sm opacity-80">Three.js, WebGL, GLSL, AR/VR</p>
-                        </div>
-                        <div class="skill-item">
-                            <h4 class="font-bold text-gray-100">Fullstack Engineering</h4>
-                            <p class="text-sm opacity-80">React, Node.js, GraphQL, WebSockets</p>
-                        </div>
-                        <div class="skill-item">
-                            <h4 class="font-bold text-gray-100">Generative Systems</h4>
-                            <p class="text-sm opacity-80">Processing, p5.js, Creative Coding</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Current Focus -->
-                <div class="content-card">
-                    <h3 class="text-2xl font-bold mb-6" style="text-shadow: 0 0 10px rgba(255, 0, 204, 0.5);">Current Focus</h3>
-                    <div class="space-y-6">
-                        <div>
-                            <h4 class="font-bold text-gray-100 mb-2">Cognitive Interfaces</h4>
-                            <p class="text-sm opacity-80">
-                                Developing adaptive UI systems that respond to cognitive load and user attention patterns.
-                            </p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-100 mb-2">Neuroaesthetics</h4>
-                            <p class="text-sm opacity-80">
-                                Researching how generative art influences focus states in ADHD brains.
-                            </p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-100 mb-2">AI-Assisted Creativity</h4>
-                            <p class="text-sm opacity-80">
-                                Building tools that augment human creativity rather than replace it.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="md:col-span-2">
-                    <div class="section-divider"></div>
-                </div>
-                
-                <!-- Recent Projects -->
-                <div class="content-card md:col-span-2">
-                    <h3 class="text-2xl font-bold mb-6 text-center">Selected Projects</h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="group relative overflow-hidden rounded-lg border border-gray-800 hover:border-pink-500 transition-all duration-300 h-48">
-                            <div class="absolute inset-0 bg-gradient-to-br from-blue-900/50 to-purple-900/50"></div>
-                            <div class="relative z-10 p-4 h-full flex flex-col justify-between">
-                                <div>
-                                    <h4 class="font-bold text-gray-100">NeuroCanvas</h4>
-                                    <p class="text-xs opacity-80 mt-1">EEG drawing interface</p>
-                                </div>
-                                <span class="text-xs px-2 py-1 bg-gray-900/70 rounded self-start">AI + Biometrics</span>
-                            </div>
-                        </div>
-                        
-                        <div class="group relative overflow-hidden rounded-lg border border-gray-800 hover:border-pink-500 transition-all duration-300 h-48">
-                            <div class="absolute inset-0 bg-gradient-to-br from-purple-900/50 to-pink-900/50"></div>
-                            <div class="relative z-10 p-4 h-full flex flex-col justify-between">
-                                <div>
-                                    <h4 class="font-bold text-gray-100">Dimensional</h4>
-                                    <p class="text-xs opacity-80 mt-1">3D concept browser</p>
-                                </div>
-                                <span class="text-xs px-2 py-1 bg-gray-900/70 rounded self-start">WebGL + ML</span>
-                            </div>
-                        </div>
-                        
-                        <div class="group relative overflow-hidden rounded-lg border border-gray-800 hover:border-pink-500 transition-all duration-300 h-48">
-                            <div class="absolute inset-0 bg-gradient-to-br from-pink-900/50 to-blue-900/50"></div>
-                            <div class="relative z-10 p-4 h-full flex flex-col justify-between">
-                                <div>
-                                    <h4 class="font-bold text-gray-100">SynthMind</h4>
-                                    <p class="text-xs opacity-80 mt-1">Generative AI toolset</p>
-                                </div>
-                                <span class="text-xs px-2 py-1 bg-gray-900/70 rounded self-start">LLMs + GPT</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Contact Section -->
-                <div class="content-card md:col-span-2 text-center">
-                    <h3 class="text-2xl font-bold mb-6">Access Channels</h3>
-                    <div class="flex justify-center gap-8 text-3xl">
-                        <a href="#" class="text-gray-400 hover:text-blue-400 transition-all hover:scale-110" aria-label="GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-blue-500 transition-all hover:scale-110" aria-label="LinkedIn">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-pink-500 transition-all hover:scale-110" aria-label="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-indigo-400 transition-all hover:scale-110" aria-label="Discord">
-                            <i class="fab fa-discord"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-red-400 transition-all hover:scale-110" aria-label="Email">
-                            <i class="fas fa-envelope"></i>
-                        </a>
-                    </div>
-                    <div class="mt-8">
-                        <a href="#" class="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-blue-600 to-pink-600 text-sm font-bold hover:opacity-90 transition-all">
-                            REQUEST FULL DOSSIER
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Back Button -->
     <button class="floating-back-button">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         EXIT DOSSIER
     </button>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- ELEMENTS ---
+            gsap.registerPlugin(ScrollTrigger);
+
             const idCard = document.getElementById('idCard');
+            const scannerUnit = document.getElementById('scannerUnit');
             const scanner = document.getElementById('scanner');
-            const dossier = document.getElementById('dossier-content');
+            const dossierWrapper = document.getElementById('dossier-wrapper');
             const backButton = document.querySelector('.floating-back-button');
             const lights = document.querySelectorAll('#indicatorLights .light');
             const doorLeft = document.getElementById('doorLeft');
             const doorRight = document.getElementById('doorRight');
             const particlesContainer = document.getElementById('particles');
             
-            // --- SOUND EFFECTS ---
             const soundEffects = {
                 scanBeep: new Audio('https://assets.codepen.io/3364143/beep-07a.mp3'),
                 accessGranted: new Audio('https://assets.codepen.io/3364143/access-granted.mp3'),
@@ -662,29 +328,22 @@
                 click: new Audio('https://assets.codepen.io/3364143/click.mp3')
             };
             
-            // Preload sounds
             Object.values(soundEffects).forEach(sound => {
-                sound.volume = 0.4;
+                sound.volume = 0.3;
                 sound.load();
             });
             
-            // --- FLOATING PARTICLES ---
             function createParticles() {
                 const colors = ['rgba(255, 0, 204, 0.7)', 'rgba(0, 204, 255, 0.7)', 'rgba(255, 255, 255, 0.5)'];
                 const particleCount = 40;
-                
                 for (let i = 0; i < particleCount; i++) {
                     const particle = document.createElement('div');
                     particle.classList.add('particle');
-                    
-                    // Random properties
                     const size = Math.random() * 5 + 3;
                     const posX = Math.random() * window.innerWidth;
                     const duration = Math.random() * 20 + 10;
                     const delay = Math.random() * 15;
                     const color = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    // Apply properties
                     particle.style.width = `${size}px`;
                     particle.style.height = `${size}px`;
                     particle.style.left = `${posX}px`;
@@ -692,379 +351,145 @@
                     particle.style.background = color;
                     particle.style.animationDuration = `${duration}s`;
                     particle.style.animationDelay = `${delay}s`;
-                    
                     particlesContainer.appendChild(particle);
                 }
             }
-            
             createParticles();
             
-            // --- CARD GLOW EFFECT ---
-            function createGlowEffect() {
-                const glow = document.createElement('div');
-                glow.classList.add('absolute', 'inset-0', 'rounded-2xl', 'pointer-events-none');
-                glow.style.boxShadow = 'inset 0 0 40px rgba(0, 204, 255, 0.1)';
-                glow.style.background = 'radial-gradient(circle at center, rgba(0, 204, 255, 0.2) 0%, transparent 70%)';
-                glow.style.zIndex = '-1';
-                glow.style.transition = 'opacity 0.3s ease';
-                glow.style.opacity = '0';
-                
-                idCard.appendChild(glow);
-                
-                idCard.addEventListener('mouseenter', () => {
-                    glow.style.opacity = '1';
-                });
-                
-                idCard.addEventListener('mouseleave', () => {
-                    glow.style.opacity = '0';
-                });
-            }
-            
-            createGlowEffect();
-            
-            // --- DRAGGABLE LOGIC ---
+            let startPosition = {};
+            gsap.set(idCard, {xPercent: -50, yPercent: -50, top: "50%", left: "50%"});
+
             Draggable.create(idCard, {
                 type: "x,y",
                 bounds: window,
                 onPress: function() {
                     soundEffects.hover.currentTime = 0;
                     soundEffects.hover.play();
-                    gsap.to(idCard, {
-                        scale: 1.1,
-                        duration: 0.2,
-                        boxShadow: '0 0 40px var(--neon-blue)'
-                    });
                     startPosition.x = this.x;
                     startPosition.y = this.y;
                 },
                 onDrag: function() {
-                    // Calculate distance to scanner for glow intensity
-                    const scannerRect = scanner.getBoundingClientRect();
-                    const cardRect = idCard.getBoundingClientRect();
-                    
-                    const scannerCenter = {
-                        x: scannerRect.left + scannerRect.width/2,
-                        y: scannerRect.top + scannerRect.height/2
-                    };
-                    
-                    const cardCenter = {
-                        x: cardRect.left + cardRect.width/2,
-                        y: cardRect.top + cardRect.height/2
-                    };
-                    
-                    // Distance formula
-                    const distance = Math.sqrt(
-                        Math.pow(scannerCenter.x - cardCenter.x, 2) + 
-                        Math.pow(scannerCenter.y - cardCenter.y, 2)
-                    );
-                    
-                    // Max distance for proximity effect
-                    const maxDistance = 300;
-                    const proximity = 1 - Math.min(distance, maxDistance) / maxDistance;
-                    
-                    if (proximity > 0.6) {
+                    if (this.hitTest(scanner, "50%")) {
                         scanner.classList.add('hovering');
-                        gsap.to(scanner, {
-                            boxShadow: `0 0 ${40 * proximity}px var(--neon-blue), inset 0 0 ${40 * proximity}px rgba(0, 204, 255, ${0.3 * proximity})`,
-                            scale: 1 + 0.1 * proximity,
-                            duration: 0.2
-                        });
                     } else {
                         scanner.classList.remove('hovering');
-                        gsap.to(scanner, {
-                            boxShadow: 'inset 0 0 40px rgba(0, 204, 255, 0.2), 0 0 30px rgba(0, 204, 255, 0.2)',
-                            scale: 1,
-                            duration: 0.3
-                        });
                     }
                 },
                 onRelease: function() {
-                    // Reset scanner appearance
                     scanner.classList.remove('hovering');
-                    gsap.to(scanner, {
-                        boxShadow: 'inset 0 0 40px rgba(0, 204, 255, 0.2), 0 0 30px rgba(0, 204, 255, 0.2)',
-                        scale: 1,
-                        duration: 0.3
-                    });
-                    
                     if (this.hitTest(scanner, "60%")) {
-                        // Successful scan - run animation sequence
                         runScanSequence(this);
                     } else {
-                        // Return card to start position
                         gsap.to(idCard, {
-                            x: startPosition.x,
-                            y: startPosition.y,
-                            scale: 1,
-                            boxShadow: '0 0 20px var(--neon-blue)',
-                            duration: 0.7,
-                            ease: "elastic.out(1, 0.5)"
+                            x: startPosition.x, y: startPosition.y,
+                            duration: 0.7, ease: "elastic.out(1, 0.5)"
                         });
-                        
-                        // Play error sound
-                        soundEffects.click.currentTime = 0;
-                        soundEffects.click.play();
-                        
-                        // Shake card for feedback
-                        gsap.to(idCard, {
-                            x: "+=15",
-                            yoyo: true,
-                            repeat: 1,
-                            duration: 0.1,
-                            ease: "power1.inOut"
-                        });
+                        soundEffects.click.currentTime = 0; soundEffects.click.play();
                     }
                 }
             });
-            
-            // --- SCAN SEQUENCE ANIMATION ---
+
             function runScanSequence(dragInstance) {
-                // Disable dragging during animation
                 dragInstance.disable();
                 
-                // Calculate scanner center position
                 const scannerRect = scanner.getBoundingClientRect();
-                const scannerCenterX = (scannerRect.left + scannerRect.width/2) - (window.innerWidth/2);
-                const scannerCenterY = (scannerRect.top + scannerRect.height/2) - (window.innerHeight/2);
+                const scannerCenterX = (scannerRect.left + scannerRect.width / 2) - (window.innerWidth / 2);
+                const scannerCenterY = (scannerRect.top + scannerRect.height / 2) - (window.innerHeight / 2);
                 
                 const tl = gsap.timeline({
-                    onStart: () => {
-                        document.body.style.cursor = 'wait';
-                    },
+                    onStart: () => { document.body.style.cursor = 'wait'; },
                     onComplete: () => {
                         document.body.style.cursor = 'default';
-                        dossier.classList.add('active');
+                        dossierWrapper.classList.add('active');
+                        // Animate dossier content on scroll
+                        gsap.from(".content-card", {
+                            scrollTrigger: {
+                                trigger: "#dossier-wrapper",
+                                scrub: 1,
+                                start: "top 80%",
+                                end: "bottom 60%"
+                            },
+                            y: 50,
+                            opacity: 0,
+                            stagger: 0.2
+                        });
                     }
                 });
                 
-                // 1. Snap card to scanner center
                 tl.to(idCard, {
-                    x: scannerCenterX,
-                    y: scannerCenterY,
-                    scale: 1.05,
-                    duration: 0.5,
-                    ease: "power2.inOut",
-                    boxShadow: '0 0 30px var(--neon-blue)'
+                    x: scannerCenterX, y: scannerCenterY,
+                    scale: 1, duration: 0.5, ease: "power2.inOut"
                 })
-                
-                // 2. Lights sequence with staggered timing
-                .to(lights[0], {
-                    backgroundColor: '#ef4444',
-                    boxShadow: '0 0 15px #ef4444',
-                    duration: 0.2,
-                    onStart: () => {
-                        soundEffects.scanBeep.currentTime = 0; 
-                        soundEffects.scanBeep.play();
-                    }
-                }, "-=0.1")
-                .to(lights[1], {
-                    backgroundColor: '#f59e0b',
-                    boxShadow: '0 0 15px #f59e0b',
-                    duration: 0.2,
-                    onStart: () => {
-                        soundEffects.scanBeep.currentTime = 0; 
-                        soundEffects.scanBeep.play();
-                    }
-                }, "+=0.3")
-                .to(lights[2], {
-                    backgroundColor: '#3b82f6',
-                    boxShadow: '0 0 15px #3b82f6',
-                    duration: 0.2,
-                    onStart: () => {
-                        soundEffects.scanBeep.currentTime = 0; 
-                        soundEffects.scanBeep.play();
-                    }
-                }, "+=0.3")
-                .to(lights[3], {
-                    backgroundColor: '#10b981',
-                    boxShadow: '0 0 20px #10b981',
-                    duration: 0.3,
-                    onStart: () => {
-                        soundEffects.accessGranted.currentTime = 0; 
-                        soundEffects.accessGranted.play();
-                    }
-                }, "+=0.4")
-                
-                // 3. Card dissolves into scanner
-                .to(idCard, {
-                    opacity: 0,
-                    scale: 0.5,
-                    duration: 0.7,
-                    ease: "power2.in",
-                    boxShadow: '0 0 50px var(--neon-blue)'
-                }, "-=0.3")
-                
-                // 4. Scanner receives card with expansion effect
-                .to(scanner, {
-                    scale: 1.1,
-                    boxShadow: '0 0 60px rgba(0, 204, 255, 0.7)',
-                    duration: 0.4,
-                    ease: "power2.inOut"
-                }, "-=0.5")
-                .to(scanner, {
-                    scale: 1.2,
-                    opacity: 0,
-                    duration: 0.6,
-                    ease: "power2.in"
-                }, "+=0.2")
-                
-                // 5. Doors open with perspective animation
-                .to([doorLeft, doorRight], {
-                    boxShadow: '0 0 60px rgba(255, 0, 204, 0.7)',
-                    duration: 0.7
-                }, "-=0.4")
-                .to(doorLeft, {
-                    x: "-100vw",
-                    rotationY: -80,
-                    duration: 2,
-                    ease: "expo.inOut",
-                    onStart: () => {
-                        soundEffects.doorOpen.currentTime = 0;
-                        soundEffects.doorOpen.play();
-                    }
-                }, "-=0.3")
-                .to(doorRight, {
-                    x: "100vw",
-                    rotationY: 80,
-                    duration: 2,
-                    ease: "expo.inOut"
-                }, "<")
-                
-                // 6. Content fades in
-                .to(dossier, {
-                    opacity: 1,
-                    duration: 1.5,
-                    ease: "power2.out"
-                }, "-=1.5")
-                
-                // 7. Back button appears
-                .to(backButton, {
-                    opacity: 1,
-                    visibility: 'visible',
-                    y: 0,
-                    duration: 0.7,
-                    ease: "back.out(1.7)"
-                }, "-=1.0");
+                .to(lights[0], { backgroundColor: '#ef4444', boxShadow: '0 0 15px #ef4444', duration: 0.2, onStart: () => { soundEffects.scanBeep.play(); } }, "-=0.2")
+                .to(lights[1], { backgroundColor: '#f59e0b', boxShadow: '0 0 15px #f59e0b', duration: 0.2, onStart: () => { soundEffects.scanBeep.play(); } }, "+=0.3")
+                .to(lights[2], { backgroundColor: '#3b82f6', boxShadow: '0 0 15px #3b82f6', duration: 0.2, onStart: () => { soundEffects.scanBeep.play(); } }, "+=0.3")
+                .to(lights[3], { backgroundColor: '#10b981', boxShadow: '0 0 20px #10b981', duration: 0.3, onStart: () => { soundEffects.accessGranted.play(); } }, "+=0.4")
+                .to(idCard, { opacity: 0, scale: 0.5, duration: 0.5, ease: "power2.in" }, "-=0.3")
+                .to(scannerUnit, { opacity: 0, duration: 0.5, ease: 'power2.out' }, "-=0.5")
+                .to(doorLeft, { x: "-100vw", duration: 1.5, ease: "power3.inOut", onStart: () => { soundEffects.doorOpen.play(); } }, "+=0.2")
+                .to(doorRight, { x: "100vw", duration: 1.5, ease: "power3.inOut" }, "<")
+                .to(dossierWrapper, { opacity: 1, duration: 1, ease: "power2.out" }, "-=1.5")
+                .to(backButton, { opacity: 1, visibility: 'visible', duration: 0.5, ease: 'back.out(1.7)' }, "-=1.0");
             }
             
-            // Back button functionality
             backButton.addEventListener('click', () => {
-                soundEffects.click.currentTime = 0;
                 soundEffects.click.play();
+                dossierWrapper.classList.remove('active');
                 
-                // Reset everything
-                gsap.to(backButton, {
-                    opacity: 0,
-                    visibility: 'hidden',
-                    duration: 0.3
-                });
-                
-                gsap.to(dossier, {
-                    opacity: 0,
-                    duration: 0.5
-                });
-                
-                gsap.set([doorLeft, doorRight], {
-                    x: 0,
-                    rotationY: 0,
-                    boxShadow: 'none'
-                });
-                
-                gsap.to(idCard, {
-                    opacity: 1,
-                    scale: 1,
-                    duration: 0.5,
-                    ease: "power2.out"
-                });
-                
-                gsap.to(scanner, {
-                    opacity: 1,
-                    scale: 1,
-                    duration: 0.5,
-                    boxShadow: 'inset 0 0 40px rgba(0, 204, 255, 0.2), 0 0 30px rgba(0, 204, 255, 0.2)',
+                const tl = gsap.timeline({
                     onComplete: () => {
-                        dossier.classList.remove('active');
-                        // Re-enable dragging
                         Draggable.get(idCard).enable();
                     }
                 });
-                
-                // Reset lights
-                gsap.to(lights, {
-                    backgroundColor: '#0f001f',
-                    boxShadow: 'inset 0 0 8px rgba(0, 0, 0, 0.7)',
-                    duration: 0.3
-                });
+
+                tl.to(backButton, { opacity: 0, visibility: 'hidden', duration: 0.3 })
+                .to(dossierWrapper, { opacity: 0, duration: 0.5 }, 0)
+                .to(doorLeft, { x: "0vw", duration: 1, ease: "power3.inOut" }, "-=0.2")
+                .to(doorRight, { x: "0vw", duration: 1, ease: "power3.inOut" }, "<")
+                .to(scannerUnit, { opacity: 1, duration: 0.5 }, "-=0.5")
+                .to(idCard, {
+                    x: startPosition.x, y: startPosition.y,
+                    opacity: 1, scale: 1, duration: 0.7, ease: "elastic.out(1, 0.5)"
+                })
+                .to(lights, { backgroundColor: '#0f001f', boxShadow: 'inset 0 0 8px rgba(0,0,0,0.7)', duration: 0.3 }, "<");
             });
-            
+
             // --- MATRIX RAIN BACKGROUND ---
             const canvas = document.getElementById('matrix-canvas');
             const ctx = canvas.getContext('2d');
             
-            // Set canvas size
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
+            function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
             
-            // Settings
-            const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZLYRICODES";
-            const fontSize = 18;
-            const columns = canvas.width / fontSize;
-            const drops = [];
+            const chars = "01LYRICODES";
+            const fontSize = 16;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = Array(columns).fill(0).map(() => Math.random() * -canvas.height);
             
-            // Initialize drops
-            for (let i = 0; i < columns; i++) {
-                drops[i] = Math.random() * -canvas.height;
-            }
-            
-            // Draw function
             function drawMatrix() {
-                // Dark overlay with low opacity for trailing effect
-                ctx.fillStyle = 'rgba(10, 10, 31, 0.05)';
+                ctx.fillStyle = 'rgba(10, 10, 31, 0.04)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                // Set text style
-                ctx.fillStyle = '#00ccff';
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--neon-blue').trim();
                 ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
                 
-                // Draw characters
                 for (let i = 0; i < drops.length; i++) {
-                    // Skip some columns to reduce density
-                    if (Math.random() > 0.35) continue;
-                    
-                    // Random character
-                    const text = chars[Math.floor(Math.random() * chars.length)];
-                    
-                    // y position
-                    const yPos = drops[i] * fontSize;
-                    
-                    // Draw character with gradient opacity
-                    const opacity = Math.min(0.8, (yPos / canvas.height) * 1.5);
-                    ctx.globalAlpha = opacity;
-                    ctx.fillText(text, i * fontSize, yPos);
-                    
-                    // Reset drop to top if it reaches bottom
-                    if (yPos > canvas.height && Math.random() > 0.975) {
+                    if (Math.random() > 0.9) { // Reduce density
+                        const text = chars[Math.floor(Math.random() * chars.length)];
+                        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    }
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                         drops[i] = 0;
                     }
-                    
-                    // Increment y position
                     drops[i]++;
                 }
-                
-                // Reset global alpha
-                ctx.globalAlpha = 1;
             }
-            
-            // Slower interval for subtle effect
-            setInterval(drawMatrix, 90);
-            
-            // Initial draw
-            drawMatrix();
+            setInterval(drawMatrix, 60);
         });
     </script>
 </body>
 </html>
+
+
+
+This is the one I want you to work with... make it better. The back button doesn't work right either. The dossier part is weird and idk. I don't love the card either. Can you just make something completely new? I trust you.
