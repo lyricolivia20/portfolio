@@ -93,6 +93,20 @@
             box-shadow: 0 0 5px var(--light-pink), 0 0 10px var(--hot-pink);
         }
         @keyframes blink { 50% { opacity: 0; } }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .terminal-container {
+            animation: fadeIn 0.8s ease-out;
+        }
+        .terminal-output > div {
+            animation: slideUp 0.3s ease-out;
+        }
         #command-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -238,7 +252,13 @@
         }
         
         resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
+        
+        // Debounced resize handler for better performance
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(resizeCanvas, 150);
+        });
         
         function drawMatrix() {
             ctx.fillStyle = 'rgba(17, 0, 17, 0.05)';
@@ -255,6 +275,10 @@
         }
         requestAnimationFrame(drawMatrix);
 
+        // Command history and autocomplete
+        let commandHistory = [];
+        let historyIndex = -1;
+        
         const commands = {
             'help': {
                 action: () => {
@@ -263,7 +287,12 @@
                     addResponse('[p / portfolio] - Access project matrix');
                     addResponse('[a / about] - Identity protocols');
                     addResponse('[c / contact] - Open secure channel');
-                    addResponse('[clear] - Purge terminal display\n');
+                    addResponse('[clear / cls] - Purge terminal display');
+                    addResponse('[whoami] - Identity check');
+                    addResponse('[ls] - List available sections');
+                    addResponse('[theme] - Display current theme');
+                    addResponse('[date] - Show current date/time');
+                    addResponse('\n💡 Tips: Use ↑↓ arrows for command history, Tab for autocomplete\n');
                 }
             },
             'p': {
@@ -289,6 +318,32 @@
             },
             'cls': {
                 action: () => outputElement.innerHTML = ''
+            },
+            'theme': {
+                action: () => {
+                    addResponse('Current theme: Neon Cyberpunk 💖');
+                    addResponse('Hot Pink (#ff069d) primary color');
+                }
+            },
+            'whoami': {
+                action: () => {
+                    addResponse('You are accessing LyriCodes portfolio terminal.');
+                    addResponse('Creative developer specializing in AI and immersive experiences.');
+                }
+            },
+            'ls': {
+                action: () => {
+                    addResponse('Available sections:');
+                    addResponse('  📁 portfolio/  - View my projects');
+                    addResponse('  📁 about/      - Learn more about me');
+                    addResponse('  📁 contact/    - Get in touch');
+                }
+            },
+            'date': {
+                action: () => addResponse(`Current date: ${new Date().toLocaleString()}`)
+            },
+            'echo': {
+                action: (args) => addResponse(args || '')
             }
         };
 
@@ -301,11 +356,23 @@
         ];
 
         function processCommand(command) {
+            if (!command) return;
+            
+            // Add to command history
+            commandHistory.push(command);
+            historyIndex = commandHistory.length;
+            
             addResponse(`♕ ${command}`, false);
-            const cmd = commands[command];
+            
+            // Parse command and arguments
+            const parts = command.split(' ');
+            const cmdName = parts[0];
+            const args = parts.slice(1).join(' ');
+            
+            const cmd = commands[cmdName];
             if (cmd) {
                 try {
-                    cmd.action();
+                    cmd.action(args);
                 } catch (error) {
                     console.error('Command error:', error);
                     addResponse(`Error executing command: [${command}]`);
@@ -315,21 +382,42 @@
             }
         }
         
+        // Autocomplete function
+        function autocomplete(partial) {
+            const matches = Object.keys(commands).filter(cmd => cmd.startsWith(partial));
+            return matches.length === 1 ? matches[0] : partial;
+        }
+        
         function addResponse(text, isTypingOrCallback, callback) {
             const line = document.createElement('div');
+            line.style.opacity = '0';
             outputElement.appendChild(line);
+            
+            // Smooth scroll to bottom
+            requestAnimationFrame(() => {
+                line.style.opacity = '1';
+                outputElement.scrollTo({
+                    top: outputElement.scrollHeight,
+                    behavior: 'smooth'
+                });
+            });
+            
             if (isTypingOrCallback === false) {
                 line.innerHTML = text;
-                outputElement.scrollTop = outputElement.scrollHeight;
                 return;
             }
             let i = 0;
-            const typeSpeed = 25; 
+            const typeSpeed = 20; 
             function typeChar() {
                 if (i < text.length) {
                     line.innerHTML += text.charAt(i);
                     i++;
-                    outputElement.scrollTop = outputElement.scrollHeight;
+                    if (i % 3 === 0) { // Scroll every 3 characters for smoothness
+                        outputElement.scrollTo({
+                            top: outputElement.scrollHeight,
+                            behavior: 'smooth'
+                        });
+                    }
                     setTimeout(typeChar, typeSpeed);
                 } else {
                     if (typeof isTypingOrCallback === 'function') setTimeout(isTypingOrCallback, 500);
@@ -367,11 +455,38 @@
             commandButtons.forEach(btn => btn.disabled = isDisabled);
         }
 
-        inputElement.addEventListener('keyup', (e) => {
-            if (e.key !== 'Enter') return;
-            const command = inputElement.value.toLowerCase().trim();
-            if (command) processCommand(command);
-            inputElement.value = '';
+        inputElement.addEventListener('keydown', (e) => {
+            // Command history navigation
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    inputElement.value = commandHistory[historyIndex];
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    inputElement.value = commandHistory[historyIndex];
+                } else {
+                    historyIndex = commandHistory.length;
+                    inputElement.value = '';
+                }
+            }
+            // Tab autocomplete
+            else if (e.key === 'Tab') {
+                e.preventDefault();
+                const value = inputElement.value.toLowerCase().trim();
+                if (value) {
+                    inputElement.value = autocomplete(value);
+                }
+            }
+            // Enter to execute
+            else if (e.key === 'Enter') {
+                const command = inputElement.value.toLowerCase().trim();
+                if (command) processCommand(command);
+                inputElement.value = '';
+            }
         });
 
         commandButtons.forEach(button => {
