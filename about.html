@@ -44,34 +44,37 @@
     
     <style>
         :root {
-            --neon-pink: #f72585;
-            --violet-fuschia: #b5179e;
+            --hot-pink: #ff069d;
+            --neon-pink: #ff00ff;
+            --light-pink: #ff9de2;
             --dark-purple: #7209b7;
             --midnight-indigo: #3a0ca3;
             --cyber-blue: #4361ee;
-            --cool-lavender: #4cc9f0;
-            --dark-charcoal: #1a1a2e;
+            --cool-lavender: #ff9de2;
+            --dark-charcoal: #0a0014;
             --soft-gray: #adb5bd;
-            --monitor-glow: #edf6f9;
+            --monitor-glow: #ff9de2;
             
-            --glow: 0 0 12px #f72585;
-            --scan-pulse: 0 0 15px rgba(247, 37, 133, 0.7);
-            --gradient-accent: linear-gradient(135deg, var(--neon-pink), var(--cool-lavender));
+            --glow: 0 0 12px #ff069d;
+            --scan-pulse: 0 0 15px rgba(255, 6, 157, 0.7);
+            --gradient-accent: linear-gradient(135deg, var(--light-pink), var(--neon-pink), var(--hot-pink));
         }
         
         body {
-            background-color: var(--dark-charcoal);
-            color: var(--monitor-glow);
+            background: linear-gradient(135deg, #0a0014 0%, #1a0a2e 50%, #16213e 100%);
+            background-attachment: fixed;
+            color: var(--light-pink);
             min-height: 100vh;
             touch-action: none;
             font-family: 'JetBrains Mono', monospace;
         }
         
         a {
-            color: var(--cyber-blue);
+            color: var(--neon-pink);
         }
         a:hover {
-            color: var(--neon-pink);
+            color: var(--hot-pink);
+            text-shadow: 0 0 10px rgba(255, 6, 157, 0.8);
         }
         
         button {
@@ -81,88 +84,92 @@
         }
         
         h1, h2 {
-            color: var(--violet-fuschia);
-            text-shadow: 0 0 10px var(--neon-pink);
+            color: var(--light-pink);
+            text-shadow: 0 0 10px var(--hot-pink);
         }
         
         ::selection {
-            background: var(--neon-pink);
-            color: var(--dark-charcoal);
+            background: var(--hot-pink);
+            color: #0a0014;
         }
         
         /* UI Elements */
         #idCard {
-            background: rgba(58, 12, 163, 0.5);
-            border: 1px solid rgba(247, 37, 133, 0.3);
-            backdrop-filter: blur(12px);
-            color: var(--monitor-glow);
-            box-shadow: var(--glow), 0 0 0 3px rgba(67, 97, 238, 0.1);
+            background: rgba(20, 0, 10, 0.3);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 6, 157, 0.2);
+            color: var(--light-pink);
+            box-shadow: 0 8px 32px 0 rgba(255, 0, 150, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05) inset, 0 0 60px rgba(255, 0, 150, 0.1);
             transform-style: preserve-3d;
             transition: all 0.3s ease;
         }
         #idCard:active {
             transform: scale(1.05) translateZ(10px);
-            box-shadow: 0 0 40px var(--neon-pink), 0 0 30px rgba(67, 97, 238, 0.5);
+            box-shadow: 0 0 40px var(--hot-pink), 0 0 30px rgba(255, 0, 255, 0.5);
         }
         #idCard:hover {
             transform: translateZ(15px);
-            box-shadow: var(--glow), 0 0 40px rgba(67, 97, 238, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(255, 0, 150, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) inset, 0 0 80px rgba(255, 0, 150, 0.2);
         }
         
         .id-photo {
-            border: 2px solid rgba(76, 201, 240, 0.7);
-            box-shadow: 0 0 30px rgba(76, 201, 240, 0.3), inset 0 0 30px rgba(76, 201, 240, 0.1);
+            border: 2px solid rgba(255, 6, 157, 0.7);
+            box-shadow: 0 0 30px rgba(255, 6, 157, 0.3), inset 0 0 30px rgba(255, 6, 157, 0.1);
         }
         .id-photo::before {
-            background: conic-gradient(from 0deg at 50% 50%, rgba(247,37,133,0) 0%, rgba(247,37,133,0.7) 25%, rgba(76,201,240,0.7) 50%, rgba(247,37,133,0.7) 75%, rgba(247,37,133,0) 100%);
+            background: conic-gradient(from 0deg at 50% 50%, rgba(255, 6, 157, 0) 0%, rgba(255, 6, 157, 0.7) 25%, rgba(255, 0, 255, 0.7) 50%, rgba(255, 6, 157, 0.7) 75%, rgba(255, 6, 157, 0) 100%);
         }
         @keyframes rotateBorder { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
         #scanner {
-            background: rgba(72, 9, 183, 0.4);
-            border: 1px solid var(--cool-lavender);
-            box-shadow: inset 0 0 40px rgba(76, 201, 240, 0.2), 0 0 30px rgba(76, 201, 240, 0.2);
+            background: rgba(20, 0, 10, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 6, 157, 0.4);
+            box-shadow: inset 0 0 40px rgba(255, 6, 157, 0.2), 0 0 30px rgba(255, 6, 157, 0.2);
         }
         #scanner.hovering {
-            box-shadow: 0 0 60px var(--cool-lavender), inset 0 0 60px rgba(76, 201, 240, 0.4);
+            box-shadow: 0 0 60px var(--hot-pink), inset 0 0 60px rgba(255, 6, 157, 0.4);
         }
         #scanner .scan-line {
-            background: var(--cool-lavender);
-            box-shadow: 0 0 25px var(--cool-lavender);
+            background: var(--hot-pink);
+            box-shadow: 0 0 25px var(--hot-pink);
         }
         #scanner .scan-grid {
-            background: linear-gradient(rgba(76,201,240,0.1) 1px, transparent 1px), 
-                        linear-gradient(90deg, rgba(76,201,240,0.1) 1px, transparent 1px);
+            background: linear-gradient(rgba(255, 6, 157, 0.1) 1px, transparent 1px), 
+                        linear-gradient(90deg, rgba(255, 6, 157, 0.1) 1px, transparent 1px);
         }
         
         .blast-door {
-            background: linear-gradient(to right, #160132, #2a0069);
+            background: linear-gradient(to right, #0a0014, #1a0a2e);
             box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.8);
         }
-        #doorLeft { border-right: 4px solid var(--neon-pink); }
-        #doorRight { border-left: 4px solid var(--neon-pink); }
+        #doorLeft { border-right: 4px solid var(--hot-pink); }
+        #doorRight { border-left: 4px solid var(--hot-pink); }
         .door-panel {
-            background: linear-gradient(135deg,rgba(247,37,133,0.05) 25%,transparent 25%) -50px 0, 
-                        linear-gradient(225deg,rgba(247,37,133,0.05) 25%,transparent 25%) -50px 0, 
-                        linear-gradient(315deg,rgba(247,37,133,0.05) 25%,transparent 25%), 
-                        linear-gradient(45deg,rgba(247,37,133,0.05) 25%,transparent 25%);
+            background: linear-gradient(135deg,rgba(255, 6, 157, 0.05) 25%,transparent 25%) -50px 0, 
+                        linear-gradient(225deg,rgba(255, 6, 157, 0.05) 25%,transparent 25%) -50px 0, 
+                        linear-gradient(315deg,rgba(255, 6, 157, 0.05) 25%,transparent 25%), 
+                        linear-gradient(45deg,rgba(255, 6, 157, 0.05) 25%,transparent 25%);
         }
         
         #dossier-content {
-            background: radial-gradient(circle at 20% 30%, rgba(114,9,183,0.2) 0%, transparent 40%), 
-                        radial-gradient(circle at 80% 70%, rgba(247,37,133,0.1) 0%, transparent 40%), 
-                        var(--dark-charcoal);
+            background: linear-gradient(135deg, #0a0014 0%, #1a0a2e 50%, #16213e 100%);
         }
         
         .content-card {
-            background: rgba(26, 26, 46, 0.4);
-            border: 1px solid rgba(76, 201, 240, 0.2);
-            backdrop-filter: blur(8px);
+            background: rgba(20, 0, 10, 0.3);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 6, 157, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(255, 0, 150, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05) inset, 0 0 60px rgba(255, 0, 150, 0.1);
             transition: all 0.3s ease;
         }
         .content-card:hover {
-            border-color: rgba(247,37,133,0.3);
-            box-shadow: 0 0 30px rgba(247,37,133,0.1);
+            border-color: rgba(255, 6, 157, 0.4);
+            box-shadow: 0 12px 48px 0 rgba(255, 0, 150, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset, 0 0 80px rgba(255, 0, 150, 0.2);
             transform: translateY(-5px);
         }
         
@@ -208,11 +215,12 @@
         
         /* Overrides for Tailwind classes */
         .bg-cyber-gradient {
-            background: linear-gradient(135deg, var(--neon-pink), var(--cool-lavender));
+            background: linear-gradient(135deg, var(--light-pink), var(--neon-pink), var(--hot-pink));
         }
         .text-cyber-gradient {
-            background: linear-gradient(135deg, var(--neon-pink), var(--cool-lavender));
+            background: linear-gradient(135deg, var(--light-pink), var(--neon-pink), var(--hot-pink));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
@@ -276,8 +284,8 @@
         <div id="dossier-content" class="w-full min-h-full py-20 px-8">
             <div class="max-w-6xl mx-auto px-4">
                 <section class="text-center mb-16">
-                    <h1 class="text-5xl md:text-6xl font-bold mb-4 text-violet-fuschia text-shadow-neon-pink">ACCESS GRANTED</h1>
-                    <h2 class="text-2xl md:text-3xl text-violet-fuschia">DOSSIER: LYRICODES</h2>
+                    <h1 class="text-5xl md:text-6xl font-bold mb-4" style="color: var(--light-pink); text-shadow: 0 0 20px var(--hot-pink);">ACCESS GRANTED</h1>
+                    <h2 class="text-2xl md:text-3xl" style="color: var(--light-pink); text-shadow: 0 0 10px var(--hot-pink);">DOSSIER: LYRICODES</h2>
                     <div class="flex justify-center mt-6">
                         <div class="w-40 h-1 rounded-full bg-cyber-gradient"></div>
                     </div>
@@ -288,7 +296,7 @@
                         <div class="flex items-center mb-6 gap-4">
                             <div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.imgur.com/3p2au6v.png" alt="Avatar" class="w-full h-full object-cover"></div>
                             <div>
-                                <h2 class="text-2xl md:text-3xl font-bold text-violet-fuschia">Lyric Olivia Jensen</h2>
+                                <h2 class="text-2xl md:text-3xl font-bold" style="color: var(--light-pink); text-shadow: 0 0 10px var(--hot-pink);">Lyric Olivia Jensen</h2>
                                 <p class="text-sm opacity-80">// Creative Technologist</p>
                             </div>
                         </div>
@@ -297,7 +305,7 @@
                     </div>
                     
                     <div class="content-card">
-                        <h3 class="text-2xl font-bold mb-6 text-violet-fuschia text-shadow-neon-pink">Core Skills</h3>
+                        <h3 class="text-2xl font-bold mb-6" style="color: var(--light-pink); text-shadow: 0 0 10px var(--hot-pink);">Core Skills</h3>
                         <div class="space-y-4">
                             <div class="skill-item relative pl-6 mb-3">
                                 <h4 class="font-bold text-monitor-glow">AI & Machine Learning</h4>
@@ -319,7 +327,7 @@
                     </div>
                     
                     <div class="content-card">
-                        <h3 class="text-2xl font-bold mb-6 text-violet-fuschia text-shadow-neon-pink">Current Focus</h3>
+                        <h3 class="text-2xl font-bold mb-6" style="color: var(--light-pink); text-shadow: 0 0 10px var(--hot-pink);">Current Focus</h3>
                         <div class="space-y-6">
                             <div>
                                 <h4 class="font-bold text-monitor-glow mb-2">Cognitive Interfaces</h4>
@@ -337,7 +345,7 @@
                     </div>
                     
                     <div class="md:col-span-2 text-center mt-8">
-                        <h3 class="text-2xl font-bold mb-6 text-violet-fuschia">Access Channels</h3>
+                        <h3 class="text-2xl font-bold mb-6" style="color: var(--light-pink); text-shadow: 0 0 10px var(--hot-pink);">Access Channels</h3>
                         <div class="flex justify-center gap-8 text-3xl">
                             <a href="#" class="text-soft-gray hover:text-cyber-blue transition-all hover:scale-110"><i class="fab fa-github"></i></a>
                             <a href="#" class="text-soft-gray hover:text-cyber-blue transition-all hover:scale-110"><i class="fab fa-linkedin"></i></a>
@@ -351,8 +359,14 @@
         </div>
     </div>
     
+    <!-- Back to Home Button (always visible) -->
+    <a href="index.html" class="fixed top-8 left-8 z-50 px-6 py-3 rounded-full cursor-pointer transition-all font-orbitron text-sm tracking-wider flex items-center gap-2" style="background: rgba(255, 6, 157, 0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255, 6, 157, 0.3); color: var(--light-pink); text-shadow: 0 0 8px rgba(255, 6, 157, 0.5); text-decoration: none;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        BACK
+    </a>
+    
     <!-- Exit Button -->
-    <button class="floating-back-button fixed bottom-10 right-10 z-50 bg-dark-purple/70 border border-cyber-blue text-monitor-glow px-8 py-4 rounded-full cursor-pointer transition-all font-orbitron text-sm tracking-wider shadow-cyber-blue opacity-0 invisible flex items-center gap-2">
+    <button class="floating-back-button fixed bottom-10 right-10 z-50 px-8 py-4 rounded-full cursor-pointer transition-all font-orbitron text-sm tracking-wider opacity-0 invisible flex items-center gap-2" style="background: rgba(255, 6, 157, 0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255, 6, 157, 0.3); color: var(--light-pink); text-shadow: 0 0 8px rgba(255, 6, 157, 0.5);">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         EXIT DOSSIER
     </button>
@@ -541,7 +555,7 @@
             function drawMatrix() {
                 ctx.fillStyle = 'rgba(26, 26, 46, 0.04)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = 'var(--cool-lavender)';
+                ctx.fillStyle = '#ff069d';
                 ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
                 
                 for (let i = 0; i < drops.length; i++) {
