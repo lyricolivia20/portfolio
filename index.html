@@ -455,20 +455,37 @@
         const commands = {
             'help': {
                 action: () => {
-                    addResponse('\n[AVAILABLE DIRECTIVES]\n');
-                    addResponse('[help] - Display this help menu');
-                    addResponse('[p / portfolio] - Access project matrix');
-                    addResponse('[a / about] - Identity protocols');
-                    addResponse('[c / contact] - Open secure channel');
-                    addResponse('[clear / cls] - Purge terminal display');
-                    addResponse('[whoami] - Identity check');
-                    addResponse('[ls] - List available sections');
-                    addResponse('[skills] - View technical skills');
-                    addResponse('[banner] - Display ASCII banner');
-                    addResponse('[theme] - Display current theme');
-                    addResponse('[date] - Show current date/time');
-                    addResponse('[echo <text>] - Print custom text');
-                    addResponse('\n💡 Tips: Use ↑↓ arrows for command history, Tab for autocomplete\n');
+                    addResponse('\n🤖 LyriBot Helper Menu\n');
+                    addResponse('📍 NAVIGATION:');
+                    addResponse('   [about/a] - Learn about LyriCodes');
+                    addResponse('   [projects/p] - Explore creative work');
+                    addResponse('   [contact/c] - Get in touch');
+                    addResponse('\n🎨 EXPLORATION:');
+                    addResponse('   [skills] - Technical abilities');
+                    addResponse('   [whoami] - Identity check');
+                    addResponse('   [ls] - List all sections');
+                    addResponse('   [banner] - ASCII art');
+                    addResponse('   [theme] - Color scheme info');
+                    addResponse('   [date] - Current date/time');
+                    addResponse('\n🛠️ UTILITIES:');
+                    addResponse('   [clear/cls] - Clear terminal');
+                    addResponse('   [echo <text>] - Print text');
+                    addResponse('   [joke] - Get a dev joke');
+                    addResponse('\n💡 Use ↑↓ for history | Tab for autocomplete\n');
+                }
+            },
+            'joke': {
+                action: () => {
+                    const jokes = [
+                        "Why do programmers prefer dark mode? Because light attracts bugs! 🐛",
+                        "How many programmers does it take to change a light bulb? None, that's a hardware problem! 💡",
+                        "Why do developers prefer iOS? Because they don't have to deal with Java! ☕",
+                        "What's a programmer's favorite hangout? The Foo Bar! 🍺",
+                        "Why did the developer go broke? Because they used up all their cache! 💸"
+                    ];
+                    const joke = jokes[Math.floor(Math.random() * jokes.length)];
+                    addResponse('🤖 Here\'s one for you:');
+                    addResponse(joke);
                 }
             },
             'p': {
@@ -497,22 +514,36 @@
             },
             'theme': {
                 action: () => {
-                    addResponse('Current theme: Neon Cyberpunk 💖');
-                    addResponse('Hot Pink (#ff069d) primary color');
+                    addResponse('🎨 CURRENT THEME: Neon Cyberpunk Dreams\n');
+                    addResponse('🌈 COLOR PALETTE:');
+                    addResponse('   → Hot Pink: #ff069d');
+                    addResponse('   → Neon Pink: #ff00ff');
+                    addResponse('   → Light Pink: #ff9de2');
+                    addResponse('   → Deep Space: #0a0014 - #16213e\n');
+                    addResponse('✨ Effects: Glassmorphism with 20px backdrop blur');
+                    addResponse('💫 Animations: Smooth cubic-bezier transitions');
+                    addResponse('🌟 Matrix Rain: 80ms frame delay for ambiance');
                 }
             },
             'whoami': {
                 action: () => {
-                    addResponse('You are accessing LyriCodes portfolio terminal.');
-                    addResponse('Creative developer specializing in AI and immersive experiences.');
+                    addResponse('🎭 You are accessing: LyriCodes Portfolio Terminal');
+                    addResponse('👤 Owner: LyriCodes (Lyric Olivia Jensen)');
+                    addResponse('💼 Role: Creative Developer & Digital Artist');
+                    addResponse('🎨 Specialties: AI, 3D Graphics, Immersive Experiences');
+                    addResponse('🌟 Currently: Crafting the future of digital art');
+                    addResponse('\n✨ Want to know more? Type \'about\' or click the menu!');
                 }
             },
             'ls': {
                 action: () => {
-                    addResponse('Available sections:');
-                    addResponse('  📁 portfolio/  - View my projects');
-                    addResponse('  📁 about/      - Learn more about me');
-                    addResponse('  📁 contact/    - Get in touch');
+                    addResponse('📂 LYRICODES PORTFOLIO STRUCTURE:\n');
+                    addResponse('├── 🏠 home/        → You are here!');
+                    addResponse('├── 👤 about/       → My story & journey');
+                    addResponse('├── 💼 projects/    → Creative work showcase');
+                    addResponse('├── 📧 contact/     → Get in touch');
+                    addResponse('└── 🤖 lyribot/    → Interactive guide (me!)\n');
+                    addResponse('💡 Tip: Click any section name or use commands!');
                 }
             },
             'date': {
@@ -523,29 +554,58 @@
             },
             'skills': {
                 action: () => {
-                    addResponse('Technical Skills:');
-                    addResponse('  🤖 AI/ML - TensorFlow, PyTorch');
-                    addResponse('  🎨 Creative Code - Three.js, WebGL');
-                    addResponse('  ⚛️  Frontend - React, Next.js');
-                    addResponse('  🔧 Backend - Node.js, Python');
+                    addResponse('💪 TECHNICAL CAPABILITIES:\n');
+                    addResponse('🤖 AI & Machine Learning');
+                    addResponse('   → TensorFlow, PyTorch, OpenAI APIs');
+                    addResponse('   → Neural networks, NLP, Computer Vision\n');
+                    addResponse('🎨 Creative Coding');
+                    addResponse('   → Three.js, WebGL, GLSL Shaders');
+                    addResponse('   → p5.js, Processing, Generative Art\n');
+                    addResponse('⚛️ Frontend Development');
+                    addResponse('   → React, Next.js, Vue, TypeScript');
+                    addResponse('   → TailwindCSS, Framer Motion\n');
+                    addResponse('🔧 Backend & Tools');
+                    addResponse('   → Node.js, Python, GraphQL');
+                    addResponse('   → Git, Docker, CI/CD\n');
+                    addResponse('✨ Want to see these in action? Check out my projects!');
                 }
             },
             'banner': {
                 action: () => {
-                    addResponse('  ╔═══════════════════════════════╗');
-                    addResponse('  ║     LyriCodes Portfolio       ║');
-                    addResponse('  ║  Creative Developer & Artist  ║');
-                    addResponse('  ╚═══════════════════════════════╝');
+                    addResponse('\n  ╔══════════════════════════════════╗');
+                    addResponse('  ║                                  ║');
+                    addResponse('  ║       ✨ LyriCodes ✨            ║');
+                    addResponse('  ║                                  ║');
+                    addResponse('  ║   Creative Developer & Artist    ║');
+                    addResponse('  ║   Crafting Digital Dreams 💖     ║');
+                    addResponse('  ║                                  ║');
+                    addResponse('  ╚══════════════════════════════════╝\n');
+                    addResponse('  🤖 LyriBot says: Looking good! ✨');
+                }
+            },
+            'surprise': {
+                action: () => {
+                    addResponse('🎉 You found the secret command!');
+                    addResponse('✨ Here\'s a little easter egg for you...');
+                    addResponse('💖 Thanks for exploring! You\'re awesome!');
+                    addResponse('🌟 Keep being curious - it\'s what makes you special!');
                 }
             }
         };
 
-        const bootSequence = [
-            { text: "Booting Lyricodes OS...", delay: 500 },
-            { text: "Aesthetic protocols injected... [OK]", delay: 800 },
-            { text: "Verifying user... Access granted.", delay: 1000 },
-            { text: "\n[SYSTEM READY]", delay: 300 },
-            { text: "Type 'help' to view available commands.\n", delay: 200 }
+        const botSequence = [
+            { text: "🤖 Initializing LyriBot v2.0...", delay: 400 },
+            { text: "✨ Neural pathways: [ONLINE]", delay: 500 },
+            { text: "💖 Aesthetic protocols: [LOADED]\n", delay: 600 },
+            { text: "👋 Hey there! I'm LyriBot, your guide through this digital space.", delay: 800 },
+            { text: "\n✨ Let me show you around...\n", delay: 600 },
+            { text: "📂 QUICK NAVIGATION:", delay: 400 },
+            { text: "   → Type 'about' or 'a' to learn my story", delay: 300 },
+            { text: "   → Type 'projects' or 'p' to explore my work", delay: 300 },
+            { text: "   → Type 'contact' or 'c' to get in touch", delay: 300 },
+            { text: "   → Type 'skills' to see what I can do", delay: 300 },
+            { text: "\n💡 Pro tip: Type 'help' anytime for more commands!", delay: 400 },
+            { text: "🎨 Or just click the menu bubble in the top right!\n", delay: 400 }
         ];
 
         function processCommand(command) {
@@ -623,13 +683,44 @@
         async function initTerminal() {
             setControlsDisabled(true);
             await animateHeader();
-            for (const item of bootSequence) {
+            
+            // Show bot welcome sequence
+            for (const item of botSequence) {
                 await new Promise(resolve => setTimeout(resolve, item.delay));
                 addResponse(item.text);
             }
+            
             setControlsDisabled(false);
             inputElement.focus();
+            
+            // Show typing indicator occasionally when idle
+            startIdleAnimations();
         }
+        
+        // Idle animations to keep terminal feeling alive
+        let idleTimeout;
+        function startIdleAnimations() {
+            clearTimeout(idleTimeout);
+            idleTimeout = setTimeout(() => {
+                if (!inputElement.value) {
+                    const tips = [
+                        "💭 Psst... still here? Try typing 'about' to learn more about me!",
+                        "🌟 Did you know? You can use arrow keys ↑↓ to navigate command history!",
+                        "✨ Try typing 'banner' for a cool ASCII art surprise!",
+                        "🎯 Quick tip: Tab key autocompletes commands!",
+                        "💖 Feeling curious? Type 'whoami' to learn who you're talking to!"
+                    ];
+                    const randomTip = tips[Math.floor(Math.random() * tips.length)];
+                    addResponse(randomTip);
+                    startIdleAnimations();
+                }
+            }, 30000); // Show tip after 30 seconds of inactivity
+        }
+        
+        // Reset idle timer on user interaction
+        inputElement.addEventListener('input', () => {
+            startIdleAnimations();
+        });
 
         async function animateHeader() {
             const title = "LyriCodes";
