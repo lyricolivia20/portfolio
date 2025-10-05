@@ -158,10 +158,24 @@
             text-shadow: 0 0 8px rgba(255, 6, 157, 0.4);
             background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(5px);
+            scroll-behavior: smooth;
+            line-height: 1.6;
+        }
+        .terminal-output > div {
+            margin-bottom: 0.25rem;
+            word-wrap: break-word;
         }
         .command-input {
             caret-color: var(--hot-pink);
             text-shadow: 0 0 8px rgba(255, 6, 157, 0.5);
+            font-size: 1rem;
+        }
+        .prompt-icon {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
         .command-input::placeholder { color: rgba(255, 6, 157, 0.4); }
         #matrix-canvas {
@@ -220,7 +234,7 @@
             </div>
             
             <div class="px-5 py-4 flex items-center border-t" style="border-color: rgba(255, 6, 157, 0.15); background: rgba(255, 6, 157, 0.03); backdrop-filter: blur(10px);">
-                <span class="mr-3 text-xl" style="color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink), 0 0 20px rgba(255, 0, 255, 0.5);">♕</span>
+                <span class="mr-3 text-xl prompt-icon" style="color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink), 0 0 20px rgba(255, 0, 255, 0.5);">♕</span>
                 <input 
                     id="command-input" type="text"
                     class="command-input flex-1 bg-transparent outline-none font-mono"
@@ -243,6 +257,8 @@
         let drops = [];
         const chars = 'LYRICO DES♕💖👩💻█▓▒░║‗╔╦╗╚╩╝';
         const fontSize = 14;
+        let lastTime = 0;
+        const frameDelay = 80; // Slower matrix rain (80ms between frames)
         
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -260,8 +276,13 @@
             resizeTimeout = setTimeout(resizeCanvas, 150);
         });
         
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(17, 0, 17, 0.05)';
+        function drawMatrix(currentTime) {
+            requestAnimationFrame(drawMatrix);
+            
+            if (currentTime - lastTime < frameDelay) return;
+            lastTime = currentTime;
+            
+            ctx.fillStyle = 'rgba(17, 0, 17, 0.08)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--hot-pink').trim();
             ctx.font = fontSize + 'px monospace';
@@ -271,7 +292,6 @@
                 if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
-            requestAnimationFrame(drawMatrix);
         }
         requestAnimationFrame(drawMatrix);
 
@@ -290,8 +310,11 @@
                     addResponse('[clear / cls] - Purge terminal display');
                     addResponse('[whoami] - Identity check');
                     addResponse('[ls] - List available sections');
+                    addResponse('[skills] - View technical skills');
+                    addResponse('[banner] - Display ASCII banner');
                     addResponse('[theme] - Display current theme');
                     addResponse('[date] - Show current date/time');
+                    addResponse('[echo <text>] - Print custom text');
                     addResponse('\n💡 Tips: Use ↑↓ arrows for command history, Tab for autocomplete\n');
                 }
             },
@@ -344,6 +367,23 @@
             },
             'echo': {
                 action: (args) => addResponse(args || '')
+            },
+            'skills': {
+                action: () => {
+                    addResponse('Technical Skills:');
+                    addResponse('  🤖 AI/ML - TensorFlow, PyTorch');
+                    addResponse('  🎨 Creative Code - Three.js, WebGL');
+                    addResponse('  ⚛️  Frontend - React, Next.js');
+                    addResponse('  🔧 Backend - Node.js, Python');
+                }
+            },
+            'banner': {
+                action: () => {
+                    addResponse('  ╔═══════════════════════════════╗');
+                    addResponse('  ║     LyriCodes Portfolio       ║');
+                    addResponse('  ║  Creative Developer & Artist  ║');
+                    addResponse('  ╚═══════════════════════════════╝');
+                }
             }
         };
 

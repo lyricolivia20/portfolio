@@ -95,14 +95,14 @@
         
         /* UI Elements */
         #idCard {
-            background: rgba(20, 0, 10, 0.3);
+            background: rgba(20, 0, 10, 0.4);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 6, 157, 0.2);
+            border: 1px solid rgba(255, 6, 157, 0.3);
             color: var(--light-pink);
-            box-shadow: 0 8px 32px 0 rgba(255, 0, 150, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05) inset, 0 0 60px rgba(255, 0, 150, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(255, 0, 150, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset, 0 0 60px rgba(255, 0, 150, 0.15);
             transform-style: preserve-3d;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         #idCard:active {
             transform: scale(1.05) translateZ(10px);
@@ -165,12 +165,18 @@
             border-radius: 16px;
             padding: 2rem;
             box-shadow: 0 8px 32px 0 rgba(255, 0, 150, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05) inset, 0 0 60px rgba(255, 0, 150, 0.1);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .content-card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         .content-card:hover {
             border-color: rgba(255, 6, 157, 0.4);
             box-shadow: 0 12px 48px 0 rgba(255, 0, 150, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset, 0 0 80px rgba(255, 0, 150, 0.2);
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.02);
         }
         
         /* Video container (placeholder before doors open) */
@@ -222,6 +228,19 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .skill-item {
+            transition: all 0.3s ease;
+        }
+        .skill-item:hover {
+            transform: translateX(8px);
+            color: var(--hot-pink);
         }
         
         /* Responsive adjustments */
@@ -388,10 +407,36 @@
             const videoBg = document.getElementById('video-bg');
             
             // Skill item dots (using custom CSS instead of before pseudo-elements)
-            document.querySelectorAll('.skill-item').forEach(item => {
+            document.querySelectorAll('.skill-item').forEach((item, index) => {
                 const dot = document.createElement('div');
-                dot.className = 'absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-cool-lavender shadow-cool-lavender';
+                dot.className = 'absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full shadow-cool-lavender';
+                dot.style.background = 'var(--hot-pink)';
+                dot.style.boxShadow = '0 0 10px var(--hot-pink)';
                 item.prepend(dot);
+                
+                // Animate skill items on hover
+                item.style.transitionDelay = `${index * 0.1}s`;
+            });
+            
+            // Intersection Observer for smooth card animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 150);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.content-card').forEach(card => {
+                observer.observe(card);
             });
             
             // Sound effects
@@ -552,8 +597,16 @@
             const columns = Math.floor(canvas.width / fontSize);
             const drops = Array(columns).fill(0).map(() => Math.random() * -canvas.height);
             
-            function drawMatrix() {
-                ctx.fillStyle = 'rgba(26, 26, 46, 0.04)';
+            let lastMatrixTime = 0;
+            const matrixFrameDelay = 100; // Slower matrix rain (100ms between frames)
+            
+            function drawMatrix(currentTime) {
+                requestAnimationFrame(drawMatrix);
+                
+                if (currentTime - lastMatrixTime < matrixFrameDelay) return;
+                lastMatrixTime = currentTime;
+                
+                ctx.fillStyle = 'rgba(10, 0, 20, 0.1)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#ff069d';
                 ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
@@ -569,7 +622,7 @@
                     drops[i]++;
                 }
             }
-            setInterval(drawMatrix, 60);
+            requestAnimationFrame(drawMatrix);
         });
     </script>
 </body>
