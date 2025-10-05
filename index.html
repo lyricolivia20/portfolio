@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>LyriCodes | Interactive Developer Portfolio</title>
-    <meta name="description" content="The interactive terminal of LyriCodes, a creative developer specializing in AI, 3D graphics, and immersive web experiences. Explore projects, learn more, and get in touch.">
-    <meta name="keywords" content="LyriCodes, portfolio, developer, creative developer, web developer, AI, 3D graphics, JavaScript, Python, interactive, terminal, front-end developer">
+    <title>LyriCodes | Award-Winning Creative Developer</title>
+    <meta name="description" content="Portfolio of LyriCodes - Creative developer crafting immersive digital experiences through AI, 3D graphics, and cutting-edge web technologies.">
+    <meta name="keywords" content="LyriCodes, portfolio, creative developer, AI developer, 3D graphics, WebGL, immersive experiences, award winning portfolio">
     <meta name="author" content="LyriCodes">
     <link rel="canonical" href="https://portfolio-roan-one-39.vercel.app/">
 
-    <meta property="og:title" content="LyriCodes | Interactive Portfolio">
-    <meta property="og:description" content="An interactive terminal portfolio showcasing the work of a creative developer.">
+    <meta property="og:title" content="LyriCodes | Award-Winning Creative Developer">
+    <meta property="og:description" content="Crafting immersive digital experiences through AI and cutting-edge web technologies.">
     <meta property="og:image" content="https://i.imgur.com/your-preview-image.png">
     <meta property="og:url" content="https://portfolio-roan-one-39.vercel.app/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="LyriCodes | Interactive Portfolio">
-    <meta name="twitter:description" content="An interactive terminal portfolio showcasing the work of a creative developer.">
+    <meta name="twitter:title" content="LyriCodes | Award-Winning Creative Developer">
+    <meta name="twitter:description" content="Crafting immersive digital experiences through AI and cutting-edge web technologies.">
     <meta name="theme-color" content="#ff069d">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --hot-pink: #ff069d;
@@ -35,12 +35,29 @@
             --scrollbar-thumb: rgba(255, 6, 157, 0.6);
             --scrollbar-thumb-hover: rgba(255, 6, 157, 0.8);
         }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             background: linear-gradient(135deg, #0a0014 0%, #1a0a2e 50%, #16213e 100%);
             background-attachment: fixed;
-            color: var(--hot-pink);
-            font-family: 'Courier New', monospace;
-            overflow: hidden;
+            color: var(--light-pink);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        code, pre, .mono {
+            font-family: 'Courier New', 'Monaco', monospace;
         }
         .terminal-container { perspective: 1000px; }
         .terminal-wrapper {
@@ -67,21 +84,30 @@
         .terminal-wrapper:active { cursor: grabbing; }
         .neon-header { 
             text-align: center; 
-            padding: 1.5rem 0; 
-            min-height: 100px;
-            background: rgba(255, 6, 157, 0.03);
+            padding: 2.5rem 2rem; 
+            min-height: 120px;
+            background: rgba(255, 6, 157, 0.02);
             backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 6, 157, 0.1);
         }
         .neon-header h1 {
-            font-family: 'Dancing Script', cursive;
-            font-weight: 700;
-            font-size: 3.5rem;
-            background: linear-gradient(135deg, var(--light-pink) 0%, var(--neon-pink) 50%, var(--hot-pink) 100%);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #ffffff 0%, var(--light-pink) 40%, var(--hot-pink) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 0 20px rgba(255, 6, 157, 0.5)) drop-shadow(0 0 40px rgba(255, 0, 255, 0.3));
-            letter-spacing: 2px;
+            filter: drop-shadow(0 0 30px rgba(255, 6, 157, 0.4));
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+        .neon-header .subtitle {
+            font-size: 0.95rem;
+            color: rgba(255, 157, 226, 0.7);
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
         }
         .typing-cursor {
             display: inline-block;
@@ -117,17 +143,18 @@
             border-bottom: 1px solid rgba(255, 6, 157, 0.15);
         }
         .command-btn {
-            background: rgba(255, 6, 157, 0.08);
+            background: rgba(255, 6, 157, 0.1);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 6, 157, 0.3);
+            border: 1px solid rgba(255, 6, 157, 0.25);
             color: var(--light-pink);
-            padding: 0.5rem 1.25rem;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
+            padding: 0.65rem 1.5rem;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-shadow: 0 0 8px rgba(255, 6, 157, 0.5);
+            text-shadow: 0 0 10px rgba(255, 6, 157, 0.3);
             position: relative;
             overflow: hidden;
         }
@@ -138,8 +165,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 6, 157, 0.3), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255, 6, 157, 0.4), transparent);
+            transition: left 0.6s;
         }
         .command-btn:hover::before {
             left: 100%;
@@ -155,15 +182,24 @@
             cursor: not-allowed;
         }
         .terminal-output {
-            text-shadow: 0 0 8px rgba(255, 6, 157, 0.4);
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
+            text-shadow: 0 0 8px rgba(255, 6, 157, 0.3);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
             scroll-behavior: smooth;
-            line-height: 1.6;
+            line-height: 1.8;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
         }
         .terminal-output > div {
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.4rem;
             word-wrap: break-word;
+            padding-left: 0.5rem;
+            border-left: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .terminal-output > div:hover {
+            border-left-color: rgba(255, 6, 157, 0.3);
+            background: rgba(255, 6, 157, 0.03);
         }
         .command-input {
             caret-color: var(--hot-pink);
@@ -189,10 +225,48 @@
             border-radius: 4px;
         }
         .terminal-output::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
-        @media (max-width: 640px) {
-            .neon-header h1 { font-size: 2.5rem; }
-            .typing-cursor { width: 0.75rem; height: 2.5rem; }
-            #terminal-output { height: 16rem; }
+        /* Navigation Menu */
+        .nav-menu {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.5s forwards;
+        }
+        .nav-link {
+            color: var(--light-pink);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 6, 157, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 6, 157, 0.15);
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            background: rgba(255, 6, 157, 0.15);
+            border-color: rgba(255, 6, 157, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 6, 157, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                top: 1rem;
+                right: 1rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .neon-header h1 { font-size: 2rem; }
+            .neon-header .subtitle { font-size: 0.8rem; }
+            .typing-cursor { width: 0.75rem; height: 2rem; }
+            #terminal-output { height: 18rem; }
+            .command-btn { padding: 0.5rem 1rem; font-size: 0.8rem; }
         }
         .command-btn:focus-visible {
             outline: 2px solid var(--hot-pink);
@@ -208,6 +282,13 @@
 <body class="min-h-screen flex items-center justify-center p-2 sm:p-4">
     
     <canvas id="matrix-canvas"></canvas>
+    
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+        <a href="about.html" class="nav-link">About</a>
+        <a href="projects.html" class="nav-link">Work</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
 
     <div class="terminal-container w-full max-w-4xl">
         <div class="terminal-wrapper rounded-lg overflow-hidden" role="main" aria-label="Interactive Terminal">
@@ -221,6 +302,7 @@
             
             <div class="neon-header">
                 <h1 id="neon-title"></h1>
+                <p class="subtitle">Creative Developer &amp; Digital Artist</p>
             </div>
             
             <div id="terminal-output" class="terminal-output p-4 h-72 overflow-y-auto" role="log" aria-live="polite" aria-relevant="additions"></div>
