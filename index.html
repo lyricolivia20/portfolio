@@ -23,7 +23,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Satisfy&display=swap" rel="stylesheet">
     <style>
         :root {
             --hot-pink: #ff069d;
@@ -91,16 +91,17 @@
             border-bottom: 1px solid rgba(255, 6, 157, 0.1);
         }
         .neon-header h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 800;
-            font-size: 3rem;
+            font-family: 'Satisfy', cursive;
+            font-weight: 400;
+            font-size: 4rem;
             background: linear-gradient(135deg, #ffffff 0%, var(--light-pink) 40%, var(--hot-pink) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 0 30px rgba(255, 6, 157, 0.4));
-            letter-spacing: -0.02em;
+            filter: drop-shadow(0 0 30px rgba(255, 6, 157, 0.5)) drop-shadow(0 0 60px rgba(255, 0, 255, 0.3));
+            letter-spacing: 0.05em;
             margin-bottom: 0.5rem;
+            position: relative;
         }
         .neon-header .subtitle {
             font-size: 0.95rem;
@@ -111,12 +112,13 @@
         }
         .typing-cursor {
             display: inline-block;
-            background-color: var(--light-pink);
-            width: 1rem;
-            height: 3.5rem;
+            background: linear-gradient(135deg, var(--light-pink), var(--hot-pink));
+            width: 0.15rem;
+            height: 4rem;
             margin-left: 0.5rem;
             animation: blink 1s infinite;
-            box-shadow: 0 0 5px var(--light-pink), 0 0 10px var(--hot-pink);
+            box-shadow: 0 0 10px var(--light-pink), 0 0 20px var(--hot-pink);
+            vertical-align: middle;
         }
         @keyframes blink { 50% { opacity: 0; } }
         @keyframes slideUp {
@@ -225,48 +227,118 @@
             border-radius: 4px;
         }
         .terminal-output::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
-        /* Navigation Menu */
-        .nav-menu {
+        /* Floating Hamburger Menu */
+        .hamburger-menu {
             position: fixed;
             top: 2rem;
             right: 2rem;
-            z-index: 1000;
-            display: flex;
-            gap: 1rem;
+            z-index: 10000;
             opacity: 0;
             animation: fadeIn 0.8s ease-out 0.5s forwards;
         }
-        .nav-link {
+        .hamburger-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 6, 157, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 6, 157, 0.3);
+            box-shadow: 0 8px 32px rgba(255, 6, 157, 0.3), 0 0 60px rgba(255, 6, 157, 0.1);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hamburger-button:hover {
+            background: rgba(255, 6, 157, 0.25);
+            border-color: rgba(255, 6, 157, 0.5);
+            box-shadow: 0 12px 48px rgba(255, 6, 157, 0.4), 0 0 80px rgba(255, 6, 157, 0.2);
+            transform: scale(1.05);
+        }
+        .hamburger-line {
+            width: 24px;
+            height: 2px;
+            background: var(--light-pink);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 6, 157, 0.5);
+        }
+        .hamburger-button.active .hamburger-line:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .hamburger-button.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-button.active .hamburger-line:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+        .menu-dropdown {
+            position: absolute;
+            top: 70px;
+            right: 0;
+            background: rgba(20, 0, 10, 0.4);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 6, 157, 0.3);
+            border-radius: 16px;
+            padding: 1rem;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(255, 6, 157, 0.3), 0 0 60px rgba(255, 6, 157, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .menu-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .menu-item {
+            display: block;
             color: var(--light-pink);
             text-decoration: none;
-            font-size: 0.875rem;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
             font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            background: rgba(255, 6, 157, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 6, 157, 0.15);
             transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 8px rgba(255, 6, 157, 0.3);
         }
-        .nav-link:hover {
+        .menu-item:last-child {
+            margin-bottom: 0;
+        }
+        .menu-item:hover {
+            background: rgba(255, 6, 157, 0.2);
+            transform: translateX(5px);
+            box-shadow: 0 0 20px rgba(255, 6, 157, 0.3);
+        }
+        .menu-item.active {
             background: rgba(255, 6, 157, 0.15);
-            border-color: rgba(255, 6, 157, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 6, 157, 0.2);
+            border-left: 3px solid var(--hot-pink);
         }
         
         @media (max-width: 768px) {
-            .nav-menu {
+            .hamburger-menu {
                 top: 1rem;
                 right: 1rem;
-                flex-direction: column;
-                gap: 0.5rem;
             }
-            .neon-header h1 { font-size: 2rem; }
+            .hamburger-button {
+                width: 50px;
+                height: 50px;
+            }
+            .hamburger-line {
+                width: 20px;
+            }
+            .neon-header h1 { font-size: 2.5rem; }
             .neon-header .subtitle { font-size: 0.8rem; }
-            .typing-cursor { width: 0.75rem; height: 2rem; }
+            .typing-cursor { width: 0.1rem; height: 2.5rem; }
             #terminal-output { height: 18rem; }
-            .command-btn { padding: 0.5rem 1rem; font-size: 0.8rem; }
         }
         .command-btn:focus-visible {
             outline: 2px solid var(--hot-pink);
@@ -283,12 +355,20 @@
     
     <canvas id="matrix-canvas"></canvas>
     
-    <!-- Navigation Menu -->
-    <nav class="nav-menu">
-        <a href="about.html" class="nav-link">About</a>
-        <a href="projects.html" class="nav-link">Work</a>
-        <a href="contact.html" class="nav-link">Contact</a>
-    </nav>
+    <!-- Floating Hamburger Menu -->
+    <div class="hamburger-menu">
+        <button class="hamburger-button" id="hamburger-btn" aria-label="Menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+        <nav class="menu-dropdown" id="menu-dropdown">
+            <a href="index.html" class="menu-item active">Home</a>
+            <a href="about.html" class="menu-item">About</a>
+            <a href="projects.html" class="menu-item">Projects</a>
+            <a href="contact.html" class="menu-item">Contact</a>
+        </nav>
+    </div>
 
     <div class="terminal-container w-full max-w-4xl">
         <div class="terminal-wrapper rounded-lg overflow-hidden" role="main" aria-label="Interactive Terminal">
@@ -306,14 +386,6 @@
             </div>
             
             <div id="terminal-output" class="terminal-output p-4 h-72 overflow-y-auto" role="log" aria-live="polite" aria-relevant="additions"></div>
-            
-            <div id="command-buttons" role="toolbar" aria-label="Quick commands">
-                <button class="command-btn" data-command="help" aria-label="Show help">Help</button>
-                <button class="command-btn" data-command="p" aria-label="View portfolio">Portfolio</button>
-                <button class="command-btn" data-command="a" aria-label="About me">About</button>
-                <button class="command-btn" data-command="c" aria-label="Contact information">Contact</button>
-                <button class="command-btn" data-command="clear" aria-label="Clear terminal">Clear</button>
-            </div>
             
             <div class="px-5 py-4 flex items-center border-t" style="border-color: rgba(255, 6, 157, 0.15); background: rgba(255, 6, 157, 0.03); backdrop-filter: blur(10px);">
                 <span class="mr-3 text-xl prompt-icon" style="color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink), 0 0 20px rgba(255, 0, 255, 0.5);">♕</span>
@@ -334,7 +406,6 @@
         const outputElement = document.getElementById('terminal-output');
         const inputElement = document.getElementById('command-input');
         const neonTitleElement = document.getElementById('neon-title');
-        const commandButtons = document.querySelectorAll('.command-btn');
 
         let drops = [];
         const chars = 'LYRICO DES♕💖👩💻█▓▒░║‗╔╦╗╚╩╝';
@@ -574,7 +645,6 @@
         
         function setControlsDisabled(isDisabled) {
             inputElement.disabled = isDisabled;
-            commandButtons.forEach(btn => btn.disabled = isDisabled);
         }
 
         inputElement.addEventListener('keydown', (e) => {
@@ -611,19 +681,12 @@
             }
         });
 
-        commandButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const command = button.dataset.command;
-                processCommand(command);
-            });
-        });
-
         const terminalWrapper = document.querySelector('.terminal-wrapper');
         let rotation = { x: 5, y: -5 };
         let isDragging = false;
         let startX, startY;
         terminalWrapper.addEventListener('mousedown', e => {
-            if (e.target.closest('.command-btn, #command-input')) return;
+            if (e.target.closest('#command-input')) return;
             isDragging = true;
             startX = e.clientX;
             startY = e.clientY;
@@ -648,6 +711,24 @@
             terminalWrapper.style.transition = 'transform 0.2s ease, box-shadow 0.3s ease';
         });
 
+        // Hamburger menu functionality
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const menuDropdown = document.getElementById('menu-dropdown');
+        
+        hamburgerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            hamburgerBtn.classList.toggle('active');
+            menuDropdown.classList.toggle('active');
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.hamburger-menu')) {
+                hamburgerBtn.classList.remove('active');
+                menuDropdown.classList.remove('active');
+            }
+        });
+        
         document.addEventListener('DOMContentLoaded', initTerminal);
     </script>
 </body>
