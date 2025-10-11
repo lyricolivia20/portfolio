@@ -581,42 +581,66 @@
                 .to(lights, { backgroundColor: '#0f001f', boxShadow: 'inset 0 0 8px rgba(0,0,0,0.7)', duration: 0.3 }, "<");
             });
             
-            // Matrix rain background
+            // Matrix rain background - OPTIMIZED
             const canvas = document.getElementById('matrix-canvas');
             const ctx = canvas.getContext('2d');
             
-            function resizeCanvas() { 
-                canvas.width = window.innerWidth; 
-                canvas.height = window.innerHeight; 
-            }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
-            
             const chars = "01LYRICODES";
             const fontSize = 16;
-            const columns = Math.floor(canvas.width / fontSize);
-            const drops = Array(columns).fill(0).map(() => Math.random() * -canvas.height);
+            let drops = [];
+            
+            // Cache font style
+            const fontStyle = `${fontSize}px 'JetBrains Mono', monospace`;
+            
+            function resizeCanvas() { 
+                canvas.width = window.innerWidth; 
+                canvas.height = window.innerHeight;
+                
+                // Reduce column density for better performance
+                const columnSpacing = window.innerWidth < 768 ? fontSize * 1.5 : fontSize;
+                const columns = Math.floor(canvas.width / columnSpacing);
+                drops = Array(columns).fill(0).map(() => Math.floor(Math.random() * -100));
+            }
+            
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(resizeCanvas, 150);
+            });
+            resizeCanvas();
             
             let lastMatrixTime = 0;
-            const matrixFrameDelay = 100; // Slower matrix rain (100ms between frames)
+            const matrixFrameDelay = 50; // Optimized frame rate (20 FPS)
+            
+            // Pause animation when tab is not visible
+            let isVisible = true;
+            document.addEventListener('visibilitychange', () => {
+                isVisible = !document.hidden;
+            });
             
             function drawMatrix(currentTime) {
                 requestAnimationFrame(drawMatrix);
                 
+                if (!isVisible) return;
                 if (currentTime - lastMatrixTime < matrixFrameDelay) return;
                 lastMatrixTime = currentTime;
                 
                 ctx.fillStyle = 'rgba(10, 0, 20, 0.1)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#ff069d';
-                ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
+                ctx.font = fontStyle;
                 
+                const columnSpacing = window.innerWidth < 768 ? fontSize * 1.5 : fontSize;
                 for (let i = 0; i < drops.length; i++) {
-                    if (Math.random() > 0.9) { // Reduce density
+                    const y = drops[i] * fontSize;
+                    
+                    // Only render if on screen and with reduced density
+                    if (y > 0 && y < canvas.height + fontSize && Math.random() > 0.9) {
                         const text = chars[Math.floor(Math.random() * chars.length)];
-                        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                        ctx.fillText(text, i * columnSpacing, y);
                     }
-                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    
+                    if (y > canvas.height && Math.random() > 0.975) {
                         drops[i] = 0;
                     }
                     drops[i]++;
