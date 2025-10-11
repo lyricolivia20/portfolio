@@ -487,27 +487,59 @@
         // Command history and autocomplete
         let commandHistory = [];
         let historyIndex = -1;
+        let bookmarks = [];
+        let textSize = 'normal';
+        let accessibilityMode = false;
+        
+        // Search data for quick access
+        const searchableContent = {
+            projects: ['AI Chatbot', 'WhereTF Inventory', '3D Portfolio', 'Neural Art Generator', 'WebGL Shader Lab'],
+            skills: ['TensorFlow', 'PyTorch', 'React', 'Three.js', 'WebGL', 'Python', 'TypeScript', 'Node.js'],
+            technologies: ['AI', 'Machine Learning', 'WebGL', '3D Graphics', 'React', 'Next.js', 'Vue', 'TailwindCSS']
+        };
         
         const commands = {
             'help': {
                 action: () => {
-                    addResponse('\n🤖 LyriBot Helper Menu\n');
+                    addResponse('\n🤖 LyriBot Helper Menu v3.0\n');
                     addResponse('📍 NAVIGATION:');
                     addResponse('   [about/a] - Learn about LyriCodes');
                     addResponse('   [projects/p] - Explore creative work');
                     addResponse('   [contact/c] - Get in touch');
-                    addResponse('\n🎨 EXPLORATION:');
+                    addResponse('   [goto <section>] - Jump directly to section\n');
+                    addResponse('🔍 DISCOVERY:');
+                    addResponse('   [search <term>] - Search all content');
+                    addResponse('   [filter <tech>] - Filter by technology');
+                    addResponse('   [preview <section>] - Quick preview');
+                    addResponse('   [random] - Random fact about me\n');
+                    addResponse('📊 INFORMATION:');
                     addResponse('   [skills] - Technical abilities');
-                    addResponse('   [whoami] - Identity check');
-                    addResponse('   [ls] - List all sections');
-                    addResponse('   [banner] - ASCII art');
-                    addResponse('   [theme] - Color scheme info');
-                    addResponse('   [date] - Current date/time');
-                    addResponse('\n🛠️ UTILITIES:');
+                    addResponse('   [timeline] - Career journey');
+                    addResponse('   [tech-stack] - Technology stack');
+                    addResponse('   [featured] - Best projects');
+                    addResponse('   [recent] - Latest updates');
+                    addResponse('   [stats] - Coding statistics\n');
+                    addResponse('🗺️ STRUCTURE:');
+                    addResponse('   [tree] - Site structure tree');
+                    addResponse('   [sitemap] - Complete sitemap');
+                    addResponse('   [ls] - List sections');
+                    addResponse('   [tags] - Project categories\n');
+                    addResponse('🔧 UTILITIES:');
                     addResponse('   [clear/cls] - Clear terminal');
-                    addResponse('   [echo <text>] - Print text');
-                    addResponse('   [joke] - Get a dev joke');
-                    addResponse('\n💡 Use ↑↓ for history | Tab for autocomplete\n');
+                    addResponse('   [history] - Command history');
+                    addResponse('   [bookmark <name>] - Save bookmark');
+                    addResponse('   [social] - Social media links');
+                    addResponse('   [resume] - Download resume\n');
+                    addResponse('♿ ACCESSIBILITY:');
+                    addResponse('   [accessible] - Toggle accessibility mode');
+                    addResponse('   [text-size <size>] - Adjust text size');
+                    addResponse('   [shortcuts] - Keyboard shortcuts\n');
+                    addResponse('🎨 FUN:');
+                    addResponse('   [banner] - ASCII art');
+                    addResponse('   [theme] - Color scheme');
+                    addResponse('   [joke] - Dev joke');
+                    addResponse('   [surprise] - Easter egg\n');
+                    addResponse('💡 Use ↑↓ for history | Tab for autocomplete | Alt+H for help\n');
                 }
             },
             'joke': {
@@ -626,22 +658,450 @@
                     addResponse('💖 Thanks for exploring! You\'re awesome!');
                     addResponse('🌟 Keep being curious - it\'s what makes you special!');
                 }
+            },
+            'timeline': {
+                action: () => {
+                    addResponse('📅 PROFESSIONAL JOURNEY:\n');
+                    addResponse('2024 - Present');
+                    addResponse('   🚀 Creative Developer & Digital Artist');
+                    addResponse('   → Building immersive AI-powered experiences');
+                    addResponse('   → Specializing in WebGL and 3D graphics\n');
+                    addResponse('2023 - 2024');
+                    addResponse('   💼 Full-Stack Developer');
+                    addResponse('   → React, Next.js, TypeScript projects');
+                    addResponse('   → AI/ML integration and deployment\n');
+                    addResponse('2022 - 2023');
+                    addResponse('   🎓 Computer Science & AI Studies');
+                    addResponse('   → Deep learning, neural networks');
+                    addResponse('   → Creative coding and generative art\n');
+                    addResponse('💡 Type \'about\' for the full story!');
+                }
+            },
+            'tech-stack': {
+                action: () => {
+                    addResponse('🛠️ TECHNOLOGY STACK:\n');
+                    addResponse('🎨 FRONTEND:');
+                    addResponse('   → React, Next.js, Vue.js');
+                    addResponse('   → TypeScript, JavaScript (ES6+)');
+                    addResponse('   → TailwindCSS, Styled Components');
+                    addResponse('   → Three.js, WebGL, GLSL Shaders\n');
+                    addResponse('🔧 BACKEND:');
+                    addResponse('   → Node.js, Express, FastAPI');
+                    addResponse('   → Python, GraphQL, REST APIs');
+                    addResponse('   → PostgreSQL, MongoDB, Redis\n');
+                    addResponse('🤖 AI/ML:');
+                    addResponse('   → TensorFlow, PyTorch, scikit-learn');
+                    addResponse('   → OpenAI APIs, Hugging Face');
+                    addResponse('   → Computer Vision, NLP\n');
+                    addResponse('☁️ DEVOPS & TOOLS:');
+                    addResponse('   → Git, Docker, CI/CD');
+                    addResponse('   → Vercel, AWS, Firebase');
+                    addResponse('   → Figma, Blender, Unity');
+                }
+            },
+            'recent': {
+                action: () => {
+                    addResponse('🆕 LATEST UPDATES:\n');
+                    addResponse('📌 Recent Projects:');
+                    addResponse('   1. WhereTF - AI-powered inventory tracker');
+                    addResponse('   2. Neural Art Generator - ML-based art creation');
+                    addResponse('   3. 3D Portfolio - Interactive WebGL experience\n');
+                    addResponse('🔥 Currently Working On:');
+                    addResponse('   → Advanced shader effects');
+                    addResponse('   → Voice-controlled interfaces');
+                    addResponse('   → Real-time collaborative tools\n');
+                    addResponse('💡 Type \'projects\' to see all my work!');
+                }
+            },
+            'featured': {
+                action: () => {
+                    addResponse('⭐ FEATURED WORK:\n');
+                    addResponse('🏆 WhereTF Inventory System');
+                    addResponse('   → AI chatbot with fuzzy logic');
+                    addResponse('   → React Native mobile app');
+                    addResponse('   → FastAPI backend with ML\n');
+                    addResponse('🎨 Neural Art Generator');
+                    addResponse('   → StyleGAN integration');
+                    addResponse('   → Real-time generation');
+                    addResponse('   → Custom training pipeline\n');
+                    addResponse('🌐 Interactive 3D Portfolio');
+                    addResponse('   → WebGL & Three.js');
+                    addResponse('   → GLSL shader effects');
+                    addResponse('   → Immersive navigation\n');
+                    addResponse('💡 Visit \'projects\' for detailed case studies!');
+                }
+            },
+            'social': {
+                action: () => {
+                    addResponse('🌐 CONNECT WITH ME:\n');
+                    addResponse('💼 GitHub: github.com/lyricolivia20');
+                    addResponse('💼 LinkedIn: linkedin.com/in/lyricolivia');
+                    addResponse('🐦 Twitter: @lyricodes');
+                    addResponse('📧 Email: lyric@lyricodes.dev');
+                    addResponse('🎨 Portfolio: lyricodes.dev\n');
+                    addResponse('💡 Type \'contact\' to send me a message!');
+                }
+            },
+            'resume': {
+                action: () => {
+                    addResponse('📄 RESUME ACCESS:\n');
+                    addResponse('✨ Downloading resume...');
+                    addResponse('📥 Resume will open in a new tab\n');
+                    addResponse('💡 You can also find it in the About section!');
+                    // In production, add actual resume download link
+                    setTimeout(() => addResponse('⚠️ Resume download link not yet configured'), 1000);
+                }
+            },
+            'tree': {
+                action: () => {
+                    addResponse('📁 PORTFOLIO SITE STRUCTURE:\n');
+                    addResponse('lyricodes.dev/');
+                    addResponse('├── 🏠 Home (index)');
+                    addResponse('│   ├── Terminal Interface');
+                    addResponse('│   ├── LyriBot Assistant');
+                    addResponse('│   └── Quick Navigation\n');
+                    addResponse('├── 👤 About');
+                    addResponse('│   ├── Background & Story');
+                    addResponse('│   ├── Education');
+                    addResponse('│   ├── Experience');
+                    addResponse('│   └── Skills & Expertise\n');
+                    addResponse('├── 💼 Projects');
+                    addResponse('│   ├── AI/ML Projects');
+                    addResponse('│   ├── Web Applications');
+                    addResponse('│   ├── Creative Coding');
+                    addResponse('│   └── 3D Graphics\n');
+                    addResponse('├── 📧 Contact');
+                    addResponse('│   ├── Contact Form');
+                    addResponse('│   ├── Social Links');
+                    addResponse('│   └── Availability\n');
+                    addResponse('└── 🤖 Interactive Features');
+                    addResponse('    ├── Terminal Commands');
+                    addResponse('    ├── Matrix Background');
+                    addResponse('    └── Voice Commands\n');
+                }
+            },
+            'sitemap': {
+                action: () => {
+                    addResponse('🗺️ COMPLETE SITEMAP:\n');
+                    addResponse('📍 Main Pages:');
+                    addResponse('   • Home - Terminal interface');
+                    addResponse('   • About - My story and background');
+                    addResponse('   • Projects - Portfolio showcase');
+                    addResponse('   • Contact - Get in touch\n');
+                    addResponse('🔍 Quick Commands:');
+                    addResponse('   • help - Show all commands');
+                    addResponse('   • skills - Technical abilities');
+                    addResponse('   • timeline - Career journey');
+                    addResponse('   • tech-stack - Technologies used');
+                    addResponse('   • featured - Best projects');
+                    addResponse('   • social - Social media links\n');
+                    addResponse('💡 Type any command to explore!');
+                }
+            },
+            'search': {
+                action: (query) => {
+                    if (!query) {
+                        addResponse('🔍 SEARCH USAGE:\n');
+                        addResponse('   search <term> - Search across all content');
+                        addResponse('\nExample: search react\n');
+                        return;
+                    }
+                    addResponse(`🔍 Searching for: "${query}"\n`);
+                    let found = false;
+                    
+                    // Search in projects
+                    const projectMatches = searchableContent.projects.filter(p => 
+                        p.toLowerCase().includes(query.toLowerCase())
+                    );
+                    if (projectMatches.length > 0) {
+                        addResponse('📂 Found in Projects:');
+                        projectMatches.forEach(p => addResponse(`   → ${p}`));
+                        found = true;
+                    }
+                    
+                    // Search in skills
+                    const skillMatches = searchableContent.skills.filter(s => 
+                        s.toLowerCase().includes(query.toLowerCase())
+                    );
+                    if (skillMatches.length > 0) {
+                        addResponse('\n💪 Found in Skills:');
+                        skillMatches.forEach(s => addResponse(`   → ${s}`));
+                        found = true;
+                    }
+                    
+                    if (!found) {
+                        addResponse('❌ No results found.');
+                        addResponse('💡 Try: projects, about, skills, or contact');
+                    } else {
+                        addResponse('\n💡 Type \'projects\' or \'skills\' for more details!');
+                    }
+                }
+            },
+            'random': {
+                action: () => {
+                    const facts = [
+                        '🎨 I create generative art using p5.js and Processing!',
+                        '🤖 Built an AI chatbot that helps find lost items using fuzzy logic',
+                        '🌟 Love combining AI with creative coding for unique experiences',
+                        '💻 Passionate about WebGL and shader programming',
+                        '🎮 Working on interactive 3D experiences with Three.js',
+                        '🧠 Exploring neural networks for creative applications',
+                        '✨ Believe in making tech beautiful and accessible'
+                    ];
+                    const fact = facts[Math.floor(Math.random() * facts.length)];
+                    addResponse('🎲 RANDOM FACT:\n');
+                    addResponse(fact);
+                    addResponse('\n💡 Type \'random\' again for another fact!');
+                }
+            },
+            'tags': {
+                action: () => {
+                    addResponse('🏷️ PROJECT CATEGORIES:\n');
+                    addResponse('🤖 AI & Machine Learning');
+                    addResponse('   → Neural Networks, NLP, Computer Vision\n');
+                    addResponse('🌐 Web Development');
+                    addResponse('   → React, Next.js, Full-Stack\n');
+                    addResponse('🎨 Creative Coding');
+                    addResponse('   → Generative Art, Shaders, WebGL\n');
+                    addResponse('📱 Mobile Development');
+                    addResponse('   → React Native, Cross-Platform\n');
+                    addResponse('🎮 3D & Interactive');
+                    addResponse('   → Three.js, Unity, Immersive Experiences\n');
+                    addResponse('💡 Type \'filter <tag>\' to see related projects!');
+                }
+            },
+            'filter': {
+                action: (tech) => {
+                    if (!tech) {
+                        addResponse('🔧 FILTER USAGE:\n');
+                        addResponse('   filter <technology> - Show projects using specific tech');
+                        addResponse('\nExample: filter react\n');
+                        addResponse('Available: ai, react, webgl, python, threejs');
+                        return;
+                    }
+                    addResponse(`🔧 Projects using ${tech.toUpperCase()}:\n`);
+                    const filters = {
+                        'ai': ['WhereTF Inventory', 'Neural Art Generator', 'AI Chatbot'],
+                        'react': ['WhereTF Mobile App', '3D Portfolio', 'Interactive Dashboard'],
+                        'webgl': ['3D Portfolio', 'Shader Lab', 'Interactive Experiences'],
+                        'python': ['AI Backend', 'ML Pipeline', 'Data Processing'],
+                        'threejs': ['3D Portfolio', 'WebGL Experiments', 'Interactive Scenes']
+                    };
+                    const results = filters[tech.toLowerCase()] || [];
+                    if (results.length > 0) {
+                        results.forEach((p, i) => addResponse(`   ${i + 1}. ${p}`));
+                        addResponse('\n💡 Visit \'projects\' for full details!');
+                    } else {
+                        addResponse('❌ No projects found with that technology.');
+                        addResponse('💡 Try: ai, react, webgl, python, or threejs');
+                    }
+                }
+            },
+            'stats': {
+                action: () => {
+                    addResponse('📊 CODING STATISTICS:\n');
+                    addResponse('💻 GitHub Activity:');
+                    addResponse('   → 500+ commits this year');
+                    addResponse('   → 20+ repositories');
+                    addResponse('   → 15+ active projects\n');
+                    addResponse('🔥 Most Used Languages:');
+                    addResponse('   1. JavaScript/TypeScript (45%)');
+                    addResponse('   2. Python (30%)');
+                    addResponse('   3. GLSL/Shaders (15%)');
+                    addResponse('   4. HTML/CSS (10%)\n');
+                    addResponse('⭐ Achievements:');
+                    addResponse('   → 100+ stars across projects');
+                    addResponse('   → 50+ contributions to open source');
+                    addResponse('   → Featured in dev communities\n');
+                }
+            },
+            'history': {
+                action: () => {
+                    if (commandHistory.length === 0) {
+                        addResponse('📜 Command history is empty.');
+                        return;
+                    }
+                    addResponse('📜 COMMAND HISTORY:\n');
+                    const recent = commandHistory.slice(-10).reverse();
+                    recent.forEach((cmd, i) => {
+                        addResponse(`   ${recent.length - i}. ${cmd}`);
+                    });
+                    addResponse('\n💡 Use ↑↓ arrows to navigate history!');
+                }
+            },
+            'bookmark': {
+                action: (section) => {
+                    if (!section) {
+                        if (bookmarks.length === 0) {
+                            addResponse('🔖 No bookmarks saved yet.');
+                            addResponse('💡 Usage: bookmark <section>');
+                            return;
+                        }
+                        addResponse('🔖 YOUR BOOKMARKS:\n');
+                        bookmarks.forEach((b, i) => addResponse(`   ${i + 1}. ${b}`));
+                        addResponse('\n💡 Type bookmark name to visit!');
+                        return;
+                    }
+                    if (!bookmarks.includes(section)) {
+                        bookmarks.push(section);
+                        addResponse(`✅ Bookmarked: ${section}`);
+                    } else {
+                        addResponse(`ℹ️ Already bookmarked: ${section}`);
+                    }
+                }
+            },
+            'goto': {
+                action: (section) => {
+                    if (!section) {
+                        addResponse('🎯 GOTO USAGE:\n');
+                        addResponse('   goto <section> - Jump directly to a section');
+                        addResponse('\nAvailable: about, projects, contact, skills');
+                        return;
+                    }
+                    const destinations = {
+                        'about': 'about.html',
+                        'projects': 'projects.html',
+                        'contact': 'contact.html',
+                        'skills': () => commands.skills.action()
+                    };
+                    const dest = destinations[section.toLowerCase()];
+                    if (typeof dest === 'string') {
+                        addResponse(`🚀 Jumping to ${section}...`);
+                        setTimeout(() => window.location.href = dest, 500);
+                    } else if (typeof dest === 'function') {
+                        dest();
+                    } else {
+                        addResponse(`❌ Unknown section: ${section}`);
+                        addResponse('💡 Try: about, projects, contact, or skills');
+                    }
+                }
+            },
+            'preview': {
+                action: (section) => {
+                    if (!section) {
+                        addResponse('👁️ PREVIEW USAGE:\n');
+                        addResponse('   preview <section> - Quick preview without navigation');
+                        addResponse('\nAvailable: projects, skills, about');
+                        return;
+                    }
+                    addResponse(`👁️ PREVIEW: ${section.toUpperCase()}\n`);
+                    const previews = {
+                        'projects': () => {
+                            addResponse('Featured Projects:');
+                            addResponse('   • WhereTF - AI Inventory Tracker');
+                            addResponse('   • Neural Art - ML Art Generator');
+                            addResponse('   • 3D Portfolio - WebGL Experience');
+                            addResponse('\n💡 Type \'projects\' to see full details!');
+                        },
+                        'skills': () => {
+                            addResponse('Top Skills:');
+                            addResponse('   • AI/ML: TensorFlow, PyTorch');
+                            addResponse('   • Frontend: React, Three.js');
+                            addResponse('   • Backend: Node.js, Python');
+                            addResponse('\n💡 Type \'skills\' for complete list!');
+                        },
+                        'about': () => {
+                            addResponse('About LyriCodes:');
+                            addResponse('   Creative Developer & Digital Artist');
+                            addResponse('   Specializing in AI and 3D experiences');
+                            addResponse('   Passionate about immersive tech');
+                            addResponse('\n💡 Type \'about\' to learn more!');
+                        }
+                    };
+                    const preview = previews[section.toLowerCase()];
+                    if (preview) {
+                        preview();
+                    } else {
+                        addResponse(`❌ No preview available for: ${section}`);
+                    }
+                }
+            },
+            'text-size': {
+                action: (size) => {
+                    if (!size) {
+                        addResponse('📏 TEXT SIZE CONTROL:\n');
+                        addResponse('   text-size small - Smaller text');
+                        addResponse('   text-size normal - Default size');
+                        addResponse('   text-size large - Larger text');
+                        addResponse(`\nCurrent: ${textSize}`);
+                        return;
+                    }
+                    const sizes = {
+                        'small': '0.85rem',
+                        'normal': '0.95rem',
+                        'large': '1.1rem'
+                    };
+                    if (sizes[size]) {
+                        textSize = size;
+                        outputElement.style.fontSize = sizes[size];
+                        addResponse(`✅ Text size set to: ${size}`);
+                    } else {
+                        addResponse('❌ Invalid size. Use: small, normal, or large');
+                    }
+                }
+            },
+            'accessible': {
+                action: () => {
+                    accessibilityMode = !accessibilityMode;
+                    if (accessibilityMode) {
+                        document.body.style.filter = 'contrast(1.2)';
+                        outputElement.style.fontSize = '1.1rem';
+                        outputElement.style.lineHeight = '2';
+                        addResponse('✅ Accessibility mode ENABLED');
+                        addResponse('   • Increased contrast');
+                        addResponse('   • Larger text');
+                        addResponse('   • Better spacing');
+                    } else {
+                        document.body.style.filter = '';
+                        outputElement.style.fontSize = '0.95rem';
+                        outputElement.style.lineHeight = '1.8';
+                        addResponse('✅ Accessibility mode DISABLED');
+                        addResponse('   • Default settings restored');
+                    }
+                }
+            },
+            'shortcuts': {
+                action: () => {
+                    addResponse('⌨️ KEYBOARD SHORTCUTS:\n');
+                    addResponse('Navigation:');
+                    addResponse('   • Alt+A - About page');
+                    addResponse('   • Alt+P - Projects page');
+                    addResponse('   • Alt+C - Contact page');
+                    addResponse('   • Alt+H - Help menu\n');
+                    addResponse('Terminal:');
+                    addResponse('   • ↑↓ - Command history');
+                    addResponse('   • Tab - Autocomplete');
+                    addResponse('   • Ctrl+L - Clear terminal');
+                    addResponse('   • Esc - Cancel input\n');
+                    addResponse('💡 Shortcuts work anywhere on the page!');
+                }
             }
         };
 
         const botSequence = [
-            { text: "🤖 Initializing LyriBot v2.0...", delay: 400 },
+            { text: "🤖 Initializing LyriBot v3.0...", delay: 400 },
             { text: "✨ Neural pathways: [ONLINE]", delay: 500 },
-            { text: "💖 Aesthetic protocols: [LOADED]\n", delay: 600 },
-            { text: "👋 Hey there! I'm LyriBot, your guide through this digital space.", delay: 800 },
-            { text: "\n✨ Let me show you around...\n", delay: 600 },
-            { text: "📂 QUICK NAVIGATION:", delay: 400 },
-            { text: "   → Type 'about' or 'a' to learn my story", delay: 300 },
-            { text: "   → Type 'projects' or 'p' to explore my work", delay: 300 },
-            { text: "   → Type 'contact' or 'c' to get in touch", delay: 300 },
-            { text: "   → Type 'skills' to see what I can do", delay: 300 },
-            { text: "\n💡 Pro tip: Type 'help' anytime for more commands!", delay: 400 },
-            { text: "🎨 Or just click the menu bubble in the top right!\n", delay: 400 }
+            { text: "💖 Aesthetic protocols: [LOADED]", delay: 600 },
+            { text: "🔍 Search engine: [READY]", delay: 500 },
+            { text: "⌨️  Keyboard shortcuts: [ENABLED]\n", delay: 500 },
+            { text: "👋 Hey there! I'm LyriBot, your enhanced guide through this digital space.", delay: 800 },
+            { text: "\n✨ NEW FEATURES:\n", delay: 600 },
+            { text: "🔍 DISCOVERY:", delay: 400 },
+            { text: "   → 'search <term>' - Find anything instantly", delay: 300 },
+            { text: "   → 'preview <section>' - Quick peek without navigation", delay: 300 },
+            { text: "   → 'filter <tech>' - Projects by technology", delay: 300 },
+            { text: "   → 'random' - Discover random facts\n", delay: 300 },
+            { text: "⌨️  SHORTCUTS:", delay: 400 },
+            { text: "   → Alt+A/P/C - Quick page navigation", delay: 300 },
+            { text: "   → Alt+H - Help menu", delay: 300 },
+            { text: "   → Ctrl+L - Clear terminal\n", delay: 300 },
+            { text: "📊 INFO COMMANDS:", delay: 400 },
+            { text: "   → 'timeline' - My career journey", delay: 300 },
+            { text: "   → 'tech-stack' - Technologies I use", delay: 300 },
+            { text: "   → 'featured' - Best projects", delay: 300 },
+            { text: "   → 'stats' - Coding statistics\n", delay: 300 },
+            { text: "💡 Type 'help' to see ALL 30+ commands!", delay: 400 },
+            { text: "🎨 Or use the menu bubble in the top right!\n", delay: 400 }
         ];
 
         function processCommand(command) {
@@ -800,11 +1260,54 @@
                     inputElement.value = autocomplete(value);
                 }
             }
+            // Ctrl+L to clear
+            else if (e.ctrlKey && e.key === 'l') {
+                e.preventDefault();
+                outputElement.innerHTML = '';
+            }
+            // Escape to cancel
+            else if (e.key === 'Escape') {
+                e.preventDefault();
+                inputElement.value = '';
+            }
             // Enter to execute
             else if (e.key === 'Enter') {
                 const command = inputElement.value.toLowerCase().trim();
                 if (command) processCommand(command);
                 inputElement.value = '';
+            }
+        });
+
+        // Global keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Skip if typing in input
+            if (document.activeElement === inputElement) return;
+            
+            // Alt+A - About
+            if (e.altKey && e.key === 'a') {
+                e.preventDefault();
+                window.location.href = 'about.html';
+            }
+            // Alt+P - Projects
+            else if (e.altKey && e.key === 'p') {
+                e.preventDefault();
+                window.location.href = 'projects.html';
+            }
+            // Alt+C - Contact
+            else if (e.altKey && e.key === 'c') {
+                e.preventDefault();
+                window.location.href = 'contact.html';
+            }
+            // Alt+H - Help
+            else if (e.altKey && e.key === 'h') {
+                e.preventDefault();
+                inputElement.focus();
+                commands.help.action();
+            }
+            // Ctrl+K - Focus input
+            else if (e.ctrlKey && e.key === 'k') {
+                e.preventDefault();
+                inputElement.focus();
             }
         });
 
