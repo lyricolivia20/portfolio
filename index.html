@@ -54,21 +54,16 @@
             position: relative;
         }
         
-        /* Cursor Flashlight Effect */
+        /* Cursor Spotlight Effect - Always Active */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             pointer-events: none;
-            z-index: 9997;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        body.flashlight-active::before {
+            background: radial-gradient(circle 250px at var(--x, 50%) var(--y, 50%), rgba(255,6,157,0.2), transparent 80%);
+            transition: background 0.15s;
+            mix-blend-mode: lighten;
+            z-index: 9999;
             opacity: 1;
         }
         
@@ -499,7 +494,7 @@
             opacity: 0.5;
         }
         
-        /* MacOS-Style Dock */
+        /* MacOS-Style Dock - Enhanced */
         .dock {
             position: fixed;
             bottom: 1.5rem;
@@ -507,16 +502,34 @@
             transform: translateX(-50%);
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-            padding: 0.75rem 2rem;
-            background: rgba(20, 0, 10, 0.6);
+            gap: 1.2rem;
+            padding: 1rem 2rem;
+            background: rgba(255,6,157,0.08);
             backdrop-filter: blur(30px) saturate(180%);
-            border: 1px solid rgba(255, 6, 157, 0.3);
-            border-radius: 24px;
+            border: 1px solid rgba(255, 6, 157, 0.25);
+            border-radius: 2rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 60px rgba(255, 6, 157, 0.2);
             z-index: 10001;
             opacity: 0;
             animation: fadeIn 0.8s ease-out 1.5s forwards;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .dock::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            animation: shimmer 6s infinite linear;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -150%; }
+            100% { left: 150%; }
         }
         .dock-icon {
             width: 48px;
@@ -524,7 +537,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             color: var(--light-pink);
             text-decoration: none;
             border-radius: 12px;
@@ -533,12 +546,21 @@
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             cursor: pointer;
+            animation: dockPulse 3s infinite ease-in-out;
+            animation-delay: calc(var(--i, 0) * 0.1s);
         }
+        
+        @keyframes dockPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(255,6,157,0.3); }
+            50% { box-shadow: 0 0 20px rgba(255,6,157,0.5); transform: scale(1.05); }
+        }
+        
         .dock-icon:hover {
-            transform: translateY(-8px) scale(1.15);
-            background: rgba(255, 6, 157, 0.2);
+            transform: translateY(-10px) scale(1.15);
+            background: rgba(255, 6, 157, 0.25);
             border-color: rgba(255, 6, 157, 0.5);
             box-shadow: 0 12px 24px rgba(255, 6, 157, 0.4), 0 0 30px rgba(255, 6, 157, 0.3);
+            animation: none;
         }
         .dock-icon::after {
             content: attr(data-label);
@@ -1780,50 +1802,11 @@
         });
         
         
-        // Flashlight Cursor Effect
-        let flashlightEnabled = false;
+        // Cursor Spotlight Effect - Always Active
         document.addEventListener('mousemove', (e) => {
-            if (flashlightEnabled) {
-                const x = e.clientX;
-                const y = e.clientY;
-                document.body.style.setProperty('--mouse-x', x + 'px');
-                document.body.style.setProperty('--mouse-y', y + 'px');
-                const gradient = `radial-gradient(circle 400px at ${x}px ${y}px, rgba(255, 255, 255, 0.15), transparent 70%)`;
-                document.body.style.backgroundImage = gradient + ', linear-gradient(135deg, #0a0014 0%, #1a0a2e 50%, #16213e 100%)';
-            }
+            document.body.style.setProperty('--x', e.clientX + 'px');
+            document.body.style.setProperty('--y', e.clientY + 'px');
         });
-        
-        // Toggle flashlight with F key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'f' && !e.ctrlKey && !e.altKey && document.activeElement !== inputElement) {
-                flashlightEnabled = !flashlightEnabled;
-                if (flashlightEnabled) {
-                    document.body.classList.add('flashlight-active');
-                    addResponse('💡 Flashlight effect ENABLED - Move your mouse!');
-                } else {
-                    document.body.classList.remove('flashlight-active');
-                    document.body.style.backgroundImage = '';
-                    addResponse('💡 Flashlight effect DISABLED');
-                }
-            }
-        });
-        
-        // Add flashlight command
-        commands['flashlight'] = {
-            action: () => {
-                flashlightEnabled = !flashlightEnabled;
-                if (flashlightEnabled) {
-                    document.body.classList.add('flashlight-active');
-                    addResponse('💡 Flashlight cursor effect ENABLED');
-                    addResponse('✨ Move your mouse to see the effect!');
-                    addResponse('💡 Press F or type "flashlight" to toggle');
-                } else {
-                    document.body.classList.remove('flashlight-active');
-                    document.body.style.backgroundImage = '';
-                    addResponse('💡 Flashlight effect DISABLED');
-                }
-            }
-        };
         document.addEventListener('DOMContentLoaded', initTerminal);
     </script>
 </body>
