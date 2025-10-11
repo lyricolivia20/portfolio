@@ -3,1811 +3,331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>LyriCodes | Award-Winning Creative Developer</title>
-    <meta name="description" content="Portfolio of LyriCodes - Creative developer crafting immersive digital experiences through AI, 3D graphics, and cutting-edge web technologies.">
-    <meta name="keywords" content="LyriCodes, portfolio, creative developer, AI developer, 3D graphics, WebGL, immersive experiences, award winning portfolio">
-    <meta name="author" content="LyriCodes">
-    <link rel="canonical" href="https://portfolio-roan-one-39.vercel.app/">
-
-    <meta property="og:title" content="LyriCodes | Award-Winning Creative Developer">
-    <meta property="og:description" content="Crafting immersive digital experiences through AI and cutting-edge web technologies.">
-    <meta property="og:image" content="https://i.imgur.com/your-preview-image.png">
-    <meta property="og:url" content="https://portfolio-roan-one-39.vercel.app/">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="LyriCodes | Award-Winning Creative Developer">
-    <meta name="twitter:description" content="Crafting immersive digital experiences through AI and cutting-edge web technologies.">
+    <title>LyriCodes | Creative Developer</title>
+    <meta name="description" content="Portfolio of LyriCodes - Creative developer crafting immersive digital experiences.">
     <meta name="theme-color" content="#ff069d">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Satisfy&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Space+Grotesk:wght@400;600;700&family=Satisfy&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --hot-pink: #ff069d;
-            --neon-pink: #ff00ff;
             --light-pink: #ff9de2;
-            --body-bg: linear-gradient(135deg, #0a0014 0%, #1a0a2e 50%, #16213e 100%);
-            --border-color: rgba(255, 6, 157, 0.4);
-            --scrollbar-thumb: rgba(255, 6, 157, 0.6);
-            --scrollbar-thumb-hover: rgba(255, 6, 157, 0.8);
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        html {
-            scroll-behavior: smooth;
-        }
-        
+
         body {
             background: linear-gradient(135deg, #0a0014 0%, #1a0a2e 50%, #16213e 100%);
             background-attachment: fixed;
             color: var(--light-pink);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            overflow-x: hidden;
-            line-height: 1.6;
-            position: relative;
-        }
-        
-        /* Cursor Spotlight Effect - Always Active */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            background: radial-gradient(circle 250px at var(--x, 50%) var(--y, 50%), rgba(255,6,157,0.2), transparent 80%);
-            transition: background 0.15s;
-            mix-blend-mode: lighten;
-            z-index: 9999;
-            opacity: 1;
-        }
-        
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-        
-        code, pre, .mono {
-            font-family: 'Courier New', 'Monaco', monospace;
-        }
-        .terminal-container { perspective: 1000px; }
-        .terminal-wrapper {
-            transform-style: preserve-3d;
-            cursor: grab;
-            background: rgba(20, 0, 10, 0.3);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 6, 157, 0.2);
-            border-radius: 16px;
-            box-shadow: 
-                0 8px 32px 0 rgba(255, 0, 150, 0.2),
-                0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-                0 0 60px rgba(255, 0, 150, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .terminal-wrapper:hover { 
-            box-shadow: 
-                0 8px 32px 0 rgba(255, 0, 150, 0.4),
-                0 0 0 1px rgba(255, 255, 255, 0.1) inset,
-                0 0 80px rgba(255, 0, 150, 0.2);
-            border-color: rgba(255, 6, 157, 0.4);
-        }
-        .terminal-wrapper:active { cursor: grabbing; }
-        .neon-header { 
-            text-align: center; 
-            padding: 2.5rem 2rem; 
-            min-height: 120px;
-            background: rgba(255, 6, 157, 0.02);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 6, 157, 0.1);
-        }
-        .neon-header h1 {
-            font-family: 'Satisfy', cursive;
-            font-weight: 400;
-            font-size: 4rem;
-            background: linear-gradient(135deg, #ffffff 0%, var(--light-pink) 40%, var(--hot-pink) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 30px rgba(255, 6, 157, 0.5)) drop-shadow(0 0 60px rgba(255, 0, 255, 0.3));
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-            position: relative;
-        }
-        .neon-header .subtitle {
-            font-size: 0.95rem;
-            color: rgba(255, 157, 226, 0.7);
-            font-weight: 400;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-        .typing-cursor {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--light-pink), var(--hot-pink));
-            width: 0.15rem;
-            height: 4rem;
-            margin-left: 0.5rem;
-            animation: blink 1s infinite;
-            box-shadow: 0 0 10px var(--light-pink), 0 0 20px var(--hot-pink);
-            vertical-align: middle;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .terminal-container {
-            animation: fadeIn 0.8s ease-out;
-        }
-        .terminal-output > div {
-            animation: slideUp 0.3s ease-out;
-        }
-        #command-buttons {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* Matrix Canvas */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        /* Terminal Container */
+        .terminal-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .terminal-wrapper {
+            background: rgba(20, 0, 10, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 6, 157, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(255, 6, 157, 0.2);
+        }
+
+        /* Terminal Header */
+        .terminal-header {
             padding: 1rem 1.5rem;
-            background: rgba(255, 6, 157, 0.02);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 6, 157, 0.05);
+            border-bottom: 1px solid rgba(255, 6, 157, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            box-shadow: 0 0 8px currentColor;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        /* Terminal Title */
+        .terminal-title {
+            text-align: center;
+            padding: 2rem;
             border-bottom: 1px solid rgba(255, 6, 157, 0.15);
         }
-        .command-btn {
-            background: rgba(255, 6, 157, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 6, 157, 0.25);
-            color: var(--light-pink);
-            padding: 0.65rem 1.5rem;
-            border-radius: 12px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-shadow: 0 0 10px rgba(255, 6, 157, 0.3);
-            position: relative;
-            overflow: hidden;
+
+        .terminal-title h1 {
+            font-family: 'Satisfy', cursive;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #fff, var(--hot-pink), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(255, 6, 157, 0.5));
+            margin-bottom: 0.5rem;
         }
-        .command-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 6, 157, 0.4), transparent);
-            transition: left 0.6s;
+
+        .terminal-title p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
-        .command-btn:hover::before {
-            left: 100%;
-        }
-        .command-btn:hover {
-            background: rgba(255, 6, 157, 0.2);
-            border-color: rgba(255, 6, 157, 0.6);
-            box-shadow: 0 0 20px rgba(255, 6, 157, 0.4), 0 0 40px rgba(255, 6, 157, 0.2);
-            transform: translateY(-2px) scale(1.02);
-        }
-        .command-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+
+        /* Terminal Output */
         .terminal-output {
-            text-shadow: 0 0 8px rgba(255, 6, 157, 0.3);
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(8px);
-            scroll-behavior: smooth;
-            line-height: 1.8;
+            padding: 1.5rem;
+            height: 400px;
+            overflow-y: auto;
             font-family: 'Courier New', monospace;
             font-size: 0.95rem;
+            line-height: 1.6;
         }
-        .terminal-output > div {
-            margin-bottom: 0.4rem;
-            word-wrap: break-word;
-            padding-left: 0.5rem;
-            border-left: 2px solid transparent;
-            transition: all 0.2s ease;
+
+        .terminal-output::-webkit-scrollbar {
+            width: 8px;
         }
-        .terminal-output > div:hover {
-            border-left-color: rgba(255, 6, 157, 0.3);
-            background: rgba(255, 6, 157, 0.03);
+
+        .terminal-output::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
         }
-        .command-input {
-            caret-color: var(--hot-pink);
-            text-shadow: 0 0 8px rgba(255, 6, 157, 0.5);
-            font-size: 1rem;
-        }
-        .prompt-icon {
-            animation: pulse 2s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-        .command-input::placeholder { color: rgba(255, 6, 157, 0.4); }
-        #matrix-canvas {
-            position: fixed; top: 0; left: 0;
-            z-index: -1; width: 100vw; height: 100vh;
-        }
-        .terminal-output::-webkit-scrollbar { width: 8px; }
-        .terminal-output::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+
         .terminal-output::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-thumb);
+            background: rgba(255, 6, 157, 0.5);
             border-radius: 4px;
         }
-        .terminal-output::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
-        /* Floating Hamburger Menu */
-        .hamburger-menu {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            z-index: 10000;
-            opacity: 0;
-            animation: fadeIn 0.8s ease-out 0.5s forwards;
-        }
-        .hamburger-button {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(255, 6, 157, 0.15);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 6, 157, 0.3);
-            box-shadow: 0 8px 32px rgba(255, 6, 157, 0.3), 0 0 60px rgba(255, 6, 157, 0.1);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .hamburger-button:hover {
-            background: rgba(255, 6, 157, 0.25);
-            border-color: rgba(255, 6, 157, 0.5);
-            box-shadow: 0 12px 48px rgba(255, 6, 157, 0.4), 0 0 80px rgba(255, 6, 157, 0.2);
-            transform: scale(1.05);
-        }
-        .hamburger-line {
-            width: 24px;
-            height: 2px;
-            background: var(--light-pink);
-            border-radius: 2px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(255, 6, 157, 0.5);
-        }
-        .hamburger-button.active .hamburger-line:nth-child(1) {
-            transform: translateY(7px) rotate(45deg);
-        }
-        .hamburger-button.active .hamburger-line:nth-child(2) {
-            opacity: 0;
-        }
-        .hamburger-button.active .hamburger-line:nth-child(3) {
-            transform: translateY(-7px) rotate(-45deg);
-        }
-        .menu-dropdown {
-            position: absolute;
-            top: 70px;
-            right: 0;
-            background: rgba(20, 0, 10, 0.4);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 6, 157, 0.3);
-            border-radius: 16px;
-            padding: 1rem;
-            min-width: 200px;
-            box-shadow: 0 8px 32px rgba(255, 6, 157, 0.3), 0 0 60px rgba(255, 6, 157, 0.1);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .menu-dropdown.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        .menu-item {
-            display: block;
-            color: var(--light-pink);
-            text-decoration: none;
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
+
+        .terminal-output > div {
             margin-bottom: 0.5rem;
-            text-shadow: 0 0 8px rgba(255, 6, 157, 0.3);
         }
-        .menu-item:last-child {
-            margin-bottom: 0;
-        }
-        .menu-item:hover {
-            background: rgba(255, 6, 157, 0.2);
-            transform: translateX(5px);
-            box-shadow: 0 0 20px rgba(255, 6, 157, 0.3);
-        }
-        .menu-item.active {
-            background: rgba(255, 6, 157, 0.15);
-            border-left: 3px solid var(--hot-pink);
-        }
-        
-        /* Voice Command Button */
-        .voice-button {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(255, 6, 157, 0.15);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 6, 157, 0.3);
-            box-shadow: 0 8px 32px rgba(255, 6, 157, 0.3);
-            cursor: pointer;
+
+        /* Terminal Input */
+        .terminal-input-wrapper {
+            padding: 1rem 1.5rem;
+            background: rgba(255, 6, 157, 0.05);
+            border-top: 1px solid rgba(255, 6, 157, 0.2);
             display: flex;
             align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 9999;
-            font-size: 1.5rem;
-        }
-        .voice-button:hover {
-            background: rgba(255, 6, 157, 0.25);
-            transform: scale(1.1);
-            box-shadow: 0 12px 48px rgba(255, 6, 157, 0.5);
-        }
-        .voice-button.listening {
-            background: rgba(255, 6, 157, 0.4);
-            animation: pulse-voice 1.5s infinite;
-        }
-        @keyframes pulse-voice {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 6, 157, 0.5); }
-            50% { box-shadow: 0 0 40px rgba(255, 6, 157, 0.8), 0 0 60px rgba(255, 0, 255, 0.5); }
-        }
-        
-        /* Quick Access Buttons */
-        .quick-access {
-            position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            display: flex;
-            flex-direction: column;
             gap: 0.75rem;
-            z-index: 9999;
-            opacity: 0;
-            animation: fadeIn 0.8s ease-out 1s forwards;
         }
-        .quick-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(255, 6, 157, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 6, 157, 0.25);
-            box-shadow: 0 4px 16px rgba(255, 6, 157, 0.2);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
+
+        .prompt {
+            color: var(--hot-pink);
             font-size: 1.2rem;
-            position: relative;
+            text-shadow: 0 0 10px var(--hot-pink);
         }
-        .quick-btn:hover {
-            background: rgba(255, 6, 157, 0.2);
-            transform: scale(1.1);
-            box-shadow: 0 8px 24px rgba(255, 6, 157, 0.4);
-        }
-        .quick-btn::before {
-            content: attr(data-tooltip);
-            position: absolute;
-            left: 60px;
-            background: rgba(20, 0, 10, 0.95);
-            backdrop-filter: blur(10px);
-            color: var(--light-pink);
-            padding: 0.5rem 0.75rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            border: 1px solid rgba(255, 6, 157, 0.3);
-        }
-        .quick-btn:hover::before {
-            opacity: 1;
-        }
-        
-        /* Command Suggestions */
-        .command-suggestions {
-            position: absolute;
-            bottom: 100%;
-            left: 0;
-            right: 0;
-            background: rgba(20, 0, 10, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 6, 157, 0.3);
-            border-radius: 12px 12px 0 0;
-            padding: 0.5rem;
-            display: none;
-            max-height: 200px;
-            overflow-y: auto;
-            box-shadow: 0 -8px 32px rgba(255, 6, 157, 0.2);
-        }
-        .command-suggestions.active {
-            display: block;
-        }
-        .suggestion-item {
-            padding: 0.5rem 0.75rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: var(--light-pink);
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .suggestion-item:hover {
-            background: rgba(255, 6, 157, 0.2);
-            transform: translateX(5px);
-        }
-        .suggestion-icon {
-            font-size: 1rem;
-        }
-        
-        /* Breadcrumb Navigation */
-        .breadcrumb {
-            position: fixed;
-            top: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(20, 0, 10, 0.4);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 6, 157, 0.3);
-            border-radius: 20px;
-            padding: 0.5rem 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.85rem;
-            color: var(--light-pink);
-            z-index: 9998;
-            opacity: 0;
-            animation: fadeIn 0.8s ease-out 0.5s forwards;
-        }
-        .breadcrumb-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .breadcrumb-separator {
-            opacity: 0.5;
-        }
-        
-        /* MacOS-Style Dock - Enhanced */
-        .dock {
-            position: fixed;
-            bottom: 1.5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            padding: 1rem 2rem;
-            background: rgba(255,6,157,0.08);
-            backdrop-filter: blur(30px) saturate(180%);
-            border: 1px solid rgba(255, 6, 157, 0.25);
-            border-radius: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 60px rgba(255, 6, 157, 0.2);
-            z-index: 10001;
-            opacity: 0;
-            animation: fadeIn 0.8s ease-out 1.5s forwards;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .dock::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-            animation: shimmer 6s infinite linear;
-        }
-        
-        @keyframes shimmer {
-            0% { left: -150%; }
-            100% { left: 150%; }
-        }
-        .dock-icon {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            color: var(--light-pink);
-            text-decoration: none;
-            border-radius: 12px;
-            background: rgba(255, 6, 157, 0.1);
-            border: 1px solid rgba(255, 6, 157, 0.2);
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-            cursor: pointer;
-            animation: dockPulse 3s infinite ease-in-out;
-            animation-delay: calc(var(--i, 0) * 0.1s);
-        }
-        
-        @keyframes dockPulse {
-            0%, 100% { box-shadow: 0 0 10px rgba(255,6,157,0.3); }
-            50% { box-shadow: 0 0 20px rgba(255,6,157,0.5); transform: scale(1.05); }
-        }
-        
-        .dock-icon:hover {
-            transform: translateY(-10px) scale(1.15);
-            background: rgba(255, 6, 157, 0.25);
-            border-color: rgba(255, 6, 157, 0.5);
-            box-shadow: 0 12px 24px rgba(255, 6, 157, 0.4), 0 0 30px rgba(255, 6, 157, 0.3);
-            animation: none;
-        }
-        .dock-icon::after {
-            content: attr(data-label);
-            position: absolute;
-            bottom: calc(100% + 10px);
-            left: 50%;
-            transform: translateX(-50%) scale(0.8);
-            background: rgba(20, 0, 10, 0.95);
-            color: var(--light-pink);
-            padding: 0.4rem 0.8rem;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 6, 157, 0.3);
-        }
-        .dock-icon:hover::after {
-            opacity: 1;
-            transform: translateX(-50%) scale(1);
-        }
-        .dock-divider {
-            width: 1px;
-            height: 40px;
-            background: linear-gradient(to bottom, transparent, rgba(255, 6, 157, 0.4), transparent);
-        }
-        
-        @media (max-width: 768px) {
-            .hamburger-menu {
-                top: 1rem;
-                right: 1rem;
-            }
-            .hamburger-button {
-                width: 50px;
-                height: 50px;
-            }
-            .hamburger-line {
-                width: 20px;
-            }
-            .neon-header h1 { font-size: 2.5rem; }
-            .neon-header .subtitle { font-size: 0.8rem; }
-            .typing-cursor { width: 0.1rem; height: 2.5rem; }
-            #terminal-output { height: 18rem; }
-            .voice-button {
-                bottom: 1rem;
-                right: 1rem;
-                width: 50px;
-                height: 50px;
-            }
-            .quick-access {
-                bottom: 1rem;
-                left: 1rem;
-            }
-            .quick-btn {
-                width: 45px;
-                height: 45px;
-            }
-            .breadcrumb {
-                font-size: 0.75rem;
-                padding: 0.4rem 1rem;
-            }
-        }
-        .command-btn:focus-visible {
-            outline: 2px solid var(--hot-pink);
-            outline-offset: 2px;
-            box-shadow: 0 0 20px rgba(255, 6, 157, 0.6);
-        }
-        #command-input:focus-visible {
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
             outline: none;
-            box-shadow: 0 0 0 2px var(--hot-pink), 0 0 20px rgba(255, 6, 157, 0.3);
+            color: var(--light-pink);
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            caret-color: var(--hot-pink);
+        }
+
+        .terminal-input::placeholder {
+            color: rgba(255, 157, 226, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .terminal-title h1 {
+                font-size: 2rem;
+            }
+            .terminal-output {
+                height: 300px;
+            }
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-2 sm:p-4">
-    
+<body>
     <canvas id="matrix-canvas"></canvas>
-    
-    <!-- Breadcrumb Navigation -->
-    <div class="breadcrumb">
-        <span class="breadcrumb-item">🏠 Home</span>
-        <span class="breadcrumb-separator">→</span>
-        <span class="breadcrumb-item">Terminal</span>
-    </div>
-    
-    <!-- Voice Command Button -->
-    <button class="voice-button" id="voice-btn" aria-label="Voice Commands" title="Click to use voice commands">
-        🎤
-    </button>
-    
-    <!-- Quick Access Buttons -->
-    <div class="quick-access">
-        <button class="quick-btn" data-tooltip="Projects" onclick="window.location.href='projects.html'">💼</button>
-        <button class="quick-btn" data-tooltip="Skills" onclick="document.getElementById('command-input').value='skills'; document.getElementById('command-input').dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}))">⚡</button>
-        <button class="quick-btn" data-tooltip="Contact" onclick="window.location.href='contact.html'">📧</button>
-        <button class="quick-btn" data-tooltip="Help" onclick="document.getElementById('command-input').value='help'; document.getElementById('command-input').dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}))">❓</button>
-    </div>
-    
-    <!-- MacOS-Style Dock with Socials -->
-    <div class="dock">
-        <a href="https://github.com/lyricolivia20" target="_blank" class="dock-icon" data-label="GitHub">💻</a>
-        <a href="https://linkedin.com/in/lyricolivia" target="_blank" class="dock-icon" data-label="LinkedIn">💼</a>
-        <a href="https://twitter.com/lyricodes" target="_blank" class="dock-icon" data-label="Twitter">🐦</a>
-        <div class="dock-divider"></div>
-        <a href="mailto:lyric@lyricodes.dev" class="dock-icon" data-label="Email">📧</a>
-        <a href="projects.html" class="dock-icon" data-label="Projects">🎨</a>
-        <a href="about.html" class="dock-icon" data-label="About">👤</a>
-    </div>
-    
-    <!-- Floating Hamburger Menu -->
-    <div class="hamburger-menu">
-        <button class="hamburger-button" id="hamburger-btn" aria-label="Menu">
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-        </button>
-        <nav class="menu-dropdown" id="menu-dropdown">
-            <a href="index.html" class="menu-item active">Home</a>
-            <a href="about.html" class="menu-item">About</a>
-            <a href="projects.html" class="menu-item">Projects</a>
-            <a href="contact.html" class="menu-item">Contact</a>
-        </nav>
-    </div>
 
-    <div class="terminal-container w-full max-w-4xl">
-        <div class="terminal-wrapper rounded-lg overflow-hidden" role="main" aria-label="Interactive Terminal">
-            <div class="px-5 py-3 flex items-center justify-between border-b" style="border-color: rgba(255, 6, 157, 0.15); background: rgba(255, 6, 157, 0.03); backdrop-filter: blur(10px);">
-                <div class="flex items-center space-x-2.5">
-                    <div class="w-3.5 h-3.5 rounded-full bg-red-500 shadow-lg" style="box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);"></div>
-                    <div class="w-3.5 h-3.5 rounded-full bg-yellow-500 shadow-lg" style="box-shadow: 0 0 10px rgba(234, 179, 8, 0.5);"></div>
-                    <div class="w-3.5 h-3.5 rounded-full bg-green-500 shadow-lg" style="box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);"></div>
-                </div>
+    <div class="terminal-container">
+        <div class="terminal-wrapper">
+            <!-- Terminal Header -->
+            <div class="terminal-header">
+                <div class="terminal-dot dot-red"></div>
+                <div class="terminal-dot dot-yellow"></div>
+                <div class="terminal-dot dot-green"></div>
             </div>
-            
-            <div class="neon-header">
-                <h1 id="neon-title"></h1>
-                <p class="subtitle">Creative Developer &amp; Digital Artist</p>
+
+            <!-- Terminal Title -->
+            <div class="terminal-title">
+                <h1>LyriCodes</h1>
+                <p>Creative Developer ✦ Digital Artist</p>
             </div>
-            
-            <div id="terminal-output" class="terminal-output p-4 h-72 overflow-y-auto" role="log" aria-live="polite" aria-relevant="additions"></div>
-            
-            <div class="px-5 py-4 flex items-center border-t" style="border-color: rgba(255, 6, 157, 0.15); background: rgba(255, 6, 157, 0.03); backdrop-filter: blur(10px); position: relative;">
-                <!-- Command Suggestions -->
-                <div class="command-suggestions" id="command-suggestions"></div>
-                
-                <span class="mr-3 text-xl prompt-icon" style="color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink), 0 0 20px rgba(255, 0, 255, 0.5);">♕</span>
+
+            <!-- Terminal Output -->
+            <div id="terminal-output" class="terminal-output"></div>
+
+            <!-- Terminal Input -->
+            <div class="terminal-input-wrapper">
+                <span class="prompt">❯</span>
                 <input 
-                    id="command-input" type="text"
-                    class="command-input flex-1 bg-transparent outline-none font-mono"
-                    autocomplete="off" spellcheck="false" 
-                    placeholder="Type 'help' for commands or click 🎤 for voice..." 
-                    aria-label="Command input"
-                    autofocus>
+                    id="terminal-input" 
+                    type="text" 
+                    class="terminal-input"
+                    placeholder="Type 'help' to begin..."
+                    autocomplete="off"
+                    spellcheck="false"
+                    autofocus
+                />
             </div>
         </div>
     </div>
 
     <script>
+        // Matrix Rain Animation
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
-        const outputElement = document.getElementById('terminal-output');
-        const inputElement = document.getElementById('command-input');
-        const neonTitleElement = document.getElementById('neon-title');
 
-        let drops = [];
-        const chars = 'LYRICO DES♕💖👩💻█▓▒░║‗╔╦╗╚╩╝';
-        const fontSize = 14;
-        let lastTime = 0;
-        const frameDelay = 50; // Optimized frame rate (20 FPS)
-        
-        // Cache computed style to avoid recalculation on every frame
-        const hotPinkColor = getComputedStyle(document.documentElement).getPropertyValue('--hot-pink').trim();
-        const fontStyle = fontSize + 'px monospace';
-        
-        // Reduce number of columns for better performance
         function resizeCanvas() {
-            const dpr = Math.min(window.devicePixelRatio || 1, 2); // Cap at 2x for performance
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            
-            // Reduce column density on smaller screens
-            const columnSpacing = window.innerWidth < 768 ? fontSize * 1.5 : fontSize;
-            const columns = Math.floor(canvas.width / columnSpacing);
-            
-            // Initialize drops with random starting positions for variety
-            drops = Array.from({ length: columns }, () => Math.floor(Math.random() * -100));
         }
-        
         resizeCanvas();
-        
-        // Debounced resize handler for better performance
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(resizeCanvas, 150);
-        });
-        
-        // Pause animation when tab is not visible
-        let isVisible = true;
-        document.addEventListener('visibilitychange', () => {
-            isVisible = !document.hidden;
-        });
-        
-        function drawMatrix(currentTime) {
-            requestAnimationFrame(drawMatrix);
-            
-            // Skip rendering if tab is not visible
-            if (!isVisible) return;
-            
-            if (currentTime - lastTime < frameDelay) return;
-            lastTime = currentTime;
-            
-            // Use darker fade for better performance (less overdraw)
-            ctx.fillStyle = 'rgba(17, 0, 17, 0.1)';
+        window.addEventListener('resize', resizeCanvas);
+
+        const chars = 'LYRICODES♕💖👩💻█▓▒░0123456789';
+        const fontSize = 14;
+        const columns = Math.floor(canvas.width / fontSize);
+        const drops = Array(columns).fill(0).map(() => Math.floor(Math.random() * -100));
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 0, 20, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Set text properties once before loop
-            ctx.fillStyle = hotPinkColor;
-            ctx.font = fontStyle;
+            ctx.fillStyle = '#ff069d';
+            ctx.font = fontSize + 'px monospace';
             
-            // Batch render operations
-            const columnSpacing = window.innerWidth < 768 ? fontSize * 1.5 : fontSize;
             for (let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
-                const x = i * columnSpacing;
+                const x = i * fontSize;
                 const y = drops[i] * fontSize;
                 
-                // Only render if on screen
-                if (y > 0 && y < canvas.height + fontSize) {
-                    ctx.fillText(text, x, y);
-                }
+                ctx.fillText(text, x, y);
                 
-                // Reset drop with some randomness
                 if (y > canvas.height && Math.random() > 0.975) {
                     drops[i] = 0;
                 }
                 drops[i]++;
             }
         }
-        requestAnimationFrame(drawMatrix);
 
-        // Command history and autocomplete
-        let commandHistory = [];
-        let historyIndex = -1;
-        let bookmarks = [];
-        let textSize = 'normal';
-        let accessibilityMode = false;
-        
-        // Search data for quick access
-        const searchableContent = {
-            projects: ['AI Chatbot', 'WhereTF Inventory', '3D Portfolio', 'Neural Art Generator', 'WebGL Shader Lab'],
-            skills: ['TensorFlow', 'PyTorch', 'React', 'Three.js', 'WebGL', 'Python', 'TypeScript', 'Node.js'],
-            technologies: ['AI', 'Machine Learning', 'WebGL', '3D Graphics', 'React', 'Next.js', 'Vue', 'TailwindCSS']
-        };
-        
-        const commands = {
-            'help': {
-                action: () => {
-                    addResponse('\n🤖 LyriBot Helper Menu v3.0\n');
-                    addResponse('📍 NAVIGATION:');
-                    addResponse('   [about/a] - Learn about LyriCodes');
-                    addResponse('   [projects/p] - Explore creative work');
-                    addResponse('   [contact/c] - Get in touch');
-                    addResponse('   [goto <section>] - Jump directly to section\n');
-                    addResponse('🔍 DISCOVERY:');
-                    addResponse('   [search <term>] - Search all content');
-                    addResponse('   [filter <tech>] - Filter by technology');
-                    addResponse('   [preview <section>] - Quick preview');
-                    addResponse('   [random] - Random fact about me\n');
-                    addResponse('📊 INFORMATION:');
-                    addResponse('   [skills] - Technical abilities');
-                    addResponse('   [timeline] - Career journey');
-                    addResponse('   [tech-stack] - Technology stack');
-                    addResponse('   [featured] - Best projects');
-                    addResponse('   [recent] - Latest updates');
-                    addResponse('   [stats] - Coding statistics\n');
-                    addResponse('🗺️ STRUCTURE:');
-                    addResponse('   [tree] - Site structure tree');
-                    addResponse('   [sitemap] - Complete sitemap');
-                    addResponse('   [ls] - List sections');
-                    addResponse('   [tags] - Project categories\n');
-                    addResponse('🔧 UTILITIES:');
-                    addResponse('   [clear/cls] - Clear terminal');
-                    addResponse('   [history] - Command history');
-                    addResponse('   [bookmark <name>] - Save bookmark');
-                    addResponse('   [social] - Social media links');
-                    addResponse('   [resume] - Download resume\n');
-                    addResponse('♿ ACCESSIBILITY:');
-                    addResponse('   [accessible] - Toggle accessibility mode');
-                    addResponse('   [text-size <size>] - Adjust text size');
-                    addResponse('   [shortcuts] - Keyboard shortcuts');
-                    addResponse('   [voice] - Voice command info\n');
-                    addResponse('   [flashlight] - Toggle cursor spotlight effect');
-                    addResponse('🎨 FUN:');
-                    addResponse('   [banner] - ASCII art');
-                    addResponse('   [theme] - Color scheme');
-                    addResponse('   [joke] - Dev joke');
-                    addResponse('   [surprise] - Easter egg\n');
-                    addResponse('💡 Use ↑↓ for history | Tab for autocomplete | Alt+H for help\n');
-                }
-            },
-            'joke': {
-                action: () => {
-                    const jokes = [
-                        "Why do programmers prefer dark mode? Because light attracts bugs! 🐛",
-                        "How many programmers does it take to change a light bulb? None, that's a hardware problem! 💡",
-                        "Why do developers prefer iOS? Because they don't have to deal with Java! ☕",
-                        "What's a programmer's favorite hangout? The Foo Bar! 🍺",
-                        "Why did the developer go broke? Because they used up all their cache! 💸"
-                    ];
-                    const joke = jokes[Math.floor(Math.random() * jokes.length)];
-                    addResponse('🤖 Here\'s one for you:');
-                    addResponse(joke);
-                }
-            },
-            'p': {
-                action: () => addResponse('Initializing portfolio showcase... Stand by.', () => window.location.href = 'projects.html')
-            },
-            'portfolio': {
-                action: () => addResponse('Initializing portfolio showcase... Stand by.', () => window.location.href = 'projects.html')
-            },
-            'a': {
-                action: () => addResponse('Accessing neural imprint... Please wait.', () => window.location.href = 'about.html')
-            },
-            'about': {
-                action: () => addResponse('Accessing neural imprint... Please wait.', () => window.location.href = 'about.html')
-            },
-            'c': {
-                action: () => addResponse('Opening secure channel... Connection established.', () => window.location.href = 'contact.html')
-            },
-            'contact': {
-                action: () => addResponse('Opening secure channel... Connection established.', () => window.location.href = 'contact.html')
-            },
-            'clear': {
-                action: () => outputElement.innerHTML = ''
-            },
-            'cls': {
-                action: () => outputElement.innerHTML = ''
-            },
-            'theme': {
-                action: () => {
-                    addResponse('🎨 CURRENT THEME: Neon Cyberpunk Dreams\n');
-                    addResponse('🌈 COLOR PALETTE:');
-                    addResponse('   → Hot Pink: #ff069d');
-                    addResponse('   → Neon Pink: #ff00ff');
-                    addResponse('   → Light Pink: #ff9de2');
-                    addResponse('   → Deep Space: #0a0014 - #16213e\n');
-                    addResponse('✨ Effects: Glassmorphism with 20px backdrop blur');
-                    addResponse('💫 Animations: Smooth cubic-bezier transitions');
-                    addResponse('🌟 Matrix Rain: 80ms frame delay for ambiance');
-                }
-            },
-            'whoami': {
-                action: () => {
-                    addResponse('🎭 You are accessing: LyriCodes Portfolio Terminal');
-                    addResponse('👤 Owner: LyriCodes (Lyric Olivia Jensen)');
-                    addResponse('💼 Role: Creative Developer & Digital Artist');
-                    addResponse('🎨 Specialties: AI, 3D Graphics, Immersive Experiences');
-                    addResponse('🌟 Currently: Crafting the future of digital art');
-                    addResponse('\n✨ Want to know more? Type \'about\' or click the menu!');
-                }
-            },
-            'ls': {
-                action: () => {
-                    addResponse('📂 LYRICODES PORTFOLIO STRUCTURE:\n');
-                    addResponse('├── 🏠 home/        → You are here!');
-                    addResponse('├── 👤 about/       → My story & journey');
-                    addResponse('├── 💼 projects/    → Creative work showcase');
-                    addResponse('├── 📧 contact/     → Get in touch');
-                    addResponse('└── 🤖 lyribot/    → Interactive guide (me!)\n');
-                    addResponse('💡 Tip: Click any section name or use commands!');
-                }
-            },
-            'date': {
-                action: () => addResponse(`Current date: ${new Date().toLocaleString()}`)
-            },
-            'echo': {
-                action: (args) => addResponse(args || '')
-            },
-            'skills': {
-                action: () => {
-                    addResponse('💪 TECHNICAL CAPABILITIES:\n');
-                    addResponse('🤖 AI & Machine Learning');
-                    addResponse('   → TensorFlow, PyTorch, OpenAI APIs');
-                    addResponse('   → Neural networks, NLP, Computer Vision\n');
-                    addResponse('🎨 Creative Coding');
-                    addResponse('   → Three.js, WebGL, GLSL Shaders');
-                    addResponse('   → p5.js, Processing, Generative Art\n');
-                    addResponse('⚛️ Frontend Development');
-                    addResponse('   → React, Next.js, Vue, TypeScript');
-                    addResponse('   → TailwindCSS, Framer Motion\n');
-                    addResponse('🔧 Backend & Tools');
-                    addResponse('   → Node.js, Python, GraphQL');
-                    addResponse('   → Git, Docker, CI/CD\n');
-                    addResponse('✨ Want to see these in action? Check out my projects!');
-                }
-            },
-            'banner': {
-                action: () => {
-                    addResponse('\n  ╔══════════════════════════════════╗');
-                    addResponse('  ║                                  ║');
-                    addResponse('  ║       ✨ LyriCodes ✨            ║');
-                    addResponse('  ║                                  ║');
-                    addResponse('  ║   Creative Developer & Artist    ║');
-                    addResponse('  ║   Crafting Digital Dreams 💖     ║');
-                    addResponse('  ║                                  ║');
-                    addResponse('  ╚══════════════════════════════════╝\n');
-                    addResponse('  🤖 LyriBot says: Looking good! ✨');
-                }
-            },
-            'surprise': {
-                action: () => {
-                    addResponse('🎉 You found the secret command!');
-                    addResponse('✨ Here\'s a little easter egg for you...');
-                    addResponse('💖 Thanks for exploring! You\'re awesome!');
-                    addResponse('🌟 Keep being curious - it\'s what makes you special!');
-                }
-            },
-            'timeline': {
-                action: () => {
-                    addResponse('📅 PROFESSIONAL JOURNEY:\n');
-                    addResponse('2024 - Present');
-                    addResponse('   🚀 Creative Developer & Digital Artist');
-                    addResponse('   → Building immersive AI-powered experiences');
-                    addResponse('   → Specializing in WebGL and 3D graphics\n');
-                    addResponse('2023 - 2024');
-                    addResponse('   💼 Full-Stack Developer');
-                    addResponse('   → React, Next.js, TypeScript projects');
-                    addResponse('   → AI/ML integration and deployment\n');
-                    addResponse('2022 - 2023');
-                    addResponse('   🎓 Computer Science & AI Studies');
-                    addResponse('   → Deep learning, neural networks');
-                    addResponse('   → Creative coding and generative art\n');
-                    addResponse('💡 Type \'about\' for the full story!');
-                }
-            },
-            'tech-stack': {
-                action: () => {
-                    addResponse('🛠️ TECHNOLOGY STACK:\n');
-                    addResponse('🎨 FRONTEND:');
-                    addResponse('   → React, Next.js, Vue.js');
-                    addResponse('   → TypeScript, JavaScript (ES6+)');
-                    addResponse('   → TailwindCSS, Styled Components');
-                    addResponse('   → Three.js, WebGL, GLSL Shaders\n');
-                    addResponse('🔧 BACKEND:');
-                    addResponse('   → Node.js, Express, FastAPI');
-                    addResponse('   → Python, GraphQL, REST APIs');
-                    addResponse('   → PostgreSQL, MongoDB, Redis\n');
-                    addResponse('🤖 AI/ML:');
-                    addResponse('   → TensorFlow, PyTorch, scikit-learn');
-                    addResponse('   → OpenAI APIs, Hugging Face');
-                    addResponse('   → Computer Vision, NLP\n');
-                    addResponse('☁️ DEVOPS & TOOLS:');
-                    addResponse('   → Git, Docker, CI/CD');
-                    addResponse('   → Vercel, AWS, Firebase');
-                    addResponse('   → Figma, Blender, Unity');
-                }
-            },
-            'recent': {
-                action: () => {
-                    addResponse('🆕 LATEST UPDATES:\n');
-                    addResponse('📌 Recent Projects:');
-                    addResponse('   1. WhereTF - AI-powered inventory tracker');
-                    addResponse('   2. Neural Art Generator - ML-based art creation');
-                    addResponse('   3. 3D Portfolio - Interactive WebGL experience\n');
-                    addResponse('🔥 Currently Working On:');
-                    addResponse('   → Advanced shader effects');
-                    addResponse('   → Voice-controlled interfaces');
-                    addResponse('   → Real-time collaborative tools\n');
-                    addResponse('💡 Type \'projects\' to see all my work!');
-                }
-            },
-            'featured': {
-                action: () => {
-                    addResponse('⭐ FEATURED WORK:\n');
-                    addResponse('🏆 WhereTF Inventory System');
-                    addResponse('   → AI chatbot with fuzzy logic');
-                    addResponse('   → React Native mobile app');
-                    addResponse('   → FastAPI backend with ML\n');
-                    addResponse('🎨 Neural Art Generator');
-                    addResponse('   → StyleGAN integration');
-                    addResponse('   → Real-time generation');
-                    addResponse('   → Custom training pipeline\n');
-                    addResponse('🌐 Interactive 3D Portfolio');
-                    addResponse('   → WebGL & Three.js');
-                    addResponse('   → GLSL shader effects');
-                    addResponse('   → Immersive navigation\n');
-                    addResponse('💡 Visit \'projects\' for detailed case studies!');
-                }
-            },
-            'social': {
-                action: () => {
-                    addResponse('🌐 CONNECT WITH ME:\n');
-                    addResponse('💼 GitHub: github.com/lyricolivia20');
-                    addResponse('💼 LinkedIn: linkedin.com/in/lyricolivia');
-                    addResponse('🐦 Twitter: @lyricodes');
-                    addResponse('📧 Email: lyric@lyricodes.dev');
-                    addResponse('🎨 Portfolio: lyricodes.dev\n');
-                    addResponse('💡 Type \'contact\' to send me a message!');
-                }
-            },
-            'resume': {
-                action: () => {
-                    addResponse('📄 RESUME ACCESS:\n');
-                    addResponse('✨ Downloading resume...');
-                    addResponse('📥 Resume will open in a new tab\n');
-                    addResponse('💡 You can also find it in the About section!');
-                    // In production, add actual resume download link
-                    setTimeout(() => addResponse('⚠️ Resume download link not yet configured'), 1000);
-                }
-            },
-            'tree': {
-                action: () => {
-                    addResponse('📁 PORTFOLIO SITE STRUCTURE:\n');
-                    addResponse('lyricodes.dev/');
-                    addResponse('├── 🏠 Home (index)');
-                    addResponse('│   ├── Terminal Interface');
-                    addResponse('│   ├── LyriBot Assistant');
-                    addResponse('│   └── Quick Navigation\n');
-                    addResponse('├── 👤 About');
-                    addResponse('│   ├── Background & Story');
-                    addResponse('│   ├── Education');
-                    addResponse('│   ├── Experience');
-                    addResponse('│   └── Skills & Expertise\n');
-                    addResponse('├── 💼 Projects');
-                    addResponse('│   ├── AI/ML Projects');
-                    addResponse('│   ├── Web Applications');
-                    addResponse('│   ├── Creative Coding');
-                    addResponse('│   └── 3D Graphics\n');
-                    addResponse('├── 📧 Contact');
-                    addResponse('│   ├── Contact Form');
-                    addResponse('│   ├── Social Links');
-                    addResponse('│   └── Availability\n');
-                    addResponse('└── 🤖 Interactive Features');
-                    addResponse('    ├── Terminal Commands');
-                    addResponse('    ├── Matrix Background');
-                    addResponse('    └── Voice Commands\n');
-                }
-            },
-            'sitemap': {
-                action: () => {
-                    addResponse('🗺️ COMPLETE SITEMAP:\n');
-                    addResponse('📍 Main Pages:');
-                    addResponse('   • Home - Terminal interface');
-                    addResponse('   • About - My story and background');
-                    addResponse('   • Projects - Portfolio showcase');
-                    addResponse('   • Contact - Get in touch\n');
-                    addResponse('🔍 Quick Commands:');
-                    addResponse('   • help - Show all commands');
-                    addResponse('   • skills - Technical abilities');
-                    addResponse('   • timeline - Career journey');
-                    addResponse('   • tech-stack - Technologies used');
-                    addResponse('   • featured - Best projects');
-                    addResponse('   • social - Social media links\n');
-                    addResponse('💡 Type any command to explore!');
-                }
-            },
-            'search': {
-                action: (query) => {
-                    if (!query) {
-                        addResponse('🔍 SEARCH USAGE:\n');
-                        addResponse('   search <term> - Search across all content');
-                        addResponse('\nExample: search react\n');
-                        return;
-                    }
-                    addResponse(`🔍 Searching for: "${query}"\n`);
-                    let found = false;
-                    
-                    // Search in projects
-                    const projectMatches = searchableContent.projects.filter(p => 
-                        p.toLowerCase().includes(query.toLowerCase())
-                    );
-                    if (projectMatches.length > 0) {
-                        addResponse('📂 Found in Projects:');
-                        projectMatches.forEach(p => addResponse(`   → ${p}`));
-                        found = true;
-                    }
-                    
-                    // Search in skills
-                    const skillMatches = searchableContent.skills.filter(s => 
-                        s.toLowerCase().includes(query.toLowerCase())
-                    );
-                    if (skillMatches.length > 0) {
-                        addResponse('\n💪 Found in Skills:');
-                        skillMatches.forEach(s => addResponse(`   → ${s}`));
-                        found = true;
-                    }
-                    
-                    if (!found) {
-                        addResponse('❌ No results found.');
-                        addResponse('💡 Try: projects, about, skills, or contact');
-                    } else {
-                        addResponse('\n💡 Type \'projects\' or \'skills\' for more details!');
-                    }
-                }
-            },
-            'random': {
-                action: () => {
-                    const facts = [
-                        '🎨 I create generative art using p5.js and Processing!',
-                        '🤖 Built an AI chatbot that helps find lost items using fuzzy logic',
-                        '🌟 Love combining AI with creative coding for unique experiences',
-                        '💻 Passionate about WebGL and shader programming',
-                        '🎮 Working on interactive 3D experiences with Three.js',
-                        '🧠 Exploring neural networks for creative applications',
-                        '✨ Believe in making tech beautiful and accessible'
-                    ];
-                    const fact = facts[Math.floor(Math.random() * facts.length)];
-                    addResponse('🎲 RANDOM FACT:\n');
-                    addResponse(fact);
-                    addResponse('\n💡 Type \'random\' again for another fact!');
-                }
-            },
-            'tags': {
-                action: () => {
-                    addResponse('🏷️ PROJECT CATEGORIES:\n');
-                    addResponse('🤖 AI & Machine Learning');
-                    addResponse('   → Neural Networks, NLP, Computer Vision\n');
-                    addResponse('🌐 Web Development');
-                    addResponse('   → React, Next.js, Full-Stack\n');
-                    addResponse('🎨 Creative Coding');
-                    addResponse('   → Generative Art, Shaders, WebGL\n');
-                    addResponse('📱 Mobile Development');
-                    addResponse('   → React Native, Cross-Platform\n');
-                    addResponse('🎮 3D & Interactive');
-                    addResponse('   → Three.js, Unity, Immersive Experiences\n');
-                    addResponse('💡 Type \'filter <tag>\' to see related projects!');
-                }
-            },
-            'filter': {
-                action: (tech) => {
-                    if (!tech) {
-                        addResponse('🔧 FILTER USAGE:\n');
-                        addResponse('   filter <technology> - Show projects using specific tech');
-                        addResponse('\nExample: filter react\n');
-                        addResponse('Available: ai, react, webgl, python, threejs');
-                        return;
-                    }
-                    addResponse(`🔧 Projects using ${tech.toUpperCase()}:\n`);
-                    const filters = {
-                        'ai': ['WhereTF Inventory', 'Neural Art Generator', 'AI Chatbot'],
-                        'react': ['WhereTF Mobile App', '3D Portfolio', 'Interactive Dashboard'],
-                        'webgl': ['3D Portfolio', 'Shader Lab', 'Interactive Experiences'],
-                        'python': ['AI Backend', 'ML Pipeline', 'Data Processing'],
-                        'threejs': ['3D Portfolio', 'WebGL Experiments', 'Interactive Scenes']
-                    };
-                    const results = filters[tech.toLowerCase()] || [];
-                    if (results.length > 0) {
-                        results.forEach((p, i) => addResponse(`   ${i + 1}. ${p}`));
-                        addResponse('\n💡 Visit \'projects\' for full details!');
-                    } else {
-                        addResponse('❌ No projects found with that technology.');
-                        addResponse('💡 Try: ai, react, webgl, python, or threejs');
-                    }
-                }
-            },
-            'stats': {
-                action: () => {
-                    addResponse('📊 CODING STATISTICS:\n');
-                    addResponse('💻 GitHub Activity:');
-                    addResponse('   → 500+ commits this year');
-                    addResponse('   → 20+ repositories');
-                    addResponse('   → 15+ active projects\n');
-                    addResponse('🔥 Most Used Languages:');
-                    addResponse('   1. JavaScript/TypeScript (45%)');
-                    addResponse('   2. Python (30%)');
-                    addResponse('   3. GLSL/Shaders (15%)');
-                    addResponse('   4. HTML/CSS (10%)\n');
-                    addResponse('⭐ Achievements:');
-                    addResponse('   → 100+ stars across projects');
-                    addResponse('   → 50+ contributions to open source');
-                    addResponse('   → Featured in dev communities\n');
-                }
-            },
-            'history': {
-                action: () => {
-                    if (commandHistory.length === 0) {
-                        addResponse('📜 Command history is empty.');
-                        return;
-                    }
-                    addResponse('📜 COMMAND HISTORY:\n');
-                    const recent = commandHistory.slice(-10).reverse();
-                    recent.forEach((cmd, i) => {
-                        addResponse(`   ${recent.length - i}. ${cmd}`);
-                    });
-                    addResponse('\n💡 Use ↑↓ arrows to navigate history!');
-                }
-            },
-            'bookmark': {
-                action: (section) => {
-                    if (!section) {
-                        if (bookmarks.length === 0) {
-                            addResponse('🔖 No bookmarks saved yet.');
-                            addResponse('💡 Usage: bookmark <section>');
-                            return;
-                        }
-                        addResponse('🔖 YOUR BOOKMARKS:\n');
-                        bookmarks.forEach((b, i) => addResponse(`   ${i + 1}. ${b}`));
-                        addResponse('\n💡 Type bookmark name to visit!');
-                        return;
-                    }
-                    if (!bookmarks.includes(section)) {
-                        bookmarks.push(section);
-                        addResponse(`✅ Bookmarked: ${section}`);
-                    } else {
-                        addResponse(`ℹ️ Already bookmarked: ${section}`);
-                    }
-                }
-            },
-            'goto': {
-                action: (section) => {
-                    if (!section) {
-                        addResponse('🎯 GOTO USAGE:\n');
-                        addResponse('   goto <section> - Jump directly to a section');
-                        addResponse('\nAvailable: about, projects, contact, skills');
-                        return;
-                    }
-                    const destinations = {
-                        'about': 'about.html',
-                        'projects': 'projects.html',
-                        'contact': 'contact.html',
-                        'skills': () => commands.skills.action()
-                    };
-                    const dest = destinations[section.toLowerCase()];
-                    if (typeof dest === 'string') {
-                        addResponse(`🚀 Jumping to ${section}...`);
-                        setTimeout(() => window.location.href = dest, 500);
-                    } else if (typeof dest === 'function') {
-                        dest();
-                    } else {
-                        addResponse(`❌ Unknown section: ${section}`);
-                        addResponse('💡 Try: about, projects, contact, or skills');
-                    }
-                }
-            },
-            'preview': {
-                action: (section) => {
-                    if (!section) {
-                        addResponse('👁️ PREVIEW USAGE:\n');
-                        addResponse('   preview <section> - Quick preview without navigation');
-                        addResponse('\nAvailable: projects, skills, about');
-                        return;
-                    }
-                    addResponse(`👁️ PREVIEW: ${section.toUpperCase()}\n`);
-                    const previews = {
-                        'projects': () => {
-                            addResponse('Featured Projects:');
-                            addResponse('   • WhereTF - AI Inventory Tracker');
-                            addResponse('   • Neural Art - ML Art Generator');
-                            addResponse('   • 3D Portfolio - WebGL Experience');
-                            addResponse('\n💡 Type \'projects\' to see full details!');
-                        },
-                        'skills': () => {
-                            addResponse('Top Skills:');
-                            addResponse('   • AI/ML: TensorFlow, PyTorch');
-                            addResponse('   • Frontend: React, Three.js');
-                            addResponse('   • Backend: Node.js, Python');
-                            addResponse('\n💡 Type \'skills\' for complete list!');
-                        },
-                        'about': () => {
-                            addResponse('About LyriCodes:');
-                            addResponse('   Creative Developer & Digital Artist');
-                            addResponse('   Specializing in AI and 3D experiences');
-                            addResponse('   Passionate about immersive tech');
-                            addResponse('\n💡 Type \'about\' to learn more!');
-                        }
-                    };
-                    const preview = previews[section.toLowerCase()];
-                    if (preview) {
-                        preview();
-                    } else {
-                        addResponse(`❌ No preview available for: ${section}`);
-                    }
-                }
-            },
-            'text-size': {
-                action: (size) => {
-                    if (!size) {
-                        addResponse('📏 TEXT SIZE CONTROL:\n');
-                        addResponse('   text-size small - Smaller text');
-                        addResponse('   text-size normal - Default size');
-                        addResponse('   text-size large - Larger text');
-                        addResponse(`\nCurrent: ${textSize}`);
-                        return;
-                    }
-                    const sizes = {
-                        'small': '0.85rem',
-                        'normal': '0.95rem',
-                        'large': '1.1rem'
-                    };
-                    if (sizes[size]) {
-                        textSize = size;
-                        outputElement.style.fontSize = sizes[size];
-                        addResponse(`✅ Text size set to: ${size}`);
-                    } else {
-                        addResponse('❌ Invalid size. Use: small, normal, or large');
-                    }
-                }
-            },
-            'accessible': {
-                action: () => {
-                    accessibilityMode = !accessibilityMode;
-                    if (accessibilityMode) {
-                        document.body.style.filter = 'contrast(1.2)';
-                        outputElement.style.fontSize = '1.1rem';
-                        outputElement.style.lineHeight = '2';
-                        addResponse('✅ Accessibility mode ENABLED');
-                        addResponse('   • Increased contrast');
-                        addResponse('   • Larger text');
-                        addResponse('   • Better spacing');
-                    } else {
-                        document.body.style.filter = '';
-                        outputElement.style.fontSize = '0.95rem';
-                        outputElement.style.lineHeight = '1.8';
-                        addResponse('✅ Accessibility mode DISABLED');
-                        addResponse('   • Default settings restored');
-                    }
-                }
-            },
-            'shortcuts': {
-                action: () => {
-                    addResponse('⌨️ KEYBOARD SHORTCUTS:\n');
-                    addResponse('Navigation:');
-                    addResponse('   • Alt+A - About page');
-                    addResponse('   • Alt+P - Projects page');
-                    addResponse('   • Alt+C - Contact page');
-                    addResponse('   • Alt+H - Help menu\n');
-                    addResponse('Terminal:');
-                    addResponse('   • ↑↓ - Command history');
-                    addResponse('   • Tab - Autocomplete');
-                    addResponse('   • Ctrl+L - Clear terminal');
-                    addResponse('   • Esc - Cancel input\n');
-                    addResponse('💡 Shortcuts work anywhere on the page!');
-                }
-            }
-        };
+        setInterval(drawMatrix, 50);
 
-        const botSequence = [
-            { text: "🤖 Initializing LyriBot v3.0...", delay: 400 },
-            { text: "✨ Neural pathways: [ONLINE]", delay: 500 },
-            { text: "💖 Aesthetic protocols: [LOADED]", delay: 600 },
-            { text: "🔍 Search engine: [READY]", delay: 500 },
-            { text: "⌨️  Keyboard shortcuts: [ENABLED]\n", delay: 500 },
-            { text: "👋 Hey there! I'm LyriBot, your enhanced guide through this digital space.", delay: 800 },
-            { text: "\n✨ NEW FEATURES:\n", delay: 600 },
-            { text: "🔍 DISCOVERY:", delay: 400 },
-            { text: "   → 'search <term>' - Find anything instantly", delay: 300 },
-            { text: "   → 'preview <section>' - Quick peek without navigation", delay: 300 },
-            { text: "   → 'filter <tech>' - Projects by technology", delay: 300 },
-            { text: "   → 'random' - Discover random facts\n", delay: 300 },
-            { text: "⌨️  SHORTCUTS:", delay: 400 },
-            { text: "   → Alt+A/P/C - Quick page navigation", delay: 300 },
-            { text: "   → Alt+H - Help menu", delay: 300 },
-            { text: "   → Ctrl+L - Clear terminal\n", delay: 300 },
-            { text: "📊 INFO COMMANDS:", delay: 400 },
-            { text: "   → 'timeline' - My career journey", delay: 300 },
-            { text: "   → 'tech-stack' - Technologies I use", delay: 300 },
-            { text: "   → 'featured' - Best projects", delay: 300 },
-            { text: "   → 'stats' - Coding statistics\n", delay: 300 },
-            { text: "💡 Type 'help' to see ALL 30+ commands!", delay: 400 },
-            { text: "🎨 Or use the menu bubble in the top right!\n", delay: 400 }
-        ];
+        // Terminal Functionality
+        const outputElement = document.getElementById('terminal-output');
+        const inputElement = document.getElementById('terminal-input');
 
-        function processCommand(command) {
-            if (!command) return;
-            
-            // Add to command history
-            commandHistory.push(command);
-            historyIndex = commandHistory.length;
-            
-            addResponse(`♕ ${command}`, false);
-            
-            // Parse command and arguments
-            const parts = command.split(' ');
-            const cmdName = parts[0];
-            const args = parts.slice(1).join(' ');
-            
-            const cmd = commands[cmdName];
-            if (cmd) {
-                try {
-                    cmd.action(args);
-                } catch (error) {
-                    console.error('Command error:', error);
-                    addResponse(`Error executing command: [${command}]`);
-                }
-            } else {
-                addResponse(`Directive not recognized: [${command}]. Type 'help' for available commands.`);
-            }
-        }
-        
-        // Autocomplete function
-        function autocomplete(partial) {
-            const matches = Object.keys(commands).filter(cmd => cmd.startsWith(partial));
-            return matches.length === 1 ? matches[0] : partial;
-        }
-        
-        function addResponse(text, isTypingOrCallback, callback) {
+        function addOutput(text) {
             const line = document.createElement('div');
-            line.style.opacity = '0';
+            line.textContent = text;
             outputElement.appendChild(line);
-            
-            // Smooth scroll to bottom
-            requestAnimationFrame(() => {
-                line.style.opacity = '1';
-                outputElement.scrollTo({
-                    top: outputElement.scrollHeight,
-                    behavior: 'smooth'
-                });
-            });
-            
-            if (isTypingOrCallback === false) {
-                line.innerHTML = text;
-                return;
-            }
-            let i = 0;
-            const typeSpeed = 20; 
-            function typeChar() {
-                if (i < text.length) {
-                    line.innerHTML += text.charAt(i);
-                    i++;
-                    if (i % 3 === 0) { // Scroll every 3 characters for smoothness
-                        outputElement.scrollTo({
-                            top: outputElement.scrollHeight,
-                            behavior: 'smooth'
-                        });
-                    }
-                    setTimeout(typeChar, typeSpeed);
-                } else {
-                    if (typeof isTypingOrCallback === 'function') setTimeout(isTypingOrCallback, 500);
-                    else if (typeof callback === 'function') setTimeout(callback, 500);
-                }
-            }
-            typeChar();
+            outputElement.scrollTop = outputElement.scrollHeight;
         }
 
-        async function initTerminal() {
-            setControlsDisabled(true);
-            await animateHeader();
-            
-            // Show bot welcome sequence
-            for (const item of botSequence) {
-                await new Promise(resolve => setTimeout(resolve, item.delay));
-                addResponse(item.text);
-            }
-            
-            setControlsDisabled(false);
-            inputElement.focus();
-            
-            // Show typing indicator occasionally when idle
-            startIdleAnimations();
-        }
-        
-        // Idle animations to keep terminal feeling alive
-        let idleTimeout;
-        function startIdleAnimations() {
-            clearTimeout(idleTimeout);
-            idleTimeout = setTimeout(() => {
-                if (!inputElement.value) {
-                    const tips = [
-                        "💭 Psst... still here? Try typing 'about' to learn more about me!",
-                        "🌟 Did you know? You can use arrow keys ↑↓ to navigate command history!",
-                        "✨ Try typing 'banner' for a cool ASCII art surprise!",
-                        "🎯 Quick tip: Tab key autocompletes commands!",
-                        "💖 Feeling curious? Type 'whoami' to learn who you're talking to!"
-                    ];
-                    const randomTip = tips[Math.floor(Math.random() * tips.length)];
-                    addResponse(randomTip);
-                    startIdleAnimations();
-                }
-            }, 30000); // Show tip after 30 seconds of inactivity
-        }
-        
-        // Reset idle timer on user interaction
-        inputElement.addEventListener('input', () => {
-            startIdleAnimations();
-        });
-
-        async function animateHeader() {
-            const title = "LyriCodes";
-            neonTitleElement.innerHTML = '<span class="typing-cursor"></span>';
-            for (let i = 0; i < title.length; i++) {
-                await new Promise(resolve => setTimeout(resolve, 150));
-                neonTitleElement.innerHTML = title.substring(0, i + 1) + '<span class="typing-cursor"></span>';
-            }
-            await new Promise(resolve => setTimeout(resolve, 500));
-            neonTitleElement.innerHTML = title;
-            await new Promise(resolve => setTimeout(resolve, 500));
-        }
-        
-        function setControlsDisabled(isDisabled) {
-            inputElement.disabled = isDisabled;
-        }
-
-        inputElement.addEventListener('keydown', (e) => {
-            // Command history navigation
-            if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (historyIndex > 0) {
-                    historyIndex--;
-                    inputElement.value = commandHistory[historyIndex];
-                }
-            } else if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                if (historyIndex < commandHistory.length - 1) {
-                    historyIndex++;
-                    inputElement.value = commandHistory[historyIndex];
-                } else {
-                    historyIndex = commandHistory.length;
-                    inputElement.value = '';
-                }
-            }
-            // Tab autocomplete
-            else if (e.key === 'Tab') {
-                e.preventDefault();
-                const value = inputElement.value.toLowerCase().trim();
-                if (value) {
-                    inputElement.value = autocomplete(value);
-                }
-            }
-            // Ctrl+L to clear
-            else if (e.ctrlKey && e.key === 'l') {
-                e.preventDefault();
+        const commands = {
+            help: () => {
+                addOutput('');
+                addOutput('Available Commands:');
+                addOutput('  help     - Show this help menu');
+                addOutput('  about    - About LyriCodes');
+                addOutput('  projects - View projects');
+                addOutput('  contact  - Get in touch');
+                addOutput('  clear    - Clear terminal');
+                addOutput('');
+            },
+            about: () => {
+                addOutput('');
+                addOutput('About LyriCodes:');
+                addOutput('Creative developer specializing in AI, 3D graphics,');
+                addOutput('and immersive digital experiences.');
+                addOutput('');
+            },
+            projects: () => {
+                addOutput('');
+                addOutput('Projects:');
+                addOutput('  • AI Chatbot');
+                addOutput('  • 3D Portfolio');
+                addOutput('  • Neural Art Generator');
+                addOutput('');
+            },
+            contact: () => {
+                addOutput('');
+                addOutput('Contact:');
+                addOutput('  Email: lyric@lyricodes.dev');
+                addOutput('  GitHub: github.com/lyricolivia20');
+                addOutput('');
+            },
+            clear: () => {
                 outputElement.innerHTML = '';
             }
-            // Escape to cancel
-            else if (e.key === 'Escape') {
-                e.preventDefault();
-                inputElement.value = '';
-            }
-            // Enter to execute
-            else if (e.key === 'Enter') {
-                const command = inputElement.value.toLowerCase().trim();
-                if (command) processCommand(command);
-                inputElement.value = '';
-            }
-        });
+        };
 
-        // Global keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            // Skip if typing in input
-            if (document.activeElement === inputElement) return;
-            
-            // Alt+A - About
-            if (e.altKey && e.key === 'a') {
-                e.preventDefault();
-                window.location.href = 'about.html';
-            }
-            // Alt+P - Projects
-            else if (e.altKey && e.key === 'p') {
-                e.preventDefault();
-                window.location.href = 'projects.html';
-            }
-            // Alt+C - Contact
-            else if (e.altKey && e.key === 'c') {
-                e.preventDefault();
-                window.location.href = 'contact.html';
-            }
-            // Alt+H - Help
-            else if (e.altKey && e.key === 'h') {
-                e.preventDefault();
-                inputElement.focus();
-                commands.help.action();
-            }
-            // Ctrl+K - Focus input
-            else if (e.ctrlKey && e.key === 'k') {
-                e.preventDefault();
-                inputElement.focus();
-            }
-        });
+        // Welcome message
+        addOutput('Welcome to LyriCodes Terminal v1.0');
+        addOutput('Type "help" to see available commands.');
+        addOutput('');
 
-        // Voice Command System
-        const voiceBtn = document.getElementById('voice-btn');
-        let recognition = null;
-        let isListening = false;
-
-        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            recognition = new SpeechRecognition();
-            recognition.continuous = false;
-            recognition.interimResults = false;
-            recognition.lang = 'en-US';
-
-            recognition.onstart = () => {
-                isListening = true;
-                voiceBtn.classList.add('listening');
-                addResponse('🎤 Listening... Speak your command!');
-            };
-
-            recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript.toLowerCase().trim();
-                addResponse(`🎤 Heard: "${transcript}"`);
+        // Handle input
+        inputElement.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const command = inputElement.value.trim().toLowerCase();
                 
-                // Process voice command
-                setTimeout(() => {
-                    processCommand(transcript);
-                }, 500);
-            };
-
-            recognition.onerror = (event) => {
-                addResponse(`❌ Voice error: ${event.error}`);
-                voiceBtn.classList.remove('listening');
-                isListening = false;
-            };
-
-            recognition.onend = () => {
-                voiceBtn.classList.remove('listening');
-                isListening = false;
-            };
-
-            voiceBtn.addEventListener('click', () => {
-                if (isListening) {
-                    recognition.stop();
-                } else {
-                    try {
-                        recognition.start();
-                    } catch (e) {
-                        addResponse('❌ Voice recognition already active or not supported');
+                if (command) {
+                    addOutput(`❯ ${command}`);
+                    
+                    if (commands[command]) {
+                        commands[command]();
+                    } else {
+                        addOutput(`Command not found: ${command}`);
+                        addOutput('Type "help" to see available commands.');
+                        addOutput('');
                     }
                 }
-            });
-        } else {
-            voiceBtn.style.display = 'none';
-            console.log('Speech recognition not supported');
-        }
-
-        // Command Suggestions System
-        const suggestionsElement = document.getElementById('command-suggestions');
-        const commandIcons = {
-            'help': '❓', 'about': '👤', 'projects': '💼', 'contact': '📧',
-            'skills': '⚡', 'timeline': '📅', 'search': '🔍', 'filter': '🔧',
-            'preview': '👁️', 'featured': '⭐', 'recent': '🆕', 'stats': '📊',
-            'tech-stack': '🛠️', 'social': '🌐', 'tree': '📁', 'sitemap': '🗺️',
-            'random': '🎲', 'tags': '🏷️', 'goto': '🎯', 'bookmark': '🔖',
-            'history': '📜', 'accessible': '♿', 'shortcuts': '⌨️'
-        };
-
-        function showSuggestions(input) {
-            if (!input || input.length < 2) {
-                suggestionsElement.classList.remove('active');
-                return;
-            }
-
-            const matches = Object.keys(commands).filter(cmd => 
-                cmd.startsWith(input.toLowerCase())
-            ).slice(0, 5);
-
-            if (matches.length === 0) {
-                suggestionsElement.classList.remove('active');
-                return;
-            }
-
-            suggestionsElement.innerHTML = matches.map(cmd => `
-                <div class="suggestion-item" onclick="document.getElementById('command-input').value='${cmd}'; document.getElementById('command-suggestions').classList.remove('active');">
-                    <span class="suggestion-icon">${commandIcons[cmd] || '▶'}</span>
-                    <span>${cmd}</span>
-                </div>
-            `).join('');
-            
-            suggestionsElement.classList.add('active');
-        }
-
-        inputElement.addEventListener('input', (e) => {
-            showSuggestions(e.target.value);
-        });
-
-        // Click outside to close suggestions
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.command-input') && !e.target.closest('.command-suggestions')) {
-                suggestionsElement.classList.remove('active');
+                
+                inputElement.value = '';
             }
         });
-
-        // Add voice command to help
-        commands['voice'] = {
-            action: () => {
-                if (recognition) {
-                    addResponse('🎤 VOICE COMMANDS:\n');
-                    addResponse('Click the 🎤 button or type "voice" to activate');
-                    addResponse('\nSupported commands:');
-                    addResponse('   • Say any terminal command');
-                    addResponse('   • "about" - Go to about page');
-                    addResponse('   • "projects" - View projects');
-                    addResponse('   • "help" - Show help menu');
-                    addResponse('   • "skills" - Display skills\n');
-                    addResponse('💡 Speak clearly and wait for response!');
-                } else {
-                    addResponse('❌ Voice commands not supported in this browser');
-                    addResponse('💡 Try Chrome, Edge, or Safari');
-                }
-            }
-        };
-
-        const terminalWrapper = document.querySelector('.terminal-wrapper');
-        let rotation = { x: 5, y: -5 };
-        let isDragging = false;
-        let startX, startY;
-        terminalWrapper.addEventListener('mousedown', e => {
-            if (e.target.closest('#command-input')) return;
-            isDragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
-            terminalWrapper.style.cursor = 'grabbing';
-            terminalWrapper.style.transition = 'none';
-        });
-        document.addEventListener('mousemove', e => {
-            if (!isDragging) return;
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-            rotation.y += dx * 0.2;
-            rotation.x -= dy * 0.2;
-            rotation.x = Math.max(-25, Math.min(25, rotation.x));
-            rotation.y = Math.max(-25, Math.min(25, rotation.y));
-            terminalWrapper.style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`;
-            startX = e.clientX;
-            startY = e.clientY;
-        });
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-            terminalWrapper.style.cursor = 'grab';
-            terminalWrapper.style.transition = 'transform 0.2s ease, box-shadow 0.3s ease';
-        });
-
-        // Hamburger menu functionality
-        const hamburgerBtn = document.getElementById('hamburger-btn');
-        const menuDropdown = document.getElementById('menu-dropdown');
-        
-        hamburgerBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            hamburgerBtn.classList.toggle('active');
-            menuDropdown.classList.toggle('active');
-        });
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.hamburger-menu')) {
-                hamburgerBtn.classList.remove('active');
-                menuDropdown.classList.remove('active');
-            }
-        });
-        
-        
-        // Cursor Spotlight Effect - Always Active
-        document.addEventListener('mousemove', (e) => {
-            document.body.style.setProperty('--x', e.clientX + 'px');
-            document.body.style.setProperty('--y', e.clientY + 'px');
-        });
-        document.addEventListener('DOMContentLoaded', initTerminal);
     </script>
 </body>
 </html>
