@@ -29,7 +29,6 @@
             --hot-pink: #ff069d;
             --neon-pink: #ff00ff;
             --light-pink: #ff9de2;
-            --terminal-bg-transparent: rgba(20, 0, 10, 0.4);
             --body-bg: linear-gradient(135deg, #0a0014 0%, #1a0a2e 50%, #16213e 100%);
             --border-color: rgba(255, 6, 157, 0.4);
             --scrollbar-thumb: rgba(255, 6, 157, 0.6);
@@ -41,6 +40,10 @@
             box-sizing: border-box;
         }
         
+        html {
+            scroll-behavior: smooth;
+        }
+        
         body {
             background: linear-gradient(135deg, #0a0014 0%, #1a0a2e 50%, #16213e 100%);
             background-attachment: fixed;
@@ -48,6 +51,25 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             overflow-x: hidden;
             line-height: 1.6;
+            position: relative;
+        }
+        
+        /* Cursor Flashlight Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9997;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        body.flashlight-active::before {
+            opacity: 1;
         }
         
         h1, h2, h3, h4, h5, h6 {
@@ -477,6 +499,74 @@
             opacity: 0.5;
         }
         
+        /* MacOS-Style Dock */
+        .dock {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 0.75rem 2rem;
+            background: rgba(20, 0, 10, 0.6);
+            backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid rgba(255, 6, 157, 0.3);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 60px rgba(255, 6, 157, 0.2);
+            z-index: 10001;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 1.5s forwards;
+        }
+        .dock-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--light-pink);
+            text-decoration: none;
+            border-radius: 12px;
+            background: rgba(255, 6, 157, 0.1);
+            border: 1px solid rgba(255, 6, 157, 0.2);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            cursor: pointer;
+        }
+        .dock-icon:hover {
+            transform: translateY(-8px) scale(1.15);
+            background: rgba(255, 6, 157, 0.2);
+            border-color: rgba(255, 6, 157, 0.5);
+            box-shadow: 0 12px 24px rgba(255, 6, 157, 0.4), 0 0 30px rgba(255, 6, 157, 0.3);
+        }
+        .dock-icon::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%) scale(0.8);
+            background: rgba(20, 0, 10, 0.95);
+            color: var(--light-pink);
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 6, 157, 0.3);
+        }
+        .dock-icon:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+        .dock-divider {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 6, 157, 0.4), transparent);
+        }
+        
         @media (max-width: 768px) {
             .hamburger-menu {
                 top: 1rem;
@@ -545,6 +635,17 @@
         <button class="quick-btn" data-tooltip="Skills" onclick="document.getElementById('command-input').value='skills'; document.getElementById('command-input').dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}))">⚡</button>
         <button class="quick-btn" data-tooltip="Contact" onclick="window.location.href='contact.html'">📧</button>
         <button class="quick-btn" data-tooltip="Help" onclick="document.getElementById('command-input').value='help'; document.getElementById('command-input').dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}))">❓</button>
+    </div>
+    
+    <!-- MacOS-Style Dock with Socials -->
+    <div class="dock">
+        <a href="https://github.com/lyricolivia20" target="_blank" class="dock-icon" data-label="GitHub">💻</a>
+        <a href="https://linkedin.com/in/lyricolivia" target="_blank" class="dock-icon" data-label="LinkedIn">💼</a>
+        <a href="https://twitter.com/lyricodes" target="_blank" class="dock-icon" data-label="Twitter">🐦</a>
+        <div class="dock-divider"></div>
+        <a href="mailto:lyric@lyricodes.dev" class="dock-icon" data-label="Email">📧</a>
+        <a href="projects.html" class="dock-icon" data-label="Projects">🎨</a>
+        <a href="about.html" class="dock-icon" data-label="About">👤</a>
     </div>
     
     <!-- Floating Hamburger Menu -->
@@ -730,6 +831,7 @@
                     addResponse('   [text-size <size>] - Adjust text size');
                     addResponse('   [shortcuts] - Keyboard shortcuts');
                     addResponse('   [voice] - Voice command info\n');
+                    addResponse('   [flashlight] - Toggle cursor spotlight effect');
                     addResponse('🎨 FUN:');
                     addResponse('   [banner] - ASCII art');
                     addResponse('   [theme] - Color scheme');
@@ -1677,6 +1779,51 @@
             }
         });
         
+        
+        // Flashlight Cursor Effect
+        let flashlightEnabled = false;
+        document.addEventListener('mousemove', (e) => {
+            if (flashlightEnabled) {
+                const x = e.clientX;
+                const y = e.clientY;
+                document.body.style.setProperty('--mouse-x', x + 'px');
+                document.body.style.setProperty('--mouse-y', y + 'px');
+                const gradient = `radial-gradient(circle 400px at ${x}px ${y}px, rgba(255, 255, 255, 0.15), transparent 70%)`;
+                document.body.style.backgroundImage = gradient + ', linear-gradient(135deg, #0a0014 0%, #1a0a2e 50%, #16213e 100%)';
+            }
+        });
+        
+        // Toggle flashlight with F key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'f' && !e.ctrlKey && !e.altKey && document.activeElement !== inputElement) {
+                flashlightEnabled = !flashlightEnabled;
+                if (flashlightEnabled) {
+                    document.body.classList.add('flashlight-active');
+                    addResponse('💡 Flashlight effect ENABLED - Move your mouse!');
+                } else {
+                    document.body.classList.remove('flashlight-active');
+                    document.body.style.backgroundImage = '';
+                    addResponse('💡 Flashlight effect DISABLED');
+                }
+            }
+        });
+        
+        // Add flashlight command
+        commands['flashlight'] = {
+            action: () => {
+                flashlightEnabled = !flashlightEnabled;
+                if (flashlightEnabled) {
+                    document.body.classList.add('flashlight-active');
+                    addResponse('💡 Flashlight cursor effect ENABLED');
+                    addResponse('✨ Move your mouse to see the effect!');
+                    addResponse('💡 Press F or type "flashlight" to toggle');
+                } else {
+                    document.body.classList.remove('flashlight-active');
+                    document.body.style.backgroundImage = '';
+                    addResponse('💡 Flashlight effect DISABLED');
+                }
+            }
+        };
         document.addEventListener('DOMContentLoaded', initTerminal);
     </script>
 </body>
