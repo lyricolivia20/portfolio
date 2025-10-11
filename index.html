@@ -323,6 +323,160 @@
             border-left: 3px solid var(--hot-pink);
         }
         
+        /* Voice Command Button */
+        .voice-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 6, 157, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 6, 157, 0.3);
+            box-shadow: 0 8px 32px rgba(255, 6, 157, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 9999;
+            font-size: 1.5rem;
+        }
+        .voice-button:hover {
+            background: rgba(255, 6, 157, 0.25);
+            transform: scale(1.1);
+            box-shadow: 0 12px 48px rgba(255, 6, 157, 0.5);
+        }
+        .voice-button.listening {
+            background: rgba(255, 6, 157, 0.4);
+            animation: pulse-voice 1.5s infinite;
+        }
+        @keyframes pulse-voice {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 6, 157, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(255, 6, 157, 0.8), 0 0 60px rgba(255, 0, 255, 0.5); }
+        }
+        
+        /* Quick Access Buttons */
+        .quick-access {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 9999;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 1s forwards;
+        }
+        .quick-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 6, 157, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 6, 157, 0.25);
+            box-shadow: 0 4px 16px rgba(255, 6, 157, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            position: relative;
+        }
+        .quick-btn:hover {
+            background: rgba(255, 6, 157, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 8px 24px rgba(255, 6, 157, 0.4);
+        }
+        .quick-btn::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 60px;
+            background: rgba(20, 0, 10, 0.95);
+            backdrop-filter: blur(10px);
+            color: var(--light-pink);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            border: 1px solid rgba(255, 6, 157, 0.3);
+        }
+        .quick-btn:hover::before {
+            opacity: 1;
+        }
+        
+        /* Command Suggestions */
+        .command-suggestions {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(20, 0, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 6, 157, 0.3);
+            border-radius: 12px 12px 0 0;
+            padding: 0.5rem;
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: 0 -8px 32px rgba(255, 6, 157, 0.2);
+        }
+        .command-suggestions.active {
+            display: block;
+        }
+        .suggestion-item {
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--light-pink);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .suggestion-item:hover {
+            background: rgba(255, 6, 157, 0.2);
+            transform: translateX(5px);
+        }
+        .suggestion-icon {
+            font-size: 1rem;
+        }
+        
+        /* Breadcrumb Navigation */
+        .breadcrumb {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 0, 10, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 6, 157, 0.3);
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--light-pink);
+            z-index: 9998;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.5s forwards;
+        }
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .breadcrumb-separator {
+            opacity: 0.5;
+        }
+        
         @media (max-width: 768px) {
             .hamburger-menu {
                 top: 1rem;
@@ -339,6 +493,24 @@
             .neon-header .subtitle { font-size: 0.8rem; }
             .typing-cursor { width: 0.1rem; height: 2.5rem; }
             #terminal-output { height: 18rem; }
+            .voice-button {
+                bottom: 1rem;
+                right: 1rem;
+                width: 50px;
+                height: 50px;
+            }
+            .quick-access {
+                bottom: 1rem;
+                left: 1rem;
+            }
+            .quick-btn {
+                width: 45px;
+                height: 45px;
+            }
+            .breadcrumb {
+                font-size: 0.75rem;
+                padding: 0.4rem 1rem;
+            }
         }
         .command-btn:focus-visible {
             outline: 2px solid var(--hot-pink);
@@ -354,6 +526,26 @@
 <body class="min-h-screen flex items-center justify-center p-2 sm:p-4">
     
     <canvas id="matrix-canvas"></canvas>
+    
+    <!-- Breadcrumb Navigation -->
+    <div class="breadcrumb">
+        <span class="breadcrumb-item">🏠 Home</span>
+        <span class="breadcrumb-separator">→</span>
+        <span class="breadcrumb-item">Terminal</span>
+    </div>
+    
+    <!-- Voice Command Button -->
+    <button class="voice-button" id="voice-btn" aria-label="Voice Commands" title="Click to use voice commands">
+        🎤
+    </button>
+    
+    <!-- Quick Access Buttons -->
+    <div class="quick-access">
+        <button class="quick-btn" data-tooltip="Projects" onclick="window.location.href='projects.html'">💼</button>
+        <button class="quick-btn" data-tooltip="Skills" onclick="document.getElementById('command-input').value='skills'; document.getElementById('command-input').dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}))">⚡</button>
+        <button class="quick-btn" data-tooltip="Contact" onclick="window.location.href='contact.html'">📧</button>
+        <button class="quick-btn" data-tooltip="Help" onclick="document.getElementById('command-input').value='help'; document.getElementById('command-input').dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}))">❓</button>
+    </div>
     
     <!-- Floating Hamburger Menu -->
     <div class="hamburger-menu">
@@ -387,13 +579,16 @@
             
             <div id="terminal-output" class="terminal-output p-4 h-72 overflow-y-auto" role="log" aria-live="polite" aria-relevant="additions"></div>
             
-            <div class="px-5 py-4 flex items-center border-t" style="border-color: rgba(255, 6, 157, 0.15); background: rgba(255, 6, 157, 0.03); backdrop-filter: blur(10px);">
+            <div class="px-5 py-4 flex items-center border-t" style="border-color: rgba(255, 6, 157, 0.15); background: rgba(255, 6, 157, 0.03); backdrop-filter: blur(10px); position: relative;">
+                <!-- Command Suggestions -->
+                <div class="command-suggestions" id="command-suggestions"></div>
+                
                 <span class="mr-3 text-xl prompt-icon" style="color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink), 0 0 20px rgba(255, 0, 255, 0.5);">♕</span>
                 <input 
                     id="command-input" type="text"
                     class="command-input flex-1 bg-transparent outline-none font-mono"
                     autocomplete="off" spellcheck="false" 
-                    placeholder="Type 'help' for commands..." 
+                    placeholder="Type 'help' for commands or click 🎤 for voice..." 
                     aria-label="Command input"
                     autofocus>
             </div>
@@ -533,7 +728,8 @@
                     addResponse('♿ ACCESSIBILITY:');
                     addResponse('   [accessible] - Toggle accessibility mode');
                     addResponse('   [text-size <size>] - Adjust text size');
-                    addResponse('   [shortcuts] - Keyboard shortcuts\n');
+                    addResponse('   [shortcuts] - Keyboard shortcuts');
+                    addResponse('   [voice] - Voice command info\n');
                     addResponse('🎨 FUN:');
                     addResponse('   [banner] - ASCII art');
                     addResponse('   [theme] - Color scheme');
@@ -1310,6 +1506,128 @@
                 inputElement.focus();
             }
         });
+
+        // Voice Command System
+        const voiceBtn = document.getElementById('voice-btn');
+        let recognition = null;
+        let isListening = false;
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = () => {
+                isListening = true;
+                voiceBtn.classList.add('listening');
+                addResponse('🎤 Listening... Speak your command!');
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript.toLowerCase().trim();
+                addResponse(`🎤 Heard: "${transcript}"`);
+                
+                // Process voice command
+                setTimeout(() => {
+                    processCommand(transcript);
+                }, 500);
+            };
+
+            recognition.onerror = (event) => {
+                addResponse(`❌ Voice error: ${event.error}`);
+                voiceBtn.classList.remove('listening');
+                isListening = false;
+            };
+
+            recognition.onend = () => {
+                voiceBtn.classList.remove('listening');
+                isListening = false;
+            };
+
+            voiceBtn.addEventListener('click', () => {
+                if (isListening) {
+                    recognition.stop();
+                } else {
+                    try {
+                        recognition.start();
+                    } catch (e) {
+                        addResponse('❌ Voice recognition already active or not supported');
+                    }
+                }
+            });
+        } else {
+            voiceBtn.style.display = 'none';
+            console.log('Speech recognition not supported');
+        }
+
+        // Command Suggestions System
+        const suggestionsElement = document.getElementById('command-suggestions');
+        const commandIcons = {
+            'help': '❓', 'about': '👤', 'projects': '💼', 'contact': '📧',
+            'skills': '⚡', 'timeline': '📅', 'search': '🔍', 'filter': '🔧',
+            'preview': '👁️', 'featured': '⭐', 'recent': '🆕', 'stats': '📊',
+            'tech-stack': '🛠️', 'social': '🌐', 'tree': '📁', 'sitemap': '🗺️',
+            'random': '🎲', 'tags': '🏷️', 'goto': '🎯', 'bookmark': '🔖',
+            'history': '📜', 'accessible': '♿', 'shortcuts': '⌨️'
+        };
+
+        function showSuggestions(input) {
+            if (!input || input.length < 2) {
+                suggestionsElement.classList.remove('active');
+                return;
+            }
+
+            const matches = Object.keys(commands).filter(cmd => 
+                cmd.startsWith(input.toLowerCase())
+            ).slice(0, 5);
+
+            if (matches.length === 0) {
+                suggestionsElement.classList.remove('active');
+                return;
+            }
+
+            suggestionsElement.innerHTML = matches.map(cmd => `
+                <div class="suggestion-item" onclick="document.getElementById('command-input').value='${cmd}'; document.getElementById('command-suggestions').classList.remove('active');">
+                    <span class="suggestion-icon">${commandIcons[cmd] || '▶'}</span>
+                    <span>${cmd}</span>
+                </div>
+            `).join('');
+            
+            suggestionsElement.classList.add('active');
+        }
+
+        inputElement.addEventListener('input', (e) => {
+            showSuggestions(e.target.value);
+        });
+
+        // Click outside to close suggestions
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.command-input') && !e.target.closest('.command-suggestions')) {
+                suggestionsElement.classList.remove('active');
+            }
+        });
+
+        // Add voice command to help
+        commands['voice'] = {
+            action: () => {
+                if (recognition) {
+                    addResponse('🎤 VOICE COMMANDS:\n');
+                    addResponse('Click the 🎤 button or type "voice" to activate');
+                    addResponse('\nSupported commands:');
+                    addResponse('   • Say any terminal command');
+                    addResponse('   • "about" - Go to about page');
+                    addResponse('   • "projects" - View projects');
+                    addResponse('   • "help" - Show help menu');
+                    addResponse('   • "skills" - Display skills\n');
+                    addResponse('💡 Speak clearly and wait for response!');
+                } else {
+                    addResponse('❌ Voice commands not supported in this browser');
+                    addResponse('💡 Try Chrome, Edge, or Safari');
+                }
+            }
+        };
 
         const terminalWrapper = document.querySelector('.terminal-wrapper');
         let rotation = { x: 5, y: -5 };
