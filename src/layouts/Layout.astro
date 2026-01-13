@@ -1,0 +1,195 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Creative Developer Portfolio' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Satisfy&display=swap" rel="stylesheet">
+    
+    <title>{title}</title>
+  </head>
+  <body class="bg-zinc-950 text-zinc-100 antialiased min-h-screen overflow-x-hidden">
+    <canvas id="matrix-canvas"></canvas>
+    <div id="cursor-light"></div>
+    <div class="scanlines"></div>
+    <div class="particles-container" id="particles"></div>
+    
+    <div class="relative z-10">
+      <slot />
+    </div>
+
+    <script>
+      // Matrix Rain with cursor reactivity
+      const canvas = document.getElementById('matrix-canvas');
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      let mouseX = -1000;
+      let mouseY = -1000;
+      let isVisible = !document.hidden;
+
+      if (canvas instanceof HTMLCanvasElement && !prefersReducedMotion) {
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          const chars = 'LYRICODES♕✦⋆01アイウエオカキクケコ';
+          const fontSize = 14;
+          let columns = 0;
+          let drops = [];
+          let lastFrame = 0;
+          const frameDelay = 50;
+
+          function resizeCanvas() {
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.floor(window.innerWidth * dpr);
+            canvas.height = Math.floor(window.innerHeight * dpr);
+            canvas.style.width = window.innerWidth + 'px';
+            canvas.style.height = window.innerHeight + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            columns = Math.max(1, Math.floor(window.innerWidth / fontSize));
+            drops = Array.from({ length: columns }, () => Math.floor(Math.random() * -50));
+          }
+
+          resizeCanvas();
+          let resizeTimeout;
+          window.addEventListener('resize', () => {
+            window.clearTimeout(resizeTimeout);
+            resizeTimeout = window.setTimeout(resizeCanvas, 150);
+          });
+
+          document.addEventListener('visibilitychange', () => {
+            isVisible = !document.hidden;
+          });
+
+          function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 0, 15, 0.05)';
+            ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
+            for (let i = 0; i < drops.length; i++) {
+              const x = i * fontSize;
+              const y = drops[i] * fontSize;
+
+              const dx = x - mouseX;
+              const dy = y - mouseY;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              const maxDist = 150;
+
+              if (dist < maxDist) {
+                const intensity = 1 - dist / maxDist;
+                const r = Math.floor(255 * intensity);
+                const g = Math.floor(6 + (211 - 6) * (1 - intensity));
+                const b = Math.floor(157 * intensity + 153 * (1 - intensity));
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.8 + intensity * 0.2})`;
+                ctx.font = `bold ${fontSize + intensity * 4}px monospace`;
+              } else {
+                ctx.fillStyle = '#ff069d';
+                ctx.font = `${fontSize}px monospace`;
+              }
+
+              const text = chars[Math.floor(Math.random() * chars.length)];
+              ctx.fillText(text, x, y);
+
+              if (y > window.innerHeight && Math.random() > 0.975) {
+                drops[i] = 0;
+              }
+              drops[i]++;
+            }
+          }
+
+          function loop(time) {
+            requestAnimationFrame(loop);
+            if (!isVisible) return;
+            if (time - lastFrame < frameDelay) return;
+            lastFrame = time;
+            drawMatrix();
+          }
+
+          requestAnimationFrame(loop);
+        }
+      }
+
+      // Cursor light + sparkle trail
+      const cursorLight = document.getElementById('cursor-light');
+      const sparkleChars = ['✦', '✧', '⋆', '˚', '·', '0', '1'];
+      const sparkleColors = ['#ff069d', '#34d399', '#22d3ee', '#a78bfa', '#fff'];
+      let lastSparkleTime = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        if (cursorLight instanceof HTMLElement) {
+          cursorLight.style.left = mouseX + 'px';
+          cursorLight.style.top = mouseY + 'px';
+        }
+
+        const now = Date.now();
+        if (now - lastSparkleTime > 40) {
+          lastSparkleTime = now;
+          createSparkle(mouseX, mouseY);
+        }
+      });
+
+      function createSparkle(x, y) {
+        const sparkle = document.createElement('span');
+        sparkle.className = 'sparkle';
+        sparkle.textContent = sparkleChars[Math.floor(Math.random() * sparkleChars.length)];
+        sparkle.style.left = `${x + (Math.random() - 0.5) * 20}px`;
+        sparkle.style.top = `${y + (Math.random() - 0.5) * 20}px`;
+        sparkle.style.color = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+        sparkle.style.fontSize = `${8 + Math.random() * 8}px`;
+        sparkle.style.opacity = '1';
+        document.body.appendChild(sparkle);
+
+        requestAnimationFrame(() => {
+          sparkle.style.opacity = '0';
+          sparkle.style.transform = `scale(0) translateY(-20px)`;
+        });
+
+        setTimeout(() => sparkle.remove(), 500);
+      }
+
+      document.addEventListener('mouseleave', () => {
+
+        if (cursorLight instanceof HTMLElement) {
+          cursorLight.style.opacity = '0';
+        }
+      });
+      document.addEventListener('mouseenter', () => {
+
+        if (cursorLight instanceof HTMLElement) {
+          cursorLight.style.opacity = '1';
+        }
+      });
+
+      // Floating particles
+      const particlesContainer = document.getElementById('particles');
+      if (particlesContainer) {
+        const colors = ['#ff069d', '#34d399', '#22d3ee'];
+        for (let i = 0; i < 12; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          particle.style.left = Math.random() * 100 + '%';
+          particle.style.color = colors[Math.floor(Math.random() * colors.length)];
+          particle.style.animationDelay = Math.random() * 18 + 's';
+          particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+          particlesContainer.appendChild(particle);
+        }
+      }
+    </script>
+  </body>
+</html>
